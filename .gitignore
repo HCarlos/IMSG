@@ -1,7 +1,11 @@
 *.sh
+.sh
 .git
 .ftpconfig
+*.json
 .json
 .ftpignore
 .md
 *.htaccess
+.htaccess
+.gitignore

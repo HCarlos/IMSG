@@ -8,12 +8,12 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
 date_default_timezone_set('America/Mexico_City');
-
+/*
 require_once('vo/voConn.php');
 require_once('vo/voConnPDO.php');
 require_once('vo/voCombo.php');
 require_once('vo/voUsuario.php');
-
+*/
 require_once('vo/voEmpty.php');
 
 class oCenturaPDO {
