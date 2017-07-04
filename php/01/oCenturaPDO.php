@@ -1,16 +1,11 @@
 <?php
 
-
-
 ini_set('display_errors', '0');     # don't show any errors...
 error_reporting(E_ALL | E_STRICT);  # ...but do log them
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-
-
-
 
 date_default_timezone_set('America/Mexico_City');
 
@@ -23,36 +18,39 @@ require_once('vo/voEmpty.php');
 
 class oCenturaPDO {
 
-	 private static $instancia;
-	 public $IdEmp;
-	 public $IdUser;
-	 public $User;
-	 public $Pass;
-	 public $Nav;
-	 public $URL;
-	 public $defaultMail;
-	 public $CID;
-	 public $Mail;
-	 public $Foto;
-	 public $iva;
+	private static $instancia;
+	public $IdEmp;
+	public $IdUser;
+	public $User;
+	public $Pass;
+	public $Nav;
+	public $URL;
+	public $defaultMail;
+	public $CID;
+	public $Mail;
+	public $Foto;
+	public $iva;
 
-	 private function __construct(){
-	 		$this->Nav      = "Ninguno";
-			$this->IdUser    = 0;
-			$this->User     = "";
-			$this->Pass     = "";
-			$this->iva      = 0.16;
-			$this->URL      = "http://imsg.mx/";
-	 }
-
-	 public static function getInstance(){
-				if (  !self::$instancia instanceof self){
-					  self::$instancia = new self;
-				}
-				return self::$instancia;
+	// Constructor
+	private function __construct(){
+			$this->Nav      = "Ninguno";
+		$this->IdUser    = 0;
+		$this->User     = "";
+		$this->Pass     = "";
+		$this->iva      = 0.16;
+		$this->URL      = "http://imsg.mx/";
 	}
 
-	 private function getIdUserFromAlias($str){
+	// Get Instance
+	public static function getInstance(){
+			if (  !self::$instancia instanceof self){
+				  self::$instancia = new self;
+			}
+			return self::$instancia;
+	}
+
+	// Obtiene el ID del Usuario a partir de su Alias
+	private function getIdUserFromAlias($str){
 
 	    $query = "select iduser from usuarios where username = '$str' and status_usuario = 1";
 
@@ -70,7 +68,8 @@ class oCenturaPDO {
 	    return $ret;
 	 }
 
-	 private function getIdEmpFromAlias($str){
+	// Obtiene el ID de la Empresa a partir de su Alias
+	private function getIdEmpFromAlias($str){
 
 	    $query = "select idemp from usuarios where username = '$str' and status_usuario = 1";
 
@@ -88,7 +87,7 @@ class oCenturaPDO {
 	    return $ret;
 	 }
 
-
+	// Valida si existen usuarios conectados
 	private function IsExistUserConnect($iduser,$idemp) {
 
 	    $query = "select iduser from usuarios_conectados where iduser = $iduser and idemp = $idemp limit 1";
@@ -104,70 +103,78 @@ class oCenturaPDO {
 	    return $ret;
 	 }
 
+	// Valida si usuario esta conectado
 	private function IsConnectUser($iduser,$idemp) {
 
-	    $query = "select iduser from usuarios_conectados where iduser = $iduser and idemp = $idemp and isconectado = 1 limit 1";
-
-     	$Conn = new voConnPDO();
+		$query = "select iduser from usuarios_conectados where iduser = $iduser and idemp = $idemp and isconectado = 1 limit 1";
+		$Conn = new voConnPDO();
 		$result = $Conn->queryFetchAllAssocOBJ($query);
 
 		if (!$result) {
-				$ret=0;
+			$ret=0;
 		}else{
-				$ret= $result[0]->iduser;
+			$ret= $result[0]->iduser;
 		}
-	    return $ret;
+		return $ret;
+
 	 }
 
 	 public function getLogoEmp($idemp){
 
-	    $query = "select valor from config where llave = 'logo-emp-rep' and idemp = $idemp";
+			$query = "select valor from config where llave = 'logo-emp-rep' and idemp = $idemp";
 
-     	$Conn = new voConnPDO();
-		$result = $Conn->queryFetchAllAssocOBJ($query);
+			$Conn = new voConnPDO();
+			$result = $Conn->queryFetchAllAssocOBJ($query);
 
-		if (!$result) {
+			if (!$result) {
 				$ret=0;
-		}else{
+			}else{
 				$ret= $result[0]->valor;
-		}
-	    return $ret;
+			}
+
+			return $ret;
+
 	 }
 
 	 public function getNombreEmp($idemp){
 
-	    $query = "select rs from empresa where idemp = $idemp";
+		  $query = "select rs from empresa where idemp = $idemp";
+		 	$Conn = new voConnPDO();
+			$result = $Conn->queryFetchAllAssocOBJ($query);
 
-     	$Conn = new voConnPDO();
-		$result = $Conn->queryFetchAllAssocOBJ($query);
+			if (!$result) {
+					$ret=0;
+			}else{
+					$ret= $result[0]->rs;
+			}
+			  return $ret;
 
-		if (!$result) {
-				$ret=0;
-		}else{
-				$ret= $result[0]->rs;
-		}
-	    return $ret;
 	 }
 
 
 
 	 private function guardarDatos($query=""){
-	 	$Conn = new voConnPDO();
-	 	$ret = array();
+
+			$Conn = new voConnPDO();
+			$ret = array();
 			$result = $Conn->exec($query);
-		if ($result != 1){
-			$ret = $result;
-		}else{
-			$ret = "OK";
-		}
-		$Conn = null;
-		return $ret;
+
+			if ($result != 1){
+				$ret = $result;
+			}else{
+				$ret = "OK";
+			}
+
+			$Conn = null;
+			return $ret;
+
 	 }
 
-    public function getComboPDO($index=0,$arg="",$pag=0,$limite=0,$tipo=0,$otros=""){
+	// Obtiene una lista de elementos Llave => Valor
+	public function getComboPDO($index=0,$arg="",$pag=0,$limite=0,$tipo=0,$otros=""){
 
 			$query="";
-    	switch ($tipo){
+			switch ($tipo){
 
 					case -2:
 
@@ -203,17 +210,18 @@ class oCenturaPDO {
 								Order By idusernivelacceso asc ";
 						break;
 
-	  	}
+			}
 
-     	$Conn = new voConnPDO();
-		$result = $Conn->queryFetchAllAssocOBJ($query);
+			$Conn = new voConnPDO();
+			$result = $Conn->queryFetchAllAssocOBJ($query);
 
-		$Conn = null;
+			$Conn = null;
 
-		return $result;
-	}
+			return $result;
 
+		}
 
+	// Realiza una consulta SQL
 	public function getQueryPDO($tipo=0,$cad="",$type=0,$from=0,$cant=0,$ar=array(),$otros="",$withPag=1) {
 		$query="";
     	switch ($tipo){
@@ -307,67 +315,68 @@ class oCenturaPDO {
 
 	}
 
+	// Asocia elementos de una tabla A con una tabla B
+	public function setAsocia($tipo=0,$arg="",$pag=0,$limite=0,$var2=0, $otros=""){
+			 	$query="";
+			 	$vRet = "Error";
 
-     public function setAsocia($tipo=0,$arg="",$pag=0,$limite=0,$var2=0, $otros=""){
-	  	$query="";
-		$vRet = "Error";
+	  		$ip=$_SERVER['REMOTE_ADDR'];
+	  		$host=gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-	  	$ip=$_SERVER['REMOTE_ADDR'];
-	  	$host=gethostbyaddr($_SERVER['REMOTE_ADDR']);
+	    	switch ($tipo){
+				case 51:
+					switch($var2){
+						case 10:
+							parse_str($arg);
+							$iduser = $this->getIdUserFromAlias($u);
+							$idemp = $this->getIdEmpFromAlias($u);
 
-    	switch ($tipo){
-			case 51:
-				switch($var2){
-					case 10:
-						parse_str($arg);
-						$iduser = $this->getIdUserFromAlias($u);
-						$idemp = $this->getIdEmpFromAlias($u);
+		          			$ar = explode("|",$dests);
+							foreach($ar as $i=>$valor){
+								if ((int)($ar[$i])>0){
+									$query = "Insert Into pase_salida_alumnos(idpsa,idalumno,idciclo,clave_nivel,idgrupo,idemp,ip,host,creado_por,creado_el)
+																		value($idpsa,$ar[$i],$idciclo,$clave_nivel,$idgrupo,$idemp,'$ip','$host',$iduser,NOW())";
 
-	          			$ar = explode("|",$dests);
-						foreach($ar as $i=>$valor){
-							if ((int)($ar[$i])>0){
-								$query = "Insert Into pase_salida_alumnos(idpsa,idalumno,idciclo,clave_nivel,idgrupo,idemp,ip,host,creado_por,creado_el)
-																	value($idpsa,$ar[$i],$idciclo,$clave_nivel,$idgrupo,$idemp,'$ip','$host',$iduser,NOW())";
+									$result = $Conn->exec($query);
 
-								$result = $Conn->exec($query);
+									if ($result != 1){
+										$vR = $Conn->errorInfo();
+										$vRet = 'Hey'; //var_dump($vR[2]);
+									}else{
+										$vRet = "OK";
+									}
 
-								if ($result != 1){
-									$vR = $Conn->errorInfo();
-									$vRet = 'Hey'; //var_dump($vR[2]);
-								}else{
-									$vRet = "OK";
 								}
-
 							}
-						}
-						break;
-					case 20:
-						parse_str($arg);
-	          			$ar = explode("|",$dests);
-						foreach($ar as $i=>$valor){
-							if ((int)($ar[$i])>0){
-								$query = "Delete from pase_salida_alumnos where idpsaalumno = ".$ar[$i];
+							break;
+						case 20:
+							parse_str($arg);
+		          			$ar = explode("|",$dests);
+							foreach($ar as $i=>$valor){
+								if ((int)($ar[$i])>0){
+									$query = "Delete from pase_salida_alumnos where idpsaalumno = ".$ar[$i];
 
-								$result = $Conn->exec($query);
+									$result = $Conn->exec($query);
 
-								if ($result != 1){
-									$vR = $Conn->errorInfo();
-									$vRet = var_dump($vR[2]);
-								}else{
-									$vRet = "OK";
+									if ($result != 1){
+										$vR = $Conn->errorInfo();
+										$vRet = var_dump($vR[2]);
+									}else{
+										$vRet = "OK";
+									}
+
 								}
-
 							}
-						}
-						break;
-				}
-				break;
-		}
+							break;
+					}
+					break;
+			}
 
 	}
 
+	// Realiza operaciones de tipo ABC
 	public function saveDataPDO($index=0,$arg="",$pag=0,$limite=0,$tipo=0,$cadena2=""){
-	  	$query="";
+		$query="";
 		$vRet = "Error";
 
 	  	$ip=$_SERVER['REMOTE_ADDR'];
@@ -812,7 +821,7 @@ class oCenturaPDO {
 		return $vRet;
 	}
 
-
+	// Genera un Username y Password
 	public function generarUsuario($iddato=0) {
 
      	$Conn = new voConnPDO();
@@ -829,8 +838,6 @@ class oCenturaPDO {
 		return $ret;
 
 	}
-
-
 
 }
 
