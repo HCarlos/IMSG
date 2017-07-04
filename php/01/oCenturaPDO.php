@@ -19,6 +19,7 @@ require_once('vo/voConnPDO.php');
 require_once('vo/voCombo.php');
 require_once('vo/voUsuario.php');
 */
+
 require_once('vo/voEmpty.php');
 
 class oCenturaPDO {
