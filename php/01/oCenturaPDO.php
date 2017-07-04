@@ -1,13 +1,18 @@
 <?php
 /*
+
 ini_set('display_errors', '0');     # don't show any errors...
 error_reporting(E_ALL | E_STRICT);  # ...but do log them
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+
 */
+
 date_default_timezone_set('America/Mexico_City');
+
+
 /*
 require_once('vo/voConn.php');
 require_once('vo/voConnPDO.php');
