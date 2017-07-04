@@ -1,0 +1,121 @@
+                    <li class="open " id="subMenuCatalogos"> 
+                        <a href="#" class="dropdown-toggle">
+                                <i class="icon-book"></i>
+                                <span class="menu-text">Catálogos</span>
+                                <b class="arrow icon-angle-down"></b>
+                        </a>
+
+                        <ul class="submenu">                            
+                            
+
+                            <li>
+                                <a href="#" id="cat_personas_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Personas</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_estados_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Estados</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_municipios_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Municipios</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+<script type="text/javascript">
+jQuery(function($) {
+
+    $("#preloaderPrincipal").show();
+
+    if ($("#cat_personas_list").length) {
+        $("#cat_personas_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-personas-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Personas'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#cat_estados_list").length) {
+        $("#cat_estados_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-estados-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Estados'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#cat_municipios_list").length) {
+        $("#cat_municipios_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-municipios-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Municipios'));
+                }, "html");
+            return false;
+        });
+
+    }
+
+    $("#preloaderPrincipal").hide();
+
+    $("#menuPrincipal li").on("click", function(event) {
+        event.preventDefault();
+        $(".nav-list li").removeClass("active");
+        if ($('.open').length === null) {
+            $(this).addClass("active open");
+        }
+    });
+
+    function cfgBase0(){
+        resizeScreen();
+        $("#contentLevel5").empty();
+        $("#contentLevel5").hide();
+        $("#contentLevel4").empty();
+        $("#contentLevel4").hide();
+        $("#contentLevel3").empty();
+        $("#contentLevel3").hide();
+        $("#contentProfile").empty();
+        $("#contentProfile").hide();
+        $("#contentMain").show();
+        $("#contentMain").empty();
+        $("#preloaderPrincipal").show();
+        obj.setIsTimeLine(false);
+    }
+
+
+    $("#preloaderPrincipal").hide();
+
+
+})
+
+</script>

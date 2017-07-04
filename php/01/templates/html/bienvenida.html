@@ -1,0 +1,46 @@
+<div class="page-content">
+					<div class=" position-relative">
+						<div class="profile-social-links pull-right" >
+							
+							<a href="https://www.facebook.com/IMSG-Tabasco-921607201291430/?fref=ts"  data-rel="tooltip" class="tooltip-info rsPrincipal0" title="Facebook" data-original-title="Visit my Facebook" target="_blank" id="fb0">
+								<i class="middle icon-facebook-sign icon-2x blue"></i>
+							</a>
+
+							<a href="mailto:imsg01@yahoo.com" data-rel="tooltip" class="tooltip-info" title="Send us Email" data-original-title="Send us Email" target="_blank"  >
+								<i class="middle icon-envelope-alt icon-2x light-default"></i>
+							</a>
+
+						</div>
+
+					</div><!--/.page-header-->
+
+					<div class="row-fluid">
+						<div class="span12">
+							<!--PAGE CONTENT BEGINS-->
+
+							<div class="row-fluid">
+								<div class="span9">
+
+								</div><!--/span-->
+
+								<div class="span3">
+
+								</div><!--/span-->
+
+							</div>
+
+						</div><!--/.span-->
+					</div><!--/.row-fluid-->
+</div>
+
+<script type="text/javascript"> 
+
+			$(".rsPrincipal0").hide();
+			$('[data-rel=tooltip]').tooltip();
+			var clave = parseInt(localStorage.ClaveNivelAcceso, 0);
+			if (clave != 5 && clave != 7){
+				$(".rsPrincipal0").show();
+				console.log("Clave: "+clave);
+			}
+
+</script>

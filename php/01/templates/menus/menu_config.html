@@ -1,0 +1,44 @@
+                    <li id="subMenuConfig"> 
+                        <a href="#" class="dropdown-toggle">
+                                <i class="icon-cogs"></i>
+                                <span class="menu-text"> Configuraciones </span>
+
+                                <b class="arrow icon-angle-down"></b>
+                        </a>
+
+                        <ul class="submenu">                            
+                            
+                            <li>
+                                <a href="#" id="cat_usuarios_list"><!-- newTask -->
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text"> Usuarios</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+<script type="text/javascript">
+jQuery(function($) {
+
+    $("#preloaderPrincipal").show();
+
+    if ($("#cat_usuarios_list").length) {
+        $("#cat_usuarios_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-usuarios-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Usuarios'));
+                }, "html");
+            return false;
+        });
+    }
+
+    $("#preloaderPrincipal").hide();
+
+});    
+</script>
