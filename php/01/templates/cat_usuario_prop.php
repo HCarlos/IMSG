@@ -40,14 +40,14 @@ $iduser  = $_POST['iduser'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<table>
 					<tr>
 						<td>
 					    	<label for="username" class="tbl80W">Username</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl80W" name="username" id="username" type="text">	
+							<input class="altoMoz tbl80W" name="username" id="username" type="text">
 						</td>
 						<td></td>
 						<td></td>
@@ -58,28 +58,28 @@ $iduser  = $_POST['iduser'];
 					    	<label for="password1"  class=" tbl80W">Password</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl80W" name="password1" id="password1" type="password">	
+							<input class="altoMoz tbl80W" name="password1" id="password1" type="password">
 						</td>
 						<td>
 					    	<label for="password2"  class="marginLeft2em tbl80W">Re-Password</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl80W" name="password2" id="password2" type="password">	
+							<input class="altoMoz tbl80W" name="password2" id="password2" type="password">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td>
 					    	<label for="apellidos" class="tbl80W">Apellidos: </label>
 						</td>
 						<td>
-							<input class="altoMoz tbl200W" name="apellidos" id="apellidos" type="text">	
+							<input class="altoMoz tbl200W" name="apellidos" id="apellidos" type="text">
 						</td>
 						<td>
 					    	<label for="nombres" class="marginLeft2em tbl80W">Nombres</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl200W" name="nombres" id="nombres" type="text">	
+							<input class="altoMoz tbl200W" name="nombres" id="nombres" type="text">
 						</td>
 					</tr>
 
@@ -88,7 +88,7 @@ $iduser  = $_POST['iduser'];
 					    	<label for="correoelectronico" class=" tbl80W">Email</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl100W" name="correoelectronico" id="correoelectronico" type="text">	
+							<input class="altoMoz tbl100W" name="correoelectronico" id="correoelectronico" type="text">
 						</td>
 						<td>
 					    	<label for="idusernivelacceso"  class="marginLeft2em tbl100W">Nivel de Acceso</label>
@@ -114,14 +114,14 @@ $iduser  = $_POST['iduser'];
 					</tr>
 
 				</table>
-			</div>		
+			</div>
 			<div id="foto" class="tab-pane">
 
 				<div class="span3 center">
 					<div>
 						<span class="profile-picture">
-							<img id="avatar" class="editable editable-click editable-empty" 
-									alt="" 
+							<img id="avatar" class="editable editable-click editable-empty"
+									alt=""
 									src="">
 						</span>
 
@@ -157,11 +157,9 @@ $iduser  = $_POST['iduser'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
-
-	var stream = io.connect(obj.getValue(4));
 
 	$("#preloaderPrincipal").hide();
 
@@ -179,7 +177,7 @@ jQuery(function($) {
 		$.post(obj.getValue(0) + "data/", {o:0, t:-2, c:IdUser, p:55, from:0, cantidad:0,s:''},
 			function(json){
 				if (json.length>0){
-					$("#idunidadadmitiva").val(json[0].idunidadadmitiva);					
+					$("#idunidadadmitiva").val(json[0].idunidadadmitiva);
 					$("#username").val(json[0].username);
 					$("#username2").val(json[0].username);
 					$("#password1").val(json[0].password);
@@ -191,16 +189,18 @@ jQuery(function($) {
 					$("#status_usuario").val(json[0].status_usuario);
 					$("#password1").prop("disabled","disabled");
 					$("#password2").prop("disabled","disabled");
-					
+
                 	var strx = json[0].foto.split(".");
                 	var imgPath = obj.getValue(0) + "upload/"+strx[0]+"-big."+strx[1];
 					$("#avatar").attr("src",imgPath);
 
 					if (inicio){
+            /*
 						idunidadadmitiva = json[0].idunidadadmitiva;
 						idsubarea = json[0].idsubarea;
 						idusernivelacceso = json[0].idusernivelacceso;
 						getSubareas();
+            */
 					}
 					$("#username").focus();
 				}
@@ -213,10 +213,10 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
+	    var queryString = $(this).serialize();
 
 	    // alert(queryString);
-	    
+
 		var data = new FormData();
 
 		if (validForm()){
@@ -225,9 +225,8 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "IMSG-USUARIO-"+IdUser});
         			}else{
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
 					$("#preloaderPrincipal").hide();
 					$("#contentProfile").hide(function(){
@@ -264,7 +263,7 @@ jQuery(function($) {
 				}
 
 	        }, "json"
-	    );  
+	    );
 	}
 
 	$("#closeFormUpload").on("click",function(event){

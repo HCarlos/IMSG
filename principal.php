@@ -40,10 +40,10 @@
     <link rel="stylesheet" href="/assets/css/jquery-ui-1.10.3.full.min.css" />
 
     <link rel="stylesheet" href="/assets/css/font-awesome.css" />
-    
-    
+
+
     <link rel="stylesheet" href="/assets/css_/font-awesome.css" />
-    
+
 
     <!--[if IE 7]>
         <link rel="stylesheet" href="/assets/css/font-awesome-ie7.css" />
@@ -56,7 +56,7 @@
     <link rel="stylesheet" href="/assets/css/ace<?= $ind1; ?>.css" />
     <link rel="stylesheet" href="/assets/css/ace-responsive.css" />
     <link rel="stylesheet" href="/assets/css/ace-skins.css" />
-    <link rel="stylesheet" href="/assets/css/bootstrap-timepicker.css" />    
+    <link rel="stylesheet" href="/assets/css/bootstrap-timepicker.css" />
     <link rel="stylesheet" href="/assets/css/datepicker.css" />
     <link rel="stylesheet" href="/assets/css/colorpicker.css" />
     <link rel="stylesheet" href="/assets/css/jquery.gritter.css" />
@@ -64,7 +64,7 @@
     <!--
     <link rel="stylesheet" href="/assets/css/jquery.dataTables.css" />
     -->
-    
+
     <!--[if lte IE 8]>
         <link rel="stylesheet" href="/assets/css/ace-ie.css" />
     <![endif]-->
@@ -74,7 +74,7 @@
     <link href="/css/sg-01.css" rel="stylesheet">
 
     <script src="/assets/js/ace-extra.min.js"></script>
-    
+
 
 <style type="text/css">
 
@@ -85,7 +85,7 @@ body{background: transparent url("/img/blueprint.png") top left; }
 <script type="text/javascript">
 
 
-    
+
 </script>
 
 </head>
@@ -117,9 +117,9 @@ body{background: transparent url("/img/blueprint.png") top left; }
   </script>
 
     <?php include("php/01/templates/navbar-top.php"); ?>
-    
+
     <section class="section-portfolio" id="section-portfolio" >
- 
+
         <div class="main-container container-fluid" style="background-color: transparent;">
             <a class="menu-toggler" id="menu-toggler" href="#">
                 <span class="menu-text"></span>
@@ -135,9 +135,9 @@ body{background: transparent url("/img/blueprint.png") top left; }
                             <i class="icon-home home-icon"></i>
                             <a id="href0" href="/dashboard/<?= $ind0; ?>/">Inicio</a>
                         </li>
-                    </ul><!--.breadcrumb--> 
-                    <span id="barInfoL0"></span>                   
-                    <span id="barInfoR0" class="pull-right"></span>                   
+                    </ul><!--.breadcrumb-->
+                    <span id="barInfoL0"></span>
+                    <span id="barInfoR0" class="pull-right"></span>
 
                 </div>
 
@@ -171,7 +171,7 @@ body{background: transparent url("/img/blueprint.png") top left; }
                 <img src="/img/loading.gif" width="32" height="32" alt=""/> Cargando...
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->  
+    </div><!-- /.modal -->
 
     <div id="divUploadImage" class="modal fade " style = "height:600px !important; width: 600px !important;">
     </div><!-- /.modal -->
@@ -213,33 +213,19 @@ body{background: transparent url("/img/blueprint.png") top left; }
     <script src="/assets/js/jquery.dataTables.bootstrap.js"> </script>
     <script src="/assets/js/date-time/bootstrap-datepicker.min.js"></script>
     <script src="/assets/js/date-time/bootstrap-timepicker.min.js"></script>
-
     <script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
     <script src="/assets/js/bootbox.min.js"></script>
     <script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
     <script src="/assets/js/jquery.gritter.min.js"></script>
     <script src="/assets/js/spin.min.js"></script>
-    
     <script src="/assets/js/ace-elements.min.js"></script>
     <script src="/assets/js/ace.min.js"></script>
-    
     <script src="/assets/js/fuelux/fuelux.wizard.min.js"></script>
     <script src="/assets/js/jquery.validate.min.js"></script>
     <script src="/assets/js/additional-methods.min.js"></script>
-    
     <script src="/assets/js/bootstrap-colorpicker.min.js"></script>
     <script src="/assets/js/jquery.maskedinput.min.js"></script>
-
     <script  src="/js/01/base.js"> </script>
-    
-    <script typy="text/javascript">
-        document.write("<script src='"+obj.getValue(4)+"/socket.io/socket.io.js'>"+"<"+"/script>");
-        if ( localStorage.IdEmpresaHome ){
-
-        }
-    </script>    
-
-
     <script  src="/js/init.js"> </script>
 
 <script>
@@ -252,9 +238,9 @@ $(".dropdown-toggle").click(function () {
 
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
-    var sc_project=10092802; 
-    var sc_invisible=0; 
-    var sc_security="ca3e0c27"; 
+    var sc_project=10092802;
+    var sc_invisible=0;
+    var sc_security="ca3e0c27";
     var scJsHost = (("https:" == document.location.protocol) ?
     "https://secure." : "http://www.");
     document.write("<sc"+"ript type='text/javascript' src='" +
@@ -263,7 +249,7 @@ $(".dropdown-toggle").click(function () {
 
 
     $('[data-rel=tooltip]').tooltip();
-    
+
 </script>
 
 </body>

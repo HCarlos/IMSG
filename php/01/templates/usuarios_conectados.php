@@ -10,27 +10,27 @@ include("includes/metas.php");
 	<div class="widget-box span6">
 
 		<div  class="widget-header header-color-green2 widget-header-flat padtop05em">
-			<h3>Usuarios Conectados</h3>	
-		
+			<h3>Usuarios Conectados</h3>
+
 		</div>
 
 		<div class="widget-body">
 			<div class="widget-main padding-4">
 				<div class="content">
-					<div class="body">						
+					<div class="body">
 						<div class="clearfix"  id="memberListConnect">
-						</div>	
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
 
 	<div class="widget-box span6">
 
 		<div  class="widget-header header-color-blue widget-header-flat padtop05em">
-			<h3>Mensajes</h3>	
-		
+			<h3>Mensajes</h3>
+
 		</div>
 
 		<div class="widget-body">
@@ -38,13 +38,13 @@ include("includes/metas.php");
 				<div class="content">
 				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
 
 </div>
 
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 	var ocupado = false;
@@ -81,7 +81,7 @@ jQuery(function($) {
 						xs += '		<div class="time">';
 						xs += '			<i class="icon-time"></i>';
 						xs += '			<span class="green">'+item.fAgo+'</span>';
-						xs += '		</div>';					
+						xs += '		</div>';
 						xs += '	</div>';
 						xs += '</div>';
 
@@ -100,25 +100,12 @@ jQuery(function($) {
 
 	$.getEval();
 
-    var stream = io.connect(obj.getValue(4));
-    stream.on("servidor", jsNewAlumno);
-    function jsNewAlumno(datosServer) {
-        var ms = datosServer.mensaje.split("-");
-        if ( ms[1]=='UCONNECT' || ms[1]=='UCONNECTDELL' )  {
-        	//if (!ocupado){
-				$.getEval();
-			//}
-        }
-    }
-
-
 });
 
 function resizeScreen() {
-	
+
     $("#contentMain").css("min-height", obj.getMinHeight());
     $("#contentProfile").css("min-height", obj.getMinHeight());
 
 }
-
 </script>

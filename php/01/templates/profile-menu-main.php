@@ -29,13 +29,6 @@
                             </a>
                         </li>
 
-                        <li>
-                            <a href="#" id="usersConnect">
-                                <i class="icon-group"></i>
-                                Usuarios Conectados
-                            </a>
-                        </li>
-
                         <li class="divider"></li>
 
                         <li>
@@ -46,10 +39,10 @@
                         </li>
                     </ul>
                 </li>
-                
-<script typy="text/javascript">     
 
-        
+<script typy="text/javascript">
+
+
     if ($("#closeSession").length) {
         $("#closeSession").unbind("click");
         $("#closeSession").on("click", function(event) {
@@ -58,8 +51,6 @@
             function(json) {
                 // alert(json[0].msg);
                 if (json[0].msg=="OK"){
-                var stream = io.connect(obj.getValue(4));
-                stream.emit("cliente", {mensaje: "IMSG-UCONNECTDELL-"+localStorage.IdUser+'-'+localStorage.nc});
                 console.log("Desconectado...");
                 delete sessionStorage.Id;
                 delete localStorage.nc;
@@ -85,7 +76,7 @@
 
         $.post(obj.getValue(0) + "data/", {o:0, t:0, c:nc, p:55, from:0, cantidad:0, s:""},
                 function(json) {
-                            
+
                             var strx = json[0].foto.split(".");
                             var imgPath;
                             if (json[0].foto!=""){
@@ -96,7 +87,7 @@
 
                             $("#imgFoto").attr("src",imgPath);
                             $("#nameuser").text(json[0].nombres+" "+json[0].apellidos);
-                            
+
                 }, "json");
 
     }
@@ -116,9 +107,9 @@
                     $("#preloaderPrincipal").hide();
                     $('#breadcrumb').html(getBar('Inicio,Profile'));
                     $("#contentMain").html("").fadeOut('slow',function(event){
-                       $("#contentProfile").html(html).fadeIn('slow'); 
+                       $("#contentProfile").html(html).fadeIn('slow');
                     });
-                    
+
                 }, "html");
         });
     }
@@ -139,7 +130,7 @@
                     $("#preloaderPrincipal").hide();
                     $('#breadcrumb').html(getBar('Inicio,Avatar'));
                     $("#contentMain").html("").fadeOut('slow',function(event){
-                       $("#contentProfile").html(html).fadeIn('slow'); 
+                       $("#contentProfile").html(html).fadeIn('slow');
                     });
                 }, "html");
         });
@@ -160,30 +151,8 @@
                     $("#preloaderPrincipal").hide();
                     $('#breadcrumb').html(getBar('Inicio,Cambiar Password'));
                     $("#contentMain").html("").fadeOut('slow',function(event){
-                       $("#contentProfile").html(html).fadeIn('slow'); 
+                       $("#contentProfile").html(html).fadeIn('slow');
                     });
-                }, "html");
-        });
-    }
-
-    if ($("#usersConnect").length) {
-        $("#usersConnect").unbind("click");
-        $("#usersConnect").on("click", function(event) {
-            event.preventDefault();
-            cfgBase0();
-            $("#preloaderSingle").show();
-
-            var nc = localStorage.nc;
-            $.post(obj.getValue(0) + "usersConnect/", {
-                    user: nc
-                },
-                function(html) {
-                    $("#preloaderPrincipal").hide();
-                    $('#breadcrumb').html(getBar('Inicio,Profile'));
-                    $("#contentMain").empty().fadeOut('slow',function(event){
-                       $("#contentProfile").html(html).fadeIn('slow'); 
-                    });
-                    
                 }, "html");
         });
     }

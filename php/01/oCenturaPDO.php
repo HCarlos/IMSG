@@ -303,10 +303,32 @@ class oCenturaPDO
 
             case 5:
                 parse_str($cad);
+                $rngQry = intval($rngQry);
+                $qry = "";
+                switch ($rngQry) {
+                    case 0:
+                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('A','B') ) ";
+                        break;
+                    case 1:
+                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('C','D','E') ) ";
+                        break;
+                    case 2:
+                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('F','H','H','I','J') ) ";
+                        break;
+                    case 3:
+                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('K','L','M','N','O') ) ";
+                        break;
+                    case 4:
+                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('P','Q','R') ) ";
+                        break;
+                    case 5:
+                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('S','T','U','V','W','X','Y','Z') ) ";
+                        break;
+                }
                 $idemp = $this->getIdEmpFromAlias($u);
                 $query = "SELECT idpersona, nombre_persona, username
 								FROM _viPersonas
-							Where idemp = $idemp order by idpersona desc";
+							WHERE idemp = $idemp ".$qry." ORDER BY nombre_persona ASC ";
                 break;
 
             case 6:
@@ -837,15 +859,13 @@ class oCenturaPDO
     {
         $Conn = new voConnPDO();
         $query = "SET @X = Generar_Usuario(".$iddato.")";
-        $result = $Conn->queryFetchAllAssocOBJ($query);
+        $result = $Conn->exec($query);
         if (!$result) {
             $ret=0;
         } else {
             $ret= $result[0]->iduser;
         }
         $Conn = null;
-
-
         return $ret;
     }
 }

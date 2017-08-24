@@ -48,7 +48,7 @@ $idexalumno  = $_POST['idexalumno'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<div class="form-group ">
 			    	<label for="username" class="col-lg-2 control-label">Username</label>
 			    	<div class="col-lg-9">
@@ -87,7 +87,7 @@ $idexalumno  = $_POST['idexalumno'];
 						<input class="date-picker altoMoz" id="fecha_nacimiento" name="fecha_nacimiento" data-date-format="dd-mm-yyyy" type="text" >
                         <span class="add-on">
                                 <i class="icon-calendar"></i>
-                        </span>			      	
+                        </span>
 			      	</div>
 
 			    </div>
@@ -124,7 +124,7 @@ $idexalumno  = $_POST['idexalumno'];
 				<div class="form-group ">
 			    	<label for="idgeneracion" class="col-lg-2 control-label">Generación</label>
 			    	<div class="col-lg-10">
-				    	<select name="idgeneracion" id="idgeneracion" size="1" > 
+				    	<select name="idgeneracion" id="idgeneracion" size="1" >
                         </select>
 		      		</div>
 			    </div>
@@ -245,28 +245,23 @@ $idexalumno  = $_POST['idexalumno'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
 	var lc = parseInt(localStorage.IdUserNivelAcceso,0);
-
-	var stream = io.connect(obj.getValue(4));
+    var idexalumno = <?php echo $idexalumno ?>;
 
 	$("#preloaderPrincipal").hide();
-
 	$("#username").focus();
 	$("#btnGenUserExa").hide();
-
-	var idexalumno = <?php echo $idexalumno ?>;
-
 
 	function getExAlumno(IdExAlumno){
 		$.post(obj.getValue(0) + "data/", {o:60, t:48, c:IdExAlumno, p:55, from:0, cantidad:0,s:''},
 			function(json){
 				if (json.length>0){
 					$("#username").val(json[0].username);
-					
+
 					$("#ap_paterno").val(json[0].ap_paterno);
 					$("#ap_materno").val(json[0].ap_materno);
 					$("#nombre").val(json[0].nombre);
@@ -286,8 +281,8 @@ jQuery(function($) {
 					$("#profesion").val(json[0].profesion);
 					$("#ocupacion").val(json[0].ocupacion);
 
-					$("#isfam").prop("checked",json[0].isfam==1?true:false);	
-					$("#status_exalumno").prop("checked",json[0].status_exalumno==1?true:false);	
+					$("#isfam").prop("checked",json[0].isfam==1?true:false);
+					$("#status_exalumno").prop("checked",json[0].status_exalumno==1?true:false);
 
 					$("#genero").val(json[0].genero);
 
@@ -296,14 +291,14 @@ jQuery(function($) {
 					$("#instagram").val(json[0].instagram);
 
 					$("#idgeneracion").val(json[0].idgeneracion);
-					
-					if ( $("#username").val() == "" ){
-							
-						$("#btnGenUserExa").show();
-					} 
 
-					
-					
+					if ( $("#username").val() == "" ){
+
+						$("#btnGenUserExa").show();
+					}
+
+
+
 					$("#username").focus();
 				}
 		},'json');
@@ -315,11 +310,11 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-		
 
-	    var queryString = $(this).serialize();	
 
-	    
+	    var queryString = $(this).serialize();
+
+
 	    // alert(queryString)
 	    // return false;
 
@@ -331,15 +326,14 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-EXALUMNOS-PROP-"+IdExAlumno});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
-							$("#contentProfile").html("");
+							$("#contentProfile").empty();
 							$("#contentMain").show();
 						});
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -375,16 +369,15 @@ jQuery(function($) {
             $.post(obj.getValue(0) + "data/", {o:60, t:2, c:idexalumno, p:3, from:0, cantidad:0, s:''},
             function(json) {
             		if (json[0].msg=="OK"){
-						stream.emit("cliente", {mensaje: "PLATSOURCE-EXALUMNOS-PROP-"+idexalumno});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
-							$("#contentProfile").html("");
-							$("#contentMain").show();
+						$("#contentProfile").html("");
+						$("#contentMain").show();
 						});
 						resizeScreen();
 						return false;
         			}else{
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
     	}
@@ -447,9 +440,9 @@ jQuery(function($) {
 					$("#title").html("Editando el registro: "+idexalumno);
 	                getExAlumno(idexalumno);
 				}
-             
+
             }, "json"
-        );  
+        );
     }
 
 

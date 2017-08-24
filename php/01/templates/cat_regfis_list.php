@@ -38,7 +38,7 @@ $de       = $_POST['user'];
 			<div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
 
 				<table aria-describedby="sample-table-2_info" id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
-									
+
 					<thead>
 						<tr role="row">
 							<th aria-label="idregfis: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
@@ -49,7 +49,7 @@ $de       = $_POST['user'];
 							<th aria-label="" style="width: 200px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
-									
+
 					<tbody aria-relevant="all" aria-live="polite" role="alert"></tbody>
 				</table>
 
@@ -59,11 +59,11 @@ $de       = $_POST['user'];
 </div>
 
 <div id="inline2">
-	
+
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -84,9 +84,9 @@ jQuery(function($) {
 	 						"sZeroRecords": "No hay registros",
 	            			"sInfo": "_START_ - _END_ de _TOTAL_ registros",
 	            			"sInfoEmpty": "No existen datos",
-	            			"sInfoFiltered": "(De _MAX_ registros)"                                        
-	        			},	
-	        "aaSorting": [[ 0, "desc" ]],			
+	            			"sInfoFiltered": "(De _MAX_ registros)"
+	        			},
+	        "aaSorting": [[ 0, "desc" ]],
 			"aoColumns": [ null, null, null, null, null,  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,
@@ -95,14 +95,14 @@ jQuery(function($) {
 	}
 
 	function fillTable(){
-						
+
 		var tB = "";
 
 		$("#preloaderPrincipal").show();
 		var nc = "u="+localStorage.nc;
 		$.post(obj.getValue(0) + "data/", {o:14, t:27, c:nc, p:11, from:0, cantidad:0,s:'rfc'},
 			function(json){
-				
+
 					$.each(json, function(i, item) {
 	           				var isok = parseInt(item.is_email,0) == 1 ? "<img src='/img/Ok-icon.png' width='16' height='16' alt='' />":""
 
@@ -157,7 +157,7 @@ jQuery(function($) {
 				            		if (json[0].msg=="OK"){
 										onClickFillTable();
 				        			}else{
-				        				alert(json[0].msg);	
+				        				alert(json[0].msg);
 				        			}
 				        	}, "json");
 			        	}
@@ -175,10 +175,10 @@ jQuery(function($) {
         	},
         'json'
         );
-							
+
 	}
-	
-	var init = true;			
+
+	var init = true;
 	fillTable();
 
 
@@ -215,9 +215,9 @@ jQuery(function($) {
 				user: nc,
 				idregfis: IdRegFis
 	            },
-	            function(html) {	                
+	            function(html) {
 	                $("#contentProfile").html(html).show('slow',function(){
-	                	//$("#contentProfile");	
+	                	//$("#contentProfile");
 		                $('#breadcrumb').html(getBar('Inicio, Registros Fiscales '));
 	                });
 	            }, "html");
@@ -227,22 +227,5 @@ jQuery(function($) {
 
 	}
 
-
-	var stream = io.connect(obj.getValue(4));
-	stream.on("servidor", jsNewRegFis);
-	function jsNewRegFis(datosServer) {
-		var ms = datosServer.mensaje.split("-");
-		//alert(datosServer);
-		//obj.setIsTimeLine(true);
-		if (ms[1]=='REGFIS') {
-			//onClickFillTable();
-		}
-	}
-
-	
-
 });
-
-
-
 </script>

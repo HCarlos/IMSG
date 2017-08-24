@@ -47,7 +47,7 @@ $idmateria  = $_POST['idmateria'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<div class="form-group ">
 			    	<label for="materia" class="col-lg-3 control-label">Materia</label>
 			    	<div class="col-lg-9">
@@ -142,7 +142,7 @@ $idmateria  = $_POST['idmateria'];
 							<span class="lbl"></span>
 						</td>
 					</tr>
-				
+
 					<tr><td>
 						<label class="green" for="isedutec">
 								<b>Es Educación Tecnológica</b>
@@ -153,7 +153,7 @@ $idmateria  = $_POST['idmateria'];
 							<span class="lbl"></span>
 						</td>
 					</tr>
-				
+
 					<tr>
 						<td>
 							<label class="green" for="ispai_materia">
@@ -176,7 +176,7 @@ $idmateria  = $_POST['idmateria'];
 							<select class="w96"  name="idpaiareadisciplinaria" id="idpaiareadisciplinaria" size="1"></select>
 						</td>
 					</tr>
-				
+
 					<tr><td>
 						<label class="green" for="isagrupadora">
 								<b>Es Agrupadora</b>
@@ -187,7 +187,7 @@ $idmateria  = $_POST['idmateria'];
 							<span class="lbl"></span>
 						</td>
 					</tr>
-				
+
 					<tr><td>
 						<label class="green" for="status_materia">
 								<b>Estatus</b>
@@ -198,14 +198,14 @@ $idmateria  = $_POST['idmateria'];
 							<span class="lbl"></span>
 						</td>
 					</tr>
-				
+
 
 				</table>
 
 			</div>
 
 			<div id="oficial" class="tab-pane">
-			
+
 				<div class="form-group ">
 			    	<label for="materia_oficial" class="col-lg-3 control-label">Materia Oficial</label>
 			    	<div class="col-lg-9">
@@ -244,27 +244,22 @@ $idmateria  = $_POST['idmateria'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
-	var stream = io.connect(obj.getValue(4));
-
-
 	$("#preloaderPrincipal").hide();
-
 	$("#materia").focus();
 	$("#btnGenUser").hide();
 
 	var idmateria = <?php echo $idmateria ?>;
-
 
 	function getMateria(IdMateria){
 		$.post(obj.getValue(0) + "data/", {o:7, t:14, c:IdMateria, p:10, from:0, cantidad:0,s:''},
 			function(json){
 				if (json.length>0){
 					$("#username").val(json[0].username);
-					
+
 					$("#materia").val(json[0].materia);
 					$("#abreviatura").val(json[0].abreviatura);
 					$("#materia_oficial").val(json[0].materia_oficial);
@@ -277,21 +272,21 @@ jQuery(function($) {
 					$("#ord_oficial").val(json[0].ord_oficial);
 					$("#idpaiareadisciplinaria").val(json[0].idpaiareadisciplinaria);
 
-					$("#idioma").prop("checked",json[0].idioma==0?true:false);	
-					$("#isoficial").prop("checked",json[0].isoficial==1?true:false);	
-					$("#isedutec").prop("checked",json[0].isedutec==1?true:false);	
-					$("#ispai_materia").prop("checked",json[0].ispai_materia==1?true:false);	
-					$("#isagrupadora").prop("checked",json[0].isagrupadora==1?true:false);	
-					$("#status_materia").prop("checked",json[0].status_materia==1?true:false);	
+					$("#idioma").prop("checked",json[0].idioma==0?true:false);
+					$("#isoficial").prop("checked",json[0].isoficial==1?true:false);
+					$("#isedutec").prop("checked",json[0].isedutec==1?true:false);
+					$("#ispai_materia").prop("checked",json[0].ispai_materia==1?true:false);
+					$("#isagrupadora").prop("checked",json[0].isagrupadora==1?true:false);
+					$("#status_materia").prop("checked",json[0].status_materia==1?true:false);
 
 					//$("#status_materia").val(json[0].status_materia);
 
-					
+
 					if ( $("#username").val() == "" ){
-							
+
 						$("#btnGenUser").show();
-					} 
-					
+					}
+
 					$("#username").focus();
 				}
 		},'json');
@@ -303,8 +298,8 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
-	    
+	    var queryString = $(this).serialize();
+
 	    // alert(queryString)
 	    // return false;
 
@@ -316,15 +311,14 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-MATERIAS-PROP-"+idmateria});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
-							$("#contentProfile").empty();
-							$("#contentMain").show();
+						$("#contentProfile").empty();
+						$("#contentMain").show();
 						});
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -388,11 +382,11 @@ function getMatClas(){
                 cls = i==0?"selected":'';
                 $("#idmatclas").append('<option value="'+item.data+'" '+cls+'> '+item.label+'</option>');
             });
-            
+
 			getAreasDisciplnariasPAI();
 
         }, "json"
-    );  
+    );
 }
 
 function getAreasDisciplnariasPAI(){
@@ -407,16 +401,16 @@ function getAreasDisciplnariasPAI(){
                 //alert(item.label);
                 $("#idpaiareadisciplinaria").append('<option value="'+item.data+'"> '+item.label+'</option>');
             });
-            
+
 			if (idmateria<=0){
 				$("#title").html("Nuevo registro");
-			}else{ 
+			}else{
 				$("#title").html("Editando el registro: "+idmateria);
 				getMateria(idmateria);
 			}
 
         }, "json"
-    );  
+    );
 }
 
 

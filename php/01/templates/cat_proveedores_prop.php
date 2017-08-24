@@ -153,7 +153,7 @@ $idproveedor  = $_POST['idproveedor'];
 
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
     var init = true;
@@ -169,23 +169,22 @@ jQuery(function($) {
 		event.preventDefault();
 
 		if (validForm()){
-		    
-		    var queryString = $(this).serialize();	
+
+		    var queryString = $(this).serialize();
 
 			var IdProveedor = (idproveedor==0?0:1)
             $.post(obj.getValue(0) + "data/", {o:33, t:IdProveedor, c:queryString, p:2, from:0, cantidad:0, s:''},
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-PROVEEDORES-PROP-"+idproveedor});
-						$("#preloaderPrincipal").hide();
+					    $("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
-							$("#contentProfile").html("");
-							$("#contentMain").show();
+						$("#contentProfile").empty();
+						$("#contentMain").show();
 						});
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -207,7 +206,7 @@ jQuery(function($) {
 					$("#localidad").val(json[0].localidad);
                     $("#idestado").val(json[0].idestado);
 					// $("#idmunicipio").val(json[0].idmunicipio);
-                    
+
                     getMunicipios( parseInt(json[0].idmunicipio,0) );
 
 					$("#pais").val(json[0].pais);
@@ -267,12 +266,12 @@ jQuery(function($) {
                 $("#preloaderPrincipal").hide();
                getMunicipios(0);
             }, "json"
-        );  
+        );
     }
 
     $("#idestado").on("change",function(event){
         event.preventDefault();
-        getMunicipios(0);        
+        getMunicipios(0);
     });
 
     function getMunicipios(oMun){
@@ -302,14 +301,10 @@ jQuery(function($) {
                 }
 
             }, "json"
-        );  
+        );
     }
 
     getEstados();
 
-	var stream = io.connect(obj.getValue(4));
-
-
 });
-
 </script>

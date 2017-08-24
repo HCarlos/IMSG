@@ -56,8 +56,8 @@ function init() {
                             obj.setConfig($.map(json, function(el) {
                                 return el;
                             }));
-                            
-                            
+
+
                         }, "json"
                     );
                 }, "html");
@@ -110,7 +110,7 @@ function resizeScreen() {
             $("#contentMain").html($("#InitDiv").html());
             hH = $( document ).height() - 130;
             obj.setMinHeight(hH);
-            
+
             $("#contentMain").css("min-height", obj.getMinHeight());
             obj.setFormResponse(true);
 
@@ -150,7 +150,7 @@ function sendSticker(titulo, msg, srcimg, milisegundos) {
 
                 }, parseInt(milisegundos,0));
 
-    
+
 
     return false;
 
@@ -166,4 +166,3 @@ function resizeScreenProfile() {
     $("#contentProfile").css("min-height", obj.getMinHeight());
     obj.setFormResponse(true);
 }
-

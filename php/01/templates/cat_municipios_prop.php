@@ -41,7 +41,7 @@ $idmunicipio  = $_POST['idmunicipio'];
 						</select>
 		      		</div>
 			    </div>
-			
+
 				<div class="form-group ">
 			    	<label for="clave" class="col-lg-2 control-label">Clave</label>
 			    	<div class="col-lg-10 ">
@@ -89,19 +89,14 @@ $idmunicipio  = $_POST['idmunicipio'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
-	var stream = io.connect(obj.getValue(4));
-
-
 	$("#preloaderPrincipal").hide();
-
 	$("#clave").focus();
 
 	var idmunicipio = <?php echo $idmunicipio ?>;
-
 
 	function getMunicipio(IdMunicipio){
 		$.post(obj.getValue(0) + "data/", {o:2, t:4, c:IdMunicipio, p:55, from:0, cantidad:0,s:''},
@@ -121,8 +116,8 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
-	    
+	    var queryString = $(this).serialize();
+
 		var data = new FormData();
 
 		if (validForm()){
@@ -131,12 +126,11 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "IMSG-MUNICIPIO-PROP-"+IdMunicipio});
 						$("#preloaderPrincipal").hide();
 						$("#divUploadImage").modal('hide');
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -172,10 +166,10 @@ function getEstados(){
     var nc = "u="+localStorage.nc;
     $.post(obj.getValue(0)+"data/", { o:2, t:-1, p:51,c:nc,from:0,cantidad:0, s:"" },
         function(json){
-           $.each(json, function(i, item) {           	
+           $.each(json, function(i, item) {
                 $("#idestado").append('<option value="'+item.data+'"> '+item.label+'</option>');
             });
-            
+
 			if (idmunicipio<=0){
 				$("#title").html("Nuevo registro");
 			}else{
@@ -186,7 +180,7 @@ function getEstados(){
 
 
         }, "json"
-    );  
+    );
 }
 
 getEstados();

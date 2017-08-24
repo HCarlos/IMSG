@@ -32,11 +32,11 @@ $user = $_POST['user'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<div class="form-group ">
 			    	<label for="mensaje" class="col-lg-2 control-label">Mensaje:</label>
 			    	<div class="col-lg-10">
- 						<textarea rows="4" cols="50" class="" id="mensaje" name="mensaje" required></textarea>		      		
+ 						<textarea rows="4" cols="50" class="" id="mensaje" name="mensaje" required></textarea>
 		      		</div>
 			    </div>
 
@@ -61,16 +61,12 @@ $user = $_POST['user'];
 
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
-	var stream = io.connect(obj.getValue(4));
-
 	$("#preloaderPrincipal").hide();
-
 	$("#title").html("Enviar mensaje");
-
 
     $("#frmUserSendMessage").unbind("submit");
 	$("#frmUserSendMessage").on("submit",function(event){
@@ -78,14 +74,14 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
+	    var queryString = $(this).serialize();
 	    var srcimg = $("#imgFoto").attr('src');
 	    var nameuser = $("#nameuser").html();
 
-		var msg = "NT|PlatSource|"+$("#mensaje").val()+"|"+srcimg+"|9000";
+		var msg = "NT|IMSG|"+$("#mensaje").val()+"|"+srcimg+"|9000";
 
 		// alert(localStorage.nc);
-		 
+
 		var x = confirm("En este momento se dispone a enviar esta Notificación vía MOBILE, esto puede tardar algunos minutos.\n\nDesea Continuar?");
 
 		if (!x){
@@ -93,15 +89,14 @@ jQuery(function($) {
 			return false;
 		}
 
-	    // $.post(obj.getValue(0) + "cat-usuario-send-notification/", 
+	    // $.post(obj.getValue(0) + "cat-usuario-send-notification/",
 
-	    $.post(obj.getValue(0) + "sn-android-users-cat/", 
+	    $.post(obj.getValue(0) + "sn-android-users-cat/",
 	    	{user:localStorage.nc,mensaje:$("#mensaje").val()},
 			function(json){
 				if (json[0].msg == "OK"){
 					$("#preloaderPrincipal").hide();
 					alert("Notificaciones enviadas correctamente.");
-				    stream.emit("cliente", {mensaje: msg});
 				}else{
 					alert(json[0].success);
 				}
@@ -116,9 +111,5 @@ jQuery(function($) {
 		$("#divUploadImage").modal('hide');
 	});
 
-
-
-
 });
-
 </script>

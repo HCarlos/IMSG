@@ -151,7 +151,7 @@ $idemisorfiscal  = $_POST['idemisorfiscal'];
 
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -166,8 +166,8 @@ jQuery(function($) {
 		event.preventDefault();
 
 		if (validForm()){
-		    
-		    var queryString = $(this).serialize();	
+
+		    var queryString = $(this).serialize();
 
             // alert(queryString);
 
@@ -176,7 +176,6 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-EMIFIS-PROP-"+idemisorfiscal});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
 							$("#contentProfile").html("");
@@ -184,7 +183,7 @@ jQuery(function($) {
 						});
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -257,9 +256,6 @@ jQuery(function($) {
 		$("#title").html("Editando la EmiFis: "+idemisorfiscal);
 		getEmiFis(idemisorfiscal);
 	}
-
-	var stream = io.connect(obj.getValue(4));
-
 
 });
 

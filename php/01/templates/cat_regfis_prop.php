@@ -144,7 +144,7 @@ $idregfis  = $_POST['idregfis'];
                             <input class="altoMoz" name="idfammig" id="idfammig" type="text" >
                         </td>
                     </tr>
-                  
+
 
                 </table>
 
@@ -162,7 +162,7 @@ $idregfis  = $_POST['idregfis'];
 
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -177,23 +177,22 @@ jQuery(function($) {
 		event.preventDefault();
 
 		if (validForm()){
-		    
-		    var queryString = $(this).serialize();	
+
+		    var queryString = $(this).serialize();
 
 			var IdRegFis = (idregfis==0?0:1)
             $.post(obj.getValue(0) + "data/", {o:14, t:IdRegFis, c:queryString, p:2, from:0, cantidad:0, s:''},
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-REGFIS-PROP-"+idregfis});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
-							$("#contentProfile").html("");
-							$("#contentMain").show();
+						$("#contentProfile").html("");
+						$("#contentMain").show();
 						});
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -267,7 +266,7 @@ jQuery(function($) {
 	// getPisos();
 	// getAplanados();
 	// getPlafones();
-	
+
 	// //getMemberFam(idregfis);
 
 	// getUsoSuelo();
@@ -286,9 +285,5 @@ jQuery(function($) {
 		getRegFis(idregfis);
 	}
 
-	var stream = io.connect(obj.getValue(4));
-
-
 });
-
 </script>

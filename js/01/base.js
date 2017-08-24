@@ -7,7 +7,7 @@ function oObject() {
 	];
 	var IdUser    = 0;
 	var Username  = "";
-	var keyUP0    = [4, 999, 1000];
+	var keyUP0    = [1, 999, 1000];
 	var keyUP1    = [1, 3, 4];
 	var keyUP2    = [0];
 	var keyUP3    = [3];
@@ -31,7 +31,7 @@ function oObject() {
 	var minHeight = 0;
 
 	var pURLS = ["imsg.mx", "www.imsg.mx"];
-	
+
 	var pHost = ["http://imsg.mx/", /iphone|ipad|ipod|android/i.test(navigator.userAgent), false, /msie\s6/i.test(navigator.userAgent), "http://187.217.204.100:1803"];
 
 	var sharedUser = ["kr.los.h", "manager"];
@@ -331,7 +331,7 @@ function oObject() {
 			    return -1;
 			},
 			getDateDiff: function(strDate0,strDate1,splitType){
-				
+
 				var f0 = strDate0.split(splitType);
 				var fi = f0[2]+'-'+f0[1]+'-'+f0[0];
 				var f1 = strDate1.split(splitType);
@@ -342,7 +342,7 @@ function oObject() {
 
 				return f1 - f0;
 
-			}			
+			}
 
 
 		};
@@ -416,7 +416,7 @@ function getBar(str) {
 		if (i != arr.length - 1) {
 			sT = '				<li>';
 			sT += '					<i class="icon-home home-icon"></i>';
-		  	
+
 		  	if ( parseInt(localStorage.IdEmpresaHome) > 0  ){
 				sT += '					<a href="/dashboard/'+localStorage.IdEmpresaHome+'/">' + arr[i] + '</a>';
             }else{
@@ -438,7 +438,7 @@ function sayNoEval(noEval) {
 	return 'Evaluación: <span class="label label-inverse">' + noEval + '</span>';
 }
 
-function padl(n, len) {	
+function padl(n, len) {
 	var s = n.toString();
 	if (s.length < len) {
 		s = ('0000000000' + s).slice(-len);

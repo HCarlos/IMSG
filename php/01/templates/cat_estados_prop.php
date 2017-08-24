@@ -33,7 +33,7 @@ $idestado  = $_POST['idestado'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<div class="form-group ">
 			    	<label for="clave" class="col-lg-2 control-label">Clave</label>
 			    	<div class="col-lg-10 ">
@@ -81,11 +81,9 @@ $idestado  = $_POST['idestado'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
-
-	var stream = io.connect(obj.getValue(4));
 
 	$("#preloaderPrincipal").hide();
 
@@ -117,8 +115,8 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
-	    
+	    var queryString = $(this).serialize();
+
 		var data = new FormData();
 
 		if (validForm()){
@@ -127,12 +125,11 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "IMSG-ESTADO-PROP-"+IdEstado});
 						$("#preloaderPrincipal").hide();
 						$("#divUploadImage").modal('hide');
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{

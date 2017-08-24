@@ -57,7 +57,7 @@ $idpersona  = $_POST['idpersona'];
 				    	<button class="btn btn-link " id="btnGenPerUser">Generar</button>
 		      		</div>
 			    </div>
-			
+
 				<div class="form-group ">
 			    	<label for="ap_paterno" class="col-lg-3 control-label">Ap. Paterno</label>
 			    	<div class="col-lg-9">
@@ -288,7 +288,7 @@ $idpersona  = $_POST['idpersona'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -308,7 +308,7 @@ jQuery(function($) {
 			function(json){
 				if (json.length>0){
 					$("#username").val(json[0].username);
-					
+
 					$("#ap_paterno").val(json[0].ap_paterno);
 					$("#ap_materno").val(json[0].ap_materno);
 					$("#nombre").val(json[0].nombre);
@@ -342,13 +342,13 @@ jQuery(function($) {
 					$("#ocupacion").val(json[0].ocupacion);
 
 					$("#status_persona").val(json[0].status_persona);
-					
+
 					if ( $("#username").val() == "" ){
 						$("#btnGenPerUser").show();
-					} 
-					
+					}
+
 					$("#username").focus();
-					
+
 				}
 		},'json');
 	}
@@ -361,7 +361,7 @@ jQuery(function($) {
 
 		if (validForm()){
 
-			var queryString = $(this).serialize();	
+			var queryString = $(this).serialize();
 
 			// alert(queryString);
 
@@ -379,7 +379,7 @@ jQuery(function($) {
 						});
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         				return false;
         			}
         	}, "json");
@@ -406,7 +406,7 @@ jQuery(function($) {
 		var resp =  confirm("Esto creará un USERNAME a esta Persona?");
 		if (resp){
 			obj.setIsTimeLine(false);
-			alert(idpersona);
+			// alert(idpersona);
 	        $.post(obj.getValue(0) + "data/", {o:3, t:2, c:idpersona, p:3, from:0, cantidad:0, s:''},
 	        function(json) {
 	        		// alert(json.lenght);
@@ -420,7 +420,7 @@ jQuery(function($) {
 						resizeScreen();
 						return false;
 	    			}else{
-	    				alert(json[0].msg);	
+	    				alert(json[0].msg);
 	    			}
 	    	}, "json");
 		}

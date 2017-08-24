@@ -33,7 +33,7 @@ $iddirector  = $_POST['iddirector'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<div class="form-group ">
 			    	<label for="idprofesor" class="col-lg-2 control-label">Director</label>
 			    	<div class="col-lg-10">
@@ -83,12 +83,9 @@ $iddirector  = $_POST['iddirector'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
-
-	var stream = io.connect(obj.getValue(4));
-
 
 	$("#preloaderPrincipal").hide();
 
@@ -113,8 +110,8 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
-	    
+	    var queryString = $(this).serialize();
+
 	    //alert(queryString)
 	    // return false;
 
@@ -126,13 +123,12 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-DIRECTORES-PROP-"+iddirector});
-						$("#preloaderPrincipal").hide();
-						$("#divUploadImage").modal('hide');
-        			}else{
-						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
-        			}
+      						$("#preloaderPrincipal").hide();
+      						$("#divUploadImage").modal('hide');
+          			}else{
+  						        $("#preloaderPrincipal").hide();
+          				alert(json[0].msg);
+          			}
         	}, "json");
 		}else{
 			$("#preloaderPrincipal").hide();
@@ -165,7 +161,7 @@ jQuery(function($) {
 	           $.each(json, function(i, item) {
 	                $("#idprofesor").append('<option value="'+item.data+'" > '+item.label+'</option>');
 	            });
-	            
+
 				if (iddirector<=0){ // Nuevo Registro
 					$("#title").html("Nuevo registro");
 				}else{ // Editar Registro
@@ -176,7 +172,7 @@ jQuery(function($) {
 
 
 	        }, "json"
-	    );  
+	    );
 	}
 
 	function getNiveles(){
@@ -187,9 +183,9 @@ jQuery(function($) {
 	           $.each(json, function(i, item) {
 	                $("#idnivel").append('<option value="'+item.data+'"> '+item.label+'</option>');
 	            });
-	            getProfesores();    
+	            getProfesores();
 	        }, "json"
-	    );  
+	    );
 	}
 
 	getNiveles();

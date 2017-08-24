@@ -32,14 +32,14 @@ $iduser  = $_POST['iduser'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<table>
 					<tr>
 						<td>
 					    	<label for="username" class="tbl80W">Username</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl80W" name="username" id="username" type="text" readonly>	
+							<input class="altoMoz tbl80W" name="username" id="username" type="text" readonly>
 						</td>
 						<td></td>
 						<td></td>
@@ -49,20 +49,20 @@ $iduser  = $_POST['iduser'];
 					    	<label for="password1"  class=" tbl80W">Password</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl80W" name="password1" id="password1" type="password">	
+							<input class="altoMoz tbl80W" name="password1" id="password1" type="password">
 						</td>
 						<td>
 					    	<label for="password2"  class="marginLeft2em tbl120W">Re-Password</label>
 						</td>
 						<td>
-							<input class="altoMoz tbl80W" name="password2" id="password2" type="password">	
+							<input class="altoMoz tbl80W" name="password2" id="password2" type="password">
 						</td>
 
 					</tr>
 
 
 				</table>
-			</div>		
+			</div>
 
 		</div>
 
@@ -87,11 +87,9 @@ $iduser  = $_POST['iduser'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
-
-	var stream = io.connect(obj.getValue(4));
 
 	$("#preloaderPrincipal").hide();
 
@@ -123,7 +121,7 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
+	    var queryString = $(this).serialize();
 
 		var data = new FormData();
 
@@ -132,9 +130,8 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "IMSG-USUARIO-"+3});
         			}else{
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
 					$("#preloaderPrincipal").hide();
 					$("#contentProfile").hide(function(){

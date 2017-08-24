@@ -20,7 +20,7 @@ $de       = $_POST['user'];
 						<span class="ui-icon icon-plus-sign purple"></span>
 					</div>
 				</td>
-				<td title="" data-original-title="" class="ui-pg-button ui-state-disabled" style="width:4px;">
+				<td style="width:4px;">
 					<span class="ui-separator marginLeft1em"></span>
 				</td>
 				<td data-original-title="Reload Grid" id="refresh_grid-table" title="" class="ui-pg-button ui-corner-all">
@@ -28,6 +28,61 @@ $de       = $_POST['user'];
 						<span class="ui-icon icon-refresh green"></span>
 					</div>
 				</td>
+                <td style="width:5em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+        			<label>
+        				<input name="ranQry01" id="ranQry01" class="ace ranQry01" type="radio" value="0" checked >
+        				<span class="lbl"> A - B</span>
+        			</label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+        			<label>
+        				<input name="ranQry01" id="ranQry01" class="ace ranQry01" type="radio" value="1"  >
+        				<span class="lbl"> C - E</span>
+        			</label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry02" class="ace ranQry01" type="radio" value="2">
+                        <span class="lbl"> F - J </span>
+                    </label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="3">
+                        <span class="lbl"> K - O</span>
+                    </label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="4">
+                        <span class="lbl"> P - R</span>
+                    </label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="5">
+                        <span class="lbl"> S - Z</span>
+                    </label>
+                </td>
+
 			</tr>
 		</tbody>
 	</table>
@@ -38,7 +93,7 @@ $de       = $_POST['user'];
 			<div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
 
 				<table aria-describedby="sample-table-2_info" id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
-									
+
 					<thead>
 						<tr role="row">
 							<th aria-label="idpersona: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
@@ -47,7 +102,7 @@ $de       = $_POST['user'];
 							<th aria-label="" style="width: 200px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
-									
+
 					<tbody aria-relevant="all" aria-live="polite" role="alert"></tbody>
 				</table>
 
@@ -57,11 +112,11 @@ $de       = $_POST['user'];
 </div>
 
 <div id="inline2">
-	
+
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -82,9 +137,9 @@ jQuery(function($) {
 	 						"sZeroRecords": "No hay registros",
 	            			"sInfo": "_START_ - _END_ de _TOTAL_ registros",
 	            			"sInfoEmpty": "No existen datos",
-	            			"sInfoFiltered": "(De _MAX_ registros)"                                        
-	        			},	
-	        "aaSorting": [[ 0, "desc" ]],			
+	            			"sInfoFiltered": "(De _MAX_ registros)"
+	        			},
+	        "aaSorting": [[ 1, "asc" ]],
 			"aoColumns": [ null, null, null,  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,
@@ -93,14 +148,17 @@ jQuery(function($) {
 	}
 
 	function fillTable(){
-						
+
 		var tB = "";
 
 		$("#preloaderPrincipal").show();
-		var nc = "u="+localStorage.nc;
+        var rngQry = $('input[name="ranQry01"]:checked').val();
+		var nc = "u="+localStorage.nc+"&rngQry="+rngQry;
+        // alert(nc);
+        // return false;
 		$.post(obj.getValue(0) + "data/", {o:3, t:5, c:nc, p:55, from:0, cantidad:0,s:''},
 			function(json){
-				
+
 					$.each(json, function(i, item) {
 
 						tB +=' 			<tr class="odd">';
@@ -152,7 +210,7 @@ jQuery(function($) {
 				            		if (json[0].msg=="OK"){
 										onClickFillTable();
 				        			}else{
-				        				alert(json[0].msg);	
+				        				alert(json[0].msg);
 				        			}
 				        	}, "json");
 			        	}
@@ -170,10 +228,10 @@ jQuery(function($) {
         	},
         'json'
         );
-							
+
 	}
-	
-	var init = true;			
+
+	var init = true;
 	fillTable();
 
 
@@ -210,27 +268,15 @@ jQuery(function($) {
 				user: nc,
 				idpersona: IdPersona
 	            },
-	            function(html) {	                
+	            function(html) {
 	                $("#contentProfile").html(html).show('slow',function(){
-	                	//$("#contentProfile");	
+	                	//$("#contentProfile");
 		                $('#breadcrumb').html(getBar('Inicio, Propiedades de un nuevo Persona '));
 	                });
 	            }, "html");
         });
         return false;
 	}
-
-
-	var stream = io.connect(obj.getValue(4));
-	stream.on("servidor", jsNewPersona);
-	function jsNewPersona(datosServer) {
-		var ms = datosServer.mensaje.split("-");
-		if (ms[1]=='PERSONAS') {
-			// onClickFillTable();
-		}
-	}
-
-	
 
 });
 

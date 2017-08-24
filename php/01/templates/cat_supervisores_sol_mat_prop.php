@@ -33,7 +33,7 @@ $idsupervisorsolmat  = $_POST['idsupervisorsolmat'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<div class="form-group ">
 			    	<label for="idusersupervisorsolmat" class="col-lg-2 control-label">Personal</label>
 			    	<div class="col-lg-10">
@@ -75,15 +75,11 @@ $idsupervisorsolmat  = $_POST['idsupervisorsolmat'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
-	var stream = io.connect(obj.getValue(4));
-
-
 	$("#preloaderPrincipal").hide();
-
 	$("#clave").focus();
 
 	var idsupervisorsolmat = <?php echo $idsupervisorsolmat ?>;
@@ -104,8 +100,8 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
-	    
+	    var queryString = $(this).serialize();
+
 	    //alert(queryString)
 	    // return false;
 
@@ -117,12 +113,11 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-SUPERVISORES_SOL_MAT-PROP-"+idsupervisorsolmat});
 						$("#preloaderPrincipal").hide();
 						$("#divUploadImage").modal('hide');
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -156,7 +151,7 @@ jQuery(function($) {
 	           $.each(json, function(i, item) {
 	                $("#idusersupervisorsolmat").append('<option value="'+item.data+'" > '+item.label+'</option>');
 	            });
-	            
+
 				if (idsupervisorsolmat<=0){ // Nuevo Registro
 					$("#title").html("Nuevo registro");
 				}else{ // Editar Registro
@@ -167,7 +162,7 @@ jQuery(function($) {
 
 
 	        }, "json"
-	    );  
+	    );
 	}
 
 	getProfesores();

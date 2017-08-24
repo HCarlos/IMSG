@@ -50,7 +50,7 @@ $idproducto  = $_POST['idproducto'];
                         <td>
                             <input class="altoMoz wd62prc" name="costo_unitario" id="costo_unitario" type="text"  pattern="[-+]?[0-9]*[.,]?[0-9]+" required>
                         </td>
-            
+
                     </tr>
 
                     <tr>
@@ -82,7 +82,7 @@ $idproducto  = $_POST['idproducto'];
 
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -92,14 +92,14 @@ jQuery(function($) {
 
     accounting.settings = {
         currency: {
-            symbol : "", 
+            symbol : "",
             format: "%s%v",
             decimal : ".",
-            thousand: ",",  
-            precision : 2   
+            thousand: ",",
+            precision : 2
         },
         number: {
-            precision : 0,  
+            precision : 0,
             thousand: ",",
             decimal : "."
         }
@@ -113,23 +113,22 @@ jQuery(function($) {
 		event.preventDefault();
 
 		if (validForm()){
-		    
-		    var queryString = $(this).serialize();	
+
+		    var queryString = $(this).serialize();
 
 			var IdProducto = (idproducto==0?0:1)
             $.post(obj.getValue(0) + "data/", {o:31, t:IdProducto, c:queryString, p:2, from:0, cantidad:0, s:''},
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-PRODUCTOS-PROP-"+idproducto});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
-							$("#contentProfile").html("");
-							$("#contentMain").show();
+						$("#contentProfile").html("");
+						$("#contentMain").show();
 						});
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
@@ -201,7 +200,7 @@ jQuery(function($) {
                 $("#preloaderPrincipal").hide();
                getMedidas();
             }, "json"
-        );  
+        );
     }
 
     function getMedidas(){
@@ -218,7 +217,7 @@ jQuery(function($) {
                 $("#preloaderPrincipal").hide();
                getColores();
             }, "json"
-        );  
+        );
     }
 
     function getColores(){
@@ -244,15 +243,10 @@ jQuery(function($) {
                 }
 
             }, "json"
-        );  
+        );
     }
 
-
-
     getProveedores();
-
-	var stream = io.connect(obj.getValue(4));
-
 
 });
 

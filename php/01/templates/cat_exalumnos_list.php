@@ -61,11 +61,11 @@ $de       = $_POST['user'];
 </div>
 
 <div id="inline2">
-	
+
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -88,9 +88,9 @@ jQuery(function($) {
 	 						"sZeroRecords": "No hay registros",
 	            			"sInfo": "_START_ - _END_ de _TOTAL_ registros",
 	            			"sInfoEmpty": "No existen datos",
-	            			"sInfoFiltered": "(De _MAX_ registros)"                                        
-	        			},	
-	        "aaSorting": [[ 0, "desc" ]],			
+	            			"sInfoFiltered": "(De _MAX_ registros)"
+	        			},
+	        "aaSorting": [[ 0, "desc" ]],
 			"aoColumns": [ null, null, null, null, null, null, { "bSortable": false }],
 			"aLengthMenu": [[-1, 10, 25, 50], [, "Todos", 10, 25, 50]],
 			"bRetrieve": true,
@@ -99,7 +99,7 @@ jQuery(function($) {
 	}
 
 	function fillTable(){
-						
+
 		var tB = "";
 
 		$("#preloaderPrincipal").show();
@@ -149,7 +149,7 @@ jQuery(function($) {
 							tB += '			<a class="blue modGruMatProKRDX02 tooltip-info " href="#" id="idgrualu2two-'+item.idexalumno+'" data-rel="tooltip" data-placement="top" data-original-title="Ver Kardex" title="Ver Kardex" >';
 							tB += '				<i class="fa fa-male bigger-150"></i>';
 						}
-					
+
 						tB +='					</div>';
 						tB +='';
 						tB +='				</td>';
@@ -182,7 +182,7 @@ jQuery(function($) {
 			            		if (json[0].msg=="OK"){
 									onClickFillTable();
 			        			}else{
-			        				alert(json[0].msg);	
+			        				alert(json[0].msg);
 			        			}
 				        	}, "json");
 			        	}
@@ -222,10 +222,10 @@ jQuery(function($) {
         	},
         'json'
         );
-							
+
 	}
-	
-	var init = true;			
+
+	var init = true;
 	fillTable();
 
 
@@ -262,9 +262,9 @@ jQuery(function($) {
 				user: nc,
 				idexalumno: IdExa
 	            },
-	            function(html) {	                
+	            function(html) {
 	                $("#contentProfile").html(html).show('slow',function(){
-	                	//$("#contentProfile");	
+	                	//$("#contentProfile");
 		                $('#breadcrumb').html(getBar('Inicio, Propiedades de un nuevo Exexalumno '));
 	                });
 	            }, "html");
@@ -283,9 +283,9 @@ jQuery(function($) {
 				idexalumno: IdExa,
 				exalumno: Exa
 	            },
-	            function(html) {	                
+	            function(html) {
 	                $("#contentProfile").html(html).show('slow',function(){
-	                	//$("#contentProfile");	
+	                	//$("#contentProfile");
 		                $('#breadcrumb').html(getBar('Inicio, Propiedades de un nuevo Exa '));
 	                });
 	            }, "html");
@@ -304,7 +304,7 @@ jQuery(function($) {
 				idexalumno: IdExa,
 				exalumno: Exa
 	            },
-	            function(html) {	                
+	            function(html) {
 	                $("#contentProfile").html(html).show('slow',function(){
 		                $('#breadcrumb').html(getBar('Inicio, Telefonos de Emergencia Exas '));
 	                });
@@ -315,8 +315,8 @@ jQuery(function($) {
 
  	function modGruMatProKRDX02(IdExa){
 
-		var nc = "u="+localStorage.nc+"&idexalumno="+IdExa+'&idgrupo=0';        
-        var PARAMS = {o:1, t:21, c:nc, p:0, from:0, cantidad:0, s:''};  
+		var nc = "u="+localStorage.nc+"&idexalumno="+IdExa+'&idgrupo=0';
+        var PARAMS = {o:1, t:21, c:nc, p:0, from:0, cantidad:0, s:''};
         var url = obj.getValue(0)+"kardex-exalumno-arji/";
 
         var temp=document.createElement("form");
@@ -334,19 +334,6 @@ jQuery(function($) {
         temp.submit();
         return temp;
  	}
-
-	var stream = io.connect(obj.getValue(4));
-	stream.on("servidor", jsNewExa);
-	function jsNewExa(datosServer) {
-		var ms = datosServer.mensaje.split("-");
-		//alert(datosServer);
-		//obj.setIsTimeLine(true);
-		if (ms[1]=='EXALUMNOS') {
-			//onClickFillTable();
-		}
-	}
-
-	
 
 });
 

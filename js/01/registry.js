@@ -34,9 +34,8 @@ $("#frmLogin").on("submit", function(event) {
 					localStorage.nc = json[0].label;
 					var xim = json[0].data.split('|');
 					localStorage.IdUser = parseInt(xim[0]);
-
-				    var stream = io.connect(obj.getValue(4));
-				    stream.emit("cliente", {mensaje: "PLATSOURCE-CONECTADO-"+localStorage.IdUser+"-"+localStorage.nc });
+				  // var stream = io.connect(obj.getValue(4));
+				  // stream.emit("cliente", {mensaje: "IMSG-CONECTADO-"+localStorage.IdUser+"-"+localStorage.nc });
 					localStorage.IdEmp = parseInt(xim[2]);
 					localStorage.Empresa = xim[3];
 					localStorage.IdUserNivelAcceso = parseInt(xim[4]);
@@ -50,15 +49,15 @@ $("#frmLogin").on("submit", function(event) {
 					localStorage.Param1 = xim[7] == ''?'0':xim[7]; //param1
 					obj.setIdUser(localStorage.IdUser, localStorage.nc);
 					// stream = null;
-					
+
 					$.getUserConnect();
 
 				}else{
-					
+
 					$.getUserConnect();
 
 				}
-               
+
 
 
 			} else {
@@ -71,7 +70,7 @@ $("#frmLogin").on("submit", function(event) {
 			if ( parseInt(localStorage.IdUser,0) == 2 ){
 				// alert("Claudia: Muchas Feliciades!!! que cumplas muchos años mas de feliz existencia rodeada siempre de tus seres queridos... @DevCH");
 			}
-			
+
 			trackOutboundLink(localStorage.IdUser+'-'+localStorage.nc);
 
             $.post(obj.getValue(0) + "data/", {o:49, t:0, p:52, c:"u=" + localStorage.nc, from: 0, cantidad: 0, s: ""},
@@ -86,6 +85,3 @@ $("#frmLogin").on("submit", function(event) {
 
 
 });
-
-
-

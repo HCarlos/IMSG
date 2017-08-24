@@ -16,7 +16,7 @@ $alumno  = $_POST['alumno'];
 
 <h3 class="header smaller lighter blue">
     <span id="title"></span>
-    <a class="label label-info arrowed-in-right arrowed closeFormEmerAlu0 pull-right">Regresar</a>	
+    <a class="label label-info arrowed-in-right arrowed closeFormEmerAlu0 pull-right">Regresar</a>
 </h3>
 
 	<div class="widget-box" id="wdEmerAlu">
@@ -32,8 +32,8 @@ $alumno  = $_POST['alumno'];
 					</a>
 					<a href="#" data-action="collapse">
 						<i class="icon-chevron-up"></i>
-					</a>					
-				</span>			
+					</a>
+				</span>
 		</div>
 
 		<div class="widget-body">
@@ -61,8 +61,8 @@ $alumno  = $_POST['alumno'];
 				</div>
 			</div>
 		</div>
-		
-	</div>			
+
+	</div>
 
     <input type="hidden" name="idalumno" id="idalumno" value="<?php echo $idalumno; ?>">
     <input type="hidden" name="user" id="user" value="<?php echo $user; ?>">
@@ -70,7 +70,7 @@ $alumno  = $_POST['alumno'];
 
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -108,7 +108,7 @@ MODULO DE COMPORABLES Y HOMOLOGACION
 			function(json){
 				$("#tblEmerAlu > tbody ").html("");
 				var str = "";
-				
+
 	           	$.each(json, function(i, item) {
 	           				var isok = parseInt(item.predeterminado,0) == 1 ? "<img src='/img/Ok-icon.png' width='16' height='16' alt='' />":""
 							str =  '  <tr>';
@@ -118,7 +118,7 @@ MODULO DE COMPORABLES Y HOMOLOGACION
 							str += '	    <td class="tbl200W">'+item.parentezco+'</td>';
 							str += '	    <td class="tbl20W">'+isok+'</td>';
 							str += '	    <td class="tbl80W">';
-							str += '			<div class="action-buttons">';						
+							str += '			<div class="action-buttons">';
 							str += '				<a class="green modEmerAlu" href="#" id="modEmerAlu-'+item.idemeralu+'" >';
 							str += '					<i class="icon-pencil bigger-130"></i>';
 							str += '				</a>';
@@ -159,8 +159,8 @@ MODULO DE COMPORABLES Y HOMOLOGACION
 						var aObj = event.currentTarget.id.split('-');
 						var r = confirm("Desea eliminar el registro "+aObj[1]+"?");
 						if (r == false) {
-							return false;	
-						}	
+							return false;
+						}
 						obj.setIsTimeLine(false);
 						// alert(aObj[1]);
 				        $.post(obj.getValue(0)+"data/",  { o:53, t:5, p:52, c:aObj[1], from:0, cantidad:0,s:'' },
@@ -172,12 +172,12 @@ MODULO DE COMPORABLES Y HOMOLOGACION
 				                    $("#preloaderPrincipal").hide();
 				                    $("#divUploadImage").modal('hide');
 				                }
-				        }, "json");        
+				        }, "json");
 					});
 				}
 
 				$("#preloaderPrincipal").hide();
-				
+
 				if($boxEmerAlu){
 					$boxEmerAlu.trigger('reloaded.ace.widget');
 				}
@@ -185,7 +185,7 @@ MODULO DE COMPORABLES Y HOMOLOGACION
 		},'json');
 
 	}
-	
+
 	if ($("#cat-alumno-emergencias-prop").length) {
 		$("#cat-alumno-emergencias-prop").on("click", function(event) {
 			event.preventDefault();
@@ -210,22 +210,6 @@ MODULO DE COMPORABLES Y HOMOLOGACION
 		e.stopPropagation();//stop propagating to the event defined in ace.min.js which you should remove altogether
 		getEmerALu(idalumno);
 	});
-
-
-/*
-
-	var stream = io.connect(obj.getValue(4));
-
-    stream.on("servidor", jsNewAEFInformacion);
-   	function jsNewAEFInformacion(datosServer) {
-		var ms = datosServer.mensaje.split("-");
-		if (ms[1]=='MEDALU') {
-            //$boxEmerAlu.trigger('reload.ace.widget');
-            getEmerALu(idalumno);
-        }
-    }
-
-*/
 
 });
 

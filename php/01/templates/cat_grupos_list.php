@@ -38,7 +38,7 @@ $de       = $_POST['user'];
 			<div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
 
 				<table aria-describedby="sample-table-2_info" id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
-									
+
 					<thead>
 						<tr role="row">
 							<th aria-label="idgponiv: activate to sort column ascending" style="width: 60px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
@@ -51,7 +51,7 @@ $de       = $_POST['user'];
 							<th aria-label="" style="width: 200px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
-									
+
 					<tbody aria-relevant="all" aria-live="polite" role="alert"></tbody>
 				</table>
 
@@ -61,11 +61,11 @@ $de       = $_POST['user'];
 </div>
 
 <div id="inline2">
-	
+
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -86,9 +86,9 @@ jQuery(function($) {
 	 						"sZeroRecords": "No hay registros",
 	            			"sInfo": "_START_ - _END_ de _TOTAL_ registros",
 	            			"sInfoEmpty": "No existen datos",
-	            			"sInfoFiltered": "(De _MAX_ registros)"                                        
-	        			},	
-	        "aaSorting": [[ 1, "asc" ]],			
+	            			"sInfoFiltered": "(De _MAX_ registros)"
+	        			},
+	        "aaSorting": [[ 1, "asc" ]],
 			"aoColumns": [ null, null, null, null, null, null, null,  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,
@@ -97,17 +97,17 @@ jQuery(function($) {
 	}
 
 	function fillTable(){
-						
+
 		var tB = "";
 
 		$("#preloaderPrincipal").show();
 		var nc = "u="+localStorage.nc+"&clavenivelacceso="+localStorage.ClaveNivelAcceso;
-		
+
 		// alert(nc);
 
 		$.post(obj.getValue(0) + "data/", {o:4, t:7, c:nc, p:11, from:0, cantidad:0,s:localStorage.Param1},
 			function(json){
-					
+
 					$.each(json, function(i, item) {
 						var bloqueado = parseInt(item.bloqueado,0)==1?'<i class="fa fa-lock"></i>':'';
 						var visible = parseInt(item.grupo_ciclo_nivel_visible,0)==1?'<i class="fa fa-eye"></i>':'';
@@ -153,7 +153,7 @@ jQuery(function($) {
 						tB +='				</td>';
 						tB +='			</tr>';
 					});
-		
+
 					$('#sample-table-2 > tbody').html(tB);
 
 					$("#preloaderPrincipal").hide();
@@ -199,7 +199,7 @@ jQuery(function($) {
 				            		if (json[0].msg=="OK"){
 										onClickFillTable();
 				        			}else{
-				        				alert(json[0].msg);	
+				        				alert(json[0].msg);
 				        			}
 				        	}, "json");
 			        	}
@@ -221,7 +221,7 @@ jQuery(function($) {
 				            		if (json[0].msg=="OK"){
 										onClickFillTable();
 				        			}else{
-				        				alert(json[0].msg);	
+				        				alert(json[0].msg);
 				        			}
 				        	}, "json");
 			        	}
@@ -249,10 +249,10 @@ jQuery(function($) {
         	},
         'json'
         );
-							
+
 	}
-	
-	var init = true;			
+
+	var init = true;
 	fillTable();
 
 
@@ -338,16 +338,16 @@ jQuery(function($) {
 
 	function printTarjetaReinscripcion(IdGrupo,Grupo,Clave_Nivel, Grado, IdCiclo){
 
-		var logoEmp   = obj.getConfig(100,0); 
-		var logoIbo   = obj.getConfig(100,1); 
-		var logoFR    = obj.getConfig(101,0); 
-		var proxCiclo = obj.getConfig(102,0); 
+		var logoEmp   = obj.getConfig(100,0);
+		var logoIbo   = obj.getConfig(100,1);
+		var logoFR    = obj.getConfig(101,0);
+		var proxCiclo = obj.getConfig(102,0);
 
 		var nc = "u="+localStorage.nc+
 				"&idgrupo="+IdGrupo;
-		var IdAlumnos = "";		
+		var IdAlumnos = "";
 		$.post(obj.getValue(0) + "data/", {o:0, t:23, c:nc, p:54, from:0, cantidad:0,s:localStorage.Param1},
-		function(json){			
+		function(json){
 			$.each(json, function(i, item) {
 				if ( parseInt(item.idgrualu) > 0 ){
 					IdAlumnos += IdAlumnos==""?item.idgrualu:"|"+item.idgrualu;
@@ -390,20 +390,6 @@ jQuery(function($) {
 		);
 
 	}
-
-
-	var stream = io.connect(obj.getValue(4));
-	stream.on("servidor", jsNewGrupo);
-	function jsNewGrupo(datosServer) {
-		var ms = datosServer.mensaje.split("-");
-		//alert(datosServer);
-		//obj.setIsTimeLine(true);
-		if (ms[1]=='GRUPOS') {
-			//onClickFillTable();
-		}
-	}
-
-	
 
 });
 

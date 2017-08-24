@@ -28,16 +28,6 @@ $de       = $_POST['user'];
 						<span class="ui-icon icon-refresh green"></span>
 					</div>
 				</td>
-				<!--
-				<td title="" data-original-title="" class="ui-pg-button ui-state-disabled" style="width:1em;">
-					<span class="ui-separator marginLeft2em"></span>
-				</td>
-				<td data-original-title="Send Grid" title="" class="ui-pg-button ui-corner-all">
-					<div class="ui-pg-div" id="btnSendMessage0">
-						<span class="ui-icon icon-comments blue"></span>
-					</div>
-				</td>
-				-->
 			</tr>
 		</tbody>
 	</table>
@@ -48,7 +38,7 @@ $de       = $_POST['user'];
 			<div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
 
 				<table aria-describedby="sample-table-2_info" id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
-									
+
 					<thead>
 						<tr role="row">
 							<th aria-label="iduser: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
@@ -58,7 +48,7 @@ $de       = $_POST['user'];
 							<th aria-label="" style="width: 80px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
-									
+
 					<tbody aria-relevant="all" aria-live="polite" role="alert"></tbody>
 				</table>
 
@@ -68,11 +58,11 @@ $de       = $_POST['user'];
 </div>
 
 <div id="inline2">
-	
+
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
@@ -93,9 +83,9 @@ jQuery(function($) {
 	 						"sZeroRecords": "No hay registros",
 	            			"sInfo": "_START_ - _END_ de _TOTAL_ registros",
 	            			"sInfoEmpty": "No existen datos",
-	            			"sInfoFiltered": "(De _MAX_ registros)"                                        
-	        			},	
-	        "aaSorting": [[ 0, "desc" ]],			
+	            			"sInfoFiltered": "(De _MAX_ registros)"
+	        			},
+	        "aaSorting": [[ 0, "desc" ]],
 			"aoColumns": [ null, null,  null, null, { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50,100, -1], [10, 25, 50,100, "Todos"]],
 			"bRetrieve": true,
@@ -104,7 +94,7 @@ jQuery(function($) {
 	}
 
 	function fillTable(){
-						
+
 		var tB = "";
 
 		$("#preloaderPrincipal").show();
@@ -175,7 +165,7 @@ jQuery(function($) {
 				            		if (json[0].msg=="OK"){
 										onClickFillTable();
 				        			}else{
-				        				alert(json[0].msg);	
+				        				alert(json[0].msg);
 				        			}
 				        	}, "json");
 			        	}
@@ -193,10 +183,10 @@ jQuery(function($) {
         	},
         'json'
         );
-							
+
 	}
-	
-	var init = true;			
+
+	var init = true;
 	fillTable();
 
 	$("#btnRefresh").on("click",function(event){
@@ -271,17 +261,6 @@ jQuery(function($) {
 
 
 	});
-
-	var stream = io.connect(obj.getValue(4));
-	stream.on("servidor", jsNewUsuario);
-	function jsNewUsuario(datosServer) {
-		var ms = datosServer.mensaje.split("-");
-		if (ms[1]=='USUARIO') {
-			onClickFillTable();
-		}
-	}
-
-	
 
 });
 

@@ -25,7 +25,7 @@ $idemeralu = $_POST['idemeralu'];
                             </select>
                         </td>
                     </tr>
-                  
+
 
                     <tr>
                         <td><label for="predeterminado" class="textRight">Default</label></td>
@@ -35,7 +35,7 @@ $idemeralu = $_POST['idemeralu'];
                             <span class="lbl"></span>
                         </td>
                     </tr>
-                  
+
 
                 </table>
 
@@ -70,17 +70,16 @@ $(document).ready(function () {
         if ( vVal <= 0 ){
             alert("Seleccione un Médico");
             return false;
-        }        
+        }
         var queryString = $(this).serialize();
 
         // alert(queryString);
-        
+
         var IdEmerAlu = (idemeralu==0?3:4);
         $.post(obj.getValue(0)+"data/",  { o:53, t:IdEmerAlu, p:52, c:queryString, from:0, cantidad:0,s:'' },
             function(json){
                 if (json[0].msg=="OK"){
                     alert("Información guardada con éxito!");
-                    // stream.emit("cliente", {mensaje: "PLATSOURCE-MEDALU-PROP-"+idemeralu});
                     $("#preloaderPrincipal").hide();
                     $("#divUploadImage").modal('hide');
                 }else{
@@ -88,7 +87,7 @@ $(document).ready(function () {
                     alert(json[0].msg);
                     return false;
                 }
-        }, "json");        
+        }, "json");
     });
 
     function updateForm(){
@@ -96,12 +95,12 @@ $(document).ready(function () {
             var nc = "u="+localStorage.nc;
             $.post(obj.getValue(0) + "data/", {o:53, t:26, c:idemeralu, p:54, from:0, cantidad:0,s:nc},
                 function(json){
-                    $("#idemergencia").val(json[0].idemergencia);            
+                    $("#idemergencia").val(json[0].idemergencia);
                     $("#predeterminado").prop("checked",json[0].predeterminado==1?true:false);
-                    $("#idemergencia").focus();  
+                    $("#idemergencia").focus();
             },'json');
         }else{
-            $("#tituloPanel").html("Nuevo Registro");  
+            $("#tituloPanel").html("Nuevo Registro");
             $("#idalumno").focus();
         }
     }
@@ -118,12 +117,10 @@ $(document).ready(function () {
                 });
                 updateForm();
             }, "json"
-        );  
+        );
     }
 
     getEmerAlu();
-
-    // var stream = io.connect(obj.getValue(4));
 
 });
 });

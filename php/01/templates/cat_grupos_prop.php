@@ -40,7 +40,7 @@ $idgrupo  = $_POST['idgrupo'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-			
+
 				<div class="form-group ">
 			    	<label for="clave" class="col-lg-4 control-label">Clave</label>
 			    	<div class="col-lg-8">
@@ -111,7 +111,7 @@ $idgrupo  = $_POST['idgrupo'];
 
 
 			<div id="especifico" class="tab-pane">
-			
+
 				<div class="form-group ">
 			    	<label for="bloqueado" class="col-lg-4 control-label">Bloqueado</label>
 			    	<div class="col-lg-8">
@@ -165,7 +165,7 @@ $idgrupo  = $_POST['idgrupo'];
 				<div class="form-group ">
 			    	<label for="grado_pai" class="col-lg-4 control-label">Grado PAI</label>
 			    	<div class="col-lg-8">
-	                    <select name="grado_pai" id="grado_pai" size="1" style="width:100% !important;" > 
+	                    <select name="grado_pai" id="grado_pai" size="1" style="width:100% !important;" >
 	                    	<option value="0" selected>Seleccione un Grado PAI</option>
 	                    	<option value="1">Primero</option>
 	                    	<option value="2">Segundo</option>
@@ -200,19 +200,15 @@ $idgrupo  = $_POST['idgrupo'];
 </div>
 <!--PAGE CONTENT ENDS-->
 
-<script typy="text/javascript">        
+<script typy="text/javascript">
 
 jQuery(function($) {
 
-	var stream = io.connect(obj.getValue(4));
 	var User = "<?= $user; ?>";
-
+    var idgrupo = <?php echo $idgrupo ?>;
 
 	$("#preloaderPrincipal").hide();
-
 	$("#clave").focus();
-
-	var idgrupo = <?php echo $idgrupo ?>;
 
 	if (idgrupo<=0){ // Nuevo Registro
 		$("#title").html("Nuevo registro");
@@ -233,7 +229,7 @@ jQuery(function($) {
 					$("#grupo_periodo").val(json[0].grupo_periodo);
 					$("#grupo_periodo_ciclo").val(json[0].grupo_periodo_ciclo);
 					$("#grupo_oficial").val(json[0].grupo_oficial);
-					// $("#visible").prop("checked",json[0].visible==1?true:false);						
+					// $("#visible").prop("checked",json[0].visible==1?true:false);
 					$("#bloqueado").prop("checked",json[0].bloqueado==1?true:false);
 					$("#activo_en_caja").prop("checked",json[0].activo_en_caja==1?true:false);
 					$("#ver_boleta_interna").prop("checked",json[0].ver_boleta_interna==1?true:false);
@@ -251,8 +247,8 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 
-	    var queryString = $(this).serialize();	
-	    
+	    var queryString = $(this).serialize();
+
 	    //alert(queryString)
 	    // return false;
 
@@ -264,12 +260,11 @@ jQuery(function($) {
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "PLATSOURCE-GRUPOS-PROP-"+idgrupo+"-"+User});
 						$("#preloaderPrincipal").hide();
 						$("#divUploadImage").modal('hide');
         			}else{
 						$("#preloaderPrincipal").hide();
-        				alert(json[0].msg);	
+        				alert(json[0].msg);
         			}
         	}, "json");
 		}else{
