@@ -53,7 +53,7 @@ class oCenturaPDO
     // Obtiene el ID del Usuario a partir de su Alias
     private function getIdUserFromAlias($str)
     {
-        $query = "select iduser from usuarios where username = '$str' and status_usuario = 1";
+        $query = "select iduser from usuarios WHERE username = '$str' AND status_usuario = 1";
 
         $Conn = new voConnPDO();
         $result = $Conn->queryFetchAllAssocOBJ($query);
@@ -72,7 +72,7 @@ class oCenturaPDO
     // Obtiene el ID de la Empresa a partir de su Alias
     private function getIdEmpFromAlias($str)
     {
-        $query = "select idemp from usuarios where username = '$str' and status_usuario = 1";
+        $query = "select idemp from usuarios WHERE username = '$str' AND status_usuario = 1";
 
         $Conn = new voConnPDO();
         $result = $Conn->queryFetchAllAssocOBJ($query);
@@ -91,7 +91,7 @@ class oCenturaPDO
     // Valida si existen usuarios conectados
     private function IsExistUserConnect($iduser, $idemp)
     {
-        $query = "select iduser from usuarios_conectados where iduser = $iduser and idemp = $idemp limit 1";
+        $query = "select iduser from usuarios_conectados WHERE iduser = $iduser AND idemp = $idemp limit 1";
 
         $Conn = new voConnPDO();
         $result = $Conn->queryFetchAllAssocOBJ($query);
@@ -107,7 +107,7 @@ class oCenturaPDO
     // Valida si usuario esta conectado
     private function IsConnectUser($iduser, $idemp)
     {
-        $query = "select iduser from usuarios_conectados where iduser = $iduser and idemp = $idemp and isconectado = 1 limit 1";
+        $query = "select iduser from usuarios_conectados WHERE iduser = $iduser AND idemp = $idemp AND isconectado = 1 limit 1";
         $Conn = new voConnPDO();
         $result = $Conn->queryFetchAllAssocOBJ($query);
 
@@ -121,7 +121,7 @@ class oCenturaPDO
 
     public function getLogoEmp($idemp)
     {
-        $query = "select valor from config where llave = 'logo-emp-rep' and idemp = $idemp";
+        $query = "select valor from config WHERE llave = 'logo-emp-rep' AND idemp = $idemp";
 
         $Conn = new voConnPDO();
         $result = $Conn->queryFetchAllAssocOBJ($query);
@@ -137,7 +137,7 @@ class oCenturaPDO
 
     public function getNombreEmp($idemp)
     {
-        $query = "select rs from empresa where idemp = $idemp";
+        $query = "select rs from empresa WHERE idemp = $idemp";
         $Conn = new voConnPDO();
         $result = $Conn->queryFetchAllAssocOBJ($query);
 
@@ -199,7 +199,7 @@ class oCenturaPDO
                         parse_str($arg);
                         $idemp = $this->getIdEmpFromAlias($u);
                         $query = "SELECT municipio as label, idmunicipio as data
-								FROM cat_municipios where idestado = $otros and status_municipio = 1 and idemp = $idemp
+								FROM cat_municipios WHERE idestado = $otros AND status_municipio = 1 AND idemp = $idemp
 								Order By data asc ";
                         break;
 
@@ -208,7 +208,7 @@ class oCenturaPDO
                         parse_str($arg);
                         $idemp = $this->getIdEmpFromAlias($u);
                         $query = "SELECT estado as label, idestado as data
-								FROM cat_estados where idemp = $idemp and status_estado = 1
+								FROM cat_estados WHERE idemp = $idemp AND status_estado = 1
 								Order By data asc ";
                         break;
 
@@ -217,14 +217,14 @@ class oCenturaPDO
                         parse_str($arg);
                         $pass = md5($passwordL);
                         $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario) as data
-								FROM  _viUsuarios where username = '$username' and password = '$pass' and status_usuario = 1";
+								FROM  _viUsuarios WHERE username = '$username' AND password = '$pass' AND status_usuario = 1";
                         break;
 
                     case 2:
                         parse_str($arg);
                         $idemp = $this->getIdEmpFromAlias($u);
                         $query = "SELECT nivel_de_acceso as label,idusernivelacceso as data
-								FROM usuarios_niveldeacceso where idemp = $idemp
+								FROM usuarios_niveldeacceso WHERE idemp = $idemp
 								Order By idusernivelacceso asc ";
                         break;
 
@@ -248,13 +248,13 @@ class oCenturaPDO
                 $idemp = $this->getIdEmpFromAlias($u);
                 $query = "SELECT llave,valor
 								FROM config
-							where idemp = $idemp";
+							WHERE idemp = $idemp";
                 break;
 
             case -2:
                 $query = "SELECT *
 								FROM _viUsuarios
-							where iduser = $cad  and status_usuario = 1  and idusernivelacceso <= 100";
+							WHERE iduser = $cad  AND status_usuario = 1  AND idusernivelacceso <= 100";
                 break;
 
             case -1:
@@ -264,14 +264,14 @@ class oCenturaPDO
 
                 $query = "SELECT iduser, username, apellidos, nombres, foto
 							FROM _viUsuarios
-							WHERE  idemp = $idemp and status_usuario = 1  and idusernivelacceso <= 100
+							WHERE  idemp = $idemp AND status_usuario = 1  AND idusernivelacceso <= 100
 							Order by iduser desc";
                 break;
 
             case 0:
                     $query="SELECT *
 							from _viUsuarios
-							where username LIKE ('$cad%')  and status_usuario = 1  and idusernivelacceso <= 1000 ";
+							WHERE username LIKE ('$cad%')  AND status_usuario = 1  AND idusernivelacceso <= 1000 ";
                     break;
 
             case 1:
@@ -279,12 +279,12 @@ class oCenturaPDO
                 $idemp = $this->getIdEmpFromAlias($u);
                 $query = "SELECT *
 								FROM cat_estados
-							Where idemp = $idemp order by idestado desc";
+							WHERE idemp = $idemp order by idestado desc";
                 break;
             case 2:
                 $query = "SELECT  *
 								FROM cat_estados
-							where idestado = $cad ";
+							WHERE idestado = $cad ";
                 break;
 
             case 3:
@@ -292,13 +292,13 @@ class oCenturaPDO
                 $idemp = $this->getIdEmpFromAlias($u);
                 $query = "SELECT *
 								FROM _viMunicipios
-							Where idemp = $idemp and status_municipio = 1 order by idmunicipio desc";
+							WHERE idemp = $idemp AND status_municipio = 1 order by idmunicipio desc";
                 break;
 
             case 4:
                 $query = "SELECT  *
 								FROM _viMunicipios
-							where idmunicipio = $cad ";
+							WHERE idmunicipio = $cad ";
                 break;
 
             case 5:
@@ -334,14 +334,38 @@ class oCenturaPDO
             case 6:
                 $query = "SELECT *
 								FROM _viPersonas
-							where idpersona = $cad ";
+							WHERE idpersona = $cad ";
                 break;
+
+            case 7:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT idempresa, rfc, razon_social, cp, is_email
+                        FROM _viEmpresas WHERE idemp = $idemp and status_empresa = 1
+                        Order By razon_social asc ";
+                break;
+
+            case 8:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT *
+                        FROM _viEmpresas WHERE idempresa = $idempresa AND idemp = $idemp AND status_empresa = 1";
+                break;
+
+            case 9:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT idpersona, nombre_persona, username
+								FROM _viPersonas
+							WHERE idemp = $idemp AND clave = '$clave' ORDER BY nombre_persona ASC ";
+                break;
+
 
             case 4000:
                 parse_str($cad);
                 $idemp = $this->getIdEmpFromAlias($u);
                 $query = "SELECT *
-						FROM _viUsuariosConectados where idemp = $idemp and isconectado = 1 ";
+						FROM _viUsuariosConectados WHERE idemp = $idemp AND isconectado = 1 ";
                 break;
 
         }
@@ -355,7 +379,7 @@ class oCenturaPDO
     }
 
     // Asocia elementos de una tabla A con una tabla B
-    public function setAsocia($tipo=0, $arg="", $pag=0, $limite=0, $var2=0, $otros="")
+    public function SETAsocia($tipo=0, $arg="", $pag=0, $limite=0, $var2=0, $otros="")
     {
         $query="";
         $vRet = "Error";
@@ -374,8 +398,8 @@ class oCenturaPDO
                               $ar = explode("|", $dests);
                             foreach ($ar as $i=>$valor) {
                                 if ((int)($ar[$i])>0) {
-                                    $query = "Insert Into pase_salida_alumnos(idpsa,idalumno,idciclo,clave_nivel,idgrupo,idemp,ip,host,creado_por,creado_el)
-																		value($idpsa,$ar[$i],$idciclo,$clave_nivel,$idgrupo,$idemp,'$ip','$host',$iduser,NOW())";
+                                    $query = "INSERT INTO pase_salida_alumnos(idpsa,idalumno,idciclo,clave_nivel,idgrupo,idemp,ip,host,creado_por,creado_el)
+																		VALUES($idpsa,$ar[$i],$idciclo,$clave_nivel,$idgrupo,$idemp,'$ip','$host',$iduser,NOW())";
 
                                     $result = $Conn->exec($query);
 
@@ -393,7 +417,7 @@ class oCenturaPDO
                               $ar = explode("|", $dests);
                             foreach ($ar as $i=>$valor) {
                                 if ((int)($ar[$i])>0) {
-                                    $query = "Delete from pase_salida_alumnos where idpsaalumno = ".$ar[$i];
+                                    $query = "DELETE FROM pase_salida_alumnos WHERE idpsaalumno = ".$ar[$i];
 
                                     $result = $Conn->exec($query);
 
@@ -431,11 +455,11 @@ class oCenturaPDO
                             $pass = md5($password1);
                             $idusr = $this->getIdUserFromAlias($user);
                             $idemp = $this->getIdEmpFromAlias($user);
-                            $query = "Insert Into usuarios(username,password,apellidos,nombres,
+                            $query = "INSERT INTO usuarios(username,password,apellidos,nombres,
 															correoelectronico,idusernivelacceso,
 															status_usuario,
 															idemp,ip,host,creado_por,creado_el)
-										value( '$username','$pass','$apellidos','$nombres',
+										VALUES( '$username','$pass','$apellidos','$nombres',
 												'$correoelectronico',$idusernivelacceso,
 												$status_usuario,
 											    $idemp,'$ip','$host',$idusr,NOW())";
@@ -454,8 +478,8 @@ class oCenturaPDO
                         } else {
                             $idnivacc = "";
                         }
-                        //$query = "update usuarios set username = '$username',
-                        $query = "update usuarios set apellidos = '$apellidos',
+                        //$query = "UPDATE usuarios SET username = '$username',
+                        $query = "UPDATE usuarios SET apellidos = '$apellidos',
 														nombres = '$nombres',
 														correoelectronico = '$correoelectronico',
 														".$idnivacc."
@@ -464,24 +488,24 @@ class oCenturaPDO
 														host = '$host',
 														modi_por = $idusr,
 														modi_el = NOW()
-								Where iduser = $iduser";
+								WHERE iduser = $iduser";
 
                         $vRet = $this->guardarDatos($query);
 
                         break;
                     case 2:
-                        $query = "delete from usuarios Where iduser = ".$arg;
+                        $query = "DELETE FROM usuarios WHERE iduser = ".$arg;
                         $vRet = $this->guardarDatos($query);
                         break;
                     case 3:
                         parse_str($arg);
                         $pass = md5($password1);
-                        $query = "update usuarios set password = '$pass',
+                        $query = "UPDATE usuarios SET password = '$pass',
 														ip = '$ip',
 														host = '$host',
 														modi_por = $iduser2,
 														modi_el = NOW()
-								Where iduser = $iduser";
+								WHERE iduser = $iduser";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -491,8 +515,8 @@ class oCenturaPDO
                         parse_str($arg);
                         $tel = trim(utf8_decode($celular));
                         $pass = md5($password);
-                        $query = "Insert Into usuarios(username,password,nombres,celular,idF,latitud,longitud,ip,host,creado_el)
-											value('$username','$pass','$nombre','$tel','$idF','$latitud','$longitud','$ip','$host',NOW())";
+                        $query = "INSERT INTO usuarios(username,password,nombres,celular,idF,latitud,longitud,ip,host,creado_el)
+											VALUES('$username','$pass','$nombre','$tel','$idF','$latitud','$longitud','$ip','$host',NOW())";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -500,7 +524,7 @@ class oCenturaPDO
                     case 101:
 
                         parse_str($arg);
-                        $query = "update usuarios set valid = 1 where username='$username'";
+                        $query = "UPDATE usuarios SET valid = 1 WHERE username='$username'";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -509,8 +533,8 @@ class oCenturaPDO
 
                         parse_str($arg);
                         $pass = md5($password);
-                        $query = "Insert Into usuarios(username,password,ip,host,creado_el)
-											value('$username','$pass','$ip','$host',NOW())";
+                        $query = "INSERT INTO usuarios(username,password,ip,host,creado_el)
+											VALUES('$username','$pass','$ip','$host',NOW())";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -528,7 +552,7 @@ class oCenturaPDO
                         $token_validated = $token == $token_source ? 1 : 0;
                         $token = intval($token_validated) == 1? $token :"";
 
-                        $query = "update usuarios set
+                        $query = "UPDATE usuarios SET
 													 apellidos = '$apellidos',
 													 nombres = '$nombres',
 													 correoelectronico = '$correoelectronico',
@@ -541,7 +565,7 @@ class oCenturaPDO
 													 param1 = '$param1',
 													 ip = '$ip',
 													 host = '$host'
-												where username LIKE ('$username2%')";
+												WHERE username LIKE ('$username2%')";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -550,10 +574,10 @@ class oCenturaPDO
                     case 204:
 
                         parse_str($arg);
-                        $query = "update usuarios set foto = '$foto',
+                        $query = "UPDATE usuarios SET foto = '$foto',
 													 ip = '$ip',
 													 host = '$host'
-													 where username LIKE ('$username%')";
+													 WHERE username LIKE ('$username%')";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -564,11 +588,11 @@ class oCenturaPDO
                         parse_str($arg);
                         $pass = md5($password);
 
-                        $query = "update usuarios set
+                        $query = "UPDATE usuarios SET
 													 password = '$pass',
 													 ip = '$ip',
 													 host = '$host'
-												where username LIKE ('$username2%')";
+												WHERE username LIKE ('$username2%')";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -583,8 +607,8 @@ class oCenturaPDO
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
                         $idemp = $this->getIdEmpFromAlias($user);
-                        $query = "Insert Into cat_estados(clave,estado,status_estado,idemp,ip,host,creado_por,creado_el)
-									value( '$clave','$estado',
+                        $query = "INSERT INTO cat_estados(clave,estado,status_estado,idemp,ip,host,creado_por,creado_el)
+									VALUES( '$clave','$estado',
 										    $status_estado,$idemp,'$ip','$host',$idusr,NOW())";
 
                         $vRet = $this->guardarDatos($query);
@@ -594,20 +618,20 @@ class oCenturaPDO
                          //$ar = $this->unserialice_force($arg);
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
-                        $query = "update cat_estados set 	clave = '$clave',
+                        $query = "UPDATE cat_estados SET 	clave = '$clave',
 													  	estado = '$estado',
 													  	status_estado = $status_estado,
 														ip = '$ip',
 														host = '$host',
 														modi_por = $idusr,
 														modi_el = NOW()
-								Where idestado = $idestado";
+								WHERE idestado = $idestado";
 
                         $vRet = $this->guardarDatos($query);
 
                         break;
                     case 2:
-                        $query = "delete from cat_estados Where idestado = ".$arg;
+                        $query = "DELETE FROM cat_estados WHERE idestado = ".$arg;
 
                         $vRet = $this->guardarDatos($query);
 
@@ -620,8 +644,8 @@ class oCenturaPDO
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
                         $idemp = $this->getIdEmpFromAlias($user);
-                        $query = "Insert Into cat_municipios(idestado,clave,municipio,status_municipio,idemp,ip,host,creado_por,creado_el)
-									value( $idestado, '$clave','$municipio',
+                        $query = "INSERT INTO cat_municipios(idestado,clave,municipio,status_municipio,idemp,ip,host,creado_por,creado_el)
+									VALUES( $idestado, '$clave','$municipio',
 										    $status_municipio,$idemp,'$ip','$host',$idusr,NOW())";
 
                         $vRet = $this->guardarDatos($query);
@@ -631,7 +655,7 @@ class oCenturaPDO
                          //$ar = $this->unserialice_force($arg);
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
-                        $query = "update cat_municipios set idestado = $idestado,
+                        $query = "UPDATE cat_municipios SET idestado = $idestado,
 														clave = '$clave',
 													  	municipio = '$municipio',
 													  	status_municipio = $status_municipio,
@@ -639,13 +663,13 @@ class oCenturaPDO
 														host = '$host',
 														modi_por = $idusr,
 														modi_el = NOW()
-								Where idmunicipio = $idmunicipio";
+								WHERE idmunicipio = $idmunicipio";
 
                         $vRet = $this->guardarDatos($query);
 
                         break;
                     case 2:
-                        $query = "delete from cat_municipios Where idmunicipio = ".$arg;
+                        $query = "DELETE FROM cat_municipios WHERE idmunicipio = ".$arg;
                         $vRet = $this->guardarDatos($query);
                         break;
                 }
@@ -661,7 +685,7 @@ class oCenturaPDO
                         $fn = explode('-', $fecha_nacimiento);
                         $fn = $fn[2].'-'.$fn[1].'-'.$fn[0];
 
-                        $query = "Insert Into cat_personas(
+                        $query = "INSERT INTO cat_personas(
 															ap_paterno,
 															ap_materno,
 															nombre,
@@ -673,7 +697,6 @@ class oCenturaPDO
 															cel2,
 															lugar_nacimiento,
 															fecha_nacimiento,
-															curp,
 															genero,
 															ocupacion,
 															domicilio_generico,
@@ -689,7 +712,7 @@ class oCenturaPDO
 															lugar_trabajo,
 															status_persona,
 															idemp,ip,host,creado_por,creado_el)
-									value(
+									VALUES(
 															'$ap_paterno',
 															'$ap_materno',
 															'$nombre',
@@ -701,7 +724,6 @@ class oCenturaPDO
 															'$cel2',
 															'$lugar_nacimiento',
 															'$fn',
-															'$curp',
 															$genero,
 															'$ocupacion',
 															'".mb_strtoupper($domicilio_generico, 'UTF-8')."',
@@ -730,7 +752,7 @@ class oCenturaPDO
                         $fn = explode('-', $fecha_nacimiento);
                         $fn = $fn[2].'-'.$fn[1].'-'.$fn[0];
 
-                        $query = "update cat_personas set
+                        $query = "UPDATE cat_personas SET
 														ap_paterno = '$ap_paterno',
 														ap_materno = '$ap_materno',
 														nombre = '$nombre',
@@ -742,7 +764,6 @@ class oCenturaPDO
 														cel2 = '$cel2',
 														lugar_nacimiento = '$lugar_nacimiento',
 														fecha_nacimiento = '$fn',
-														curp = '$curp',
 														calle = '".mb_strtoupper($calle, 'UTF-8')."',
 														num_ext = '".mb_strtoupper($num_ext, 'UTF-8')."',
 														num_int = '".mb_strtoupper($num_int, 'UTF-8')."',
@@ -761,17 +782,91 @@ class oCenturaPDO
 														host = '$host',
 														modi_por = $idusr,
 														modi_el = NOW()
-								Where idpersona = $idpersona";
+								WHERE idpersona = $idpersona";
 
                         $vRet = $this->guardarDatos($query);
 
                         break;
                     case 2:
-                        $query = "delete from cat_personas Where idpersona = ".$arg;
+                        $query = "DELETE FROM cat_personas WHERE idpersona = ".$arg;
                         $vRet = $this->guardarDatos($query);
                         break;
                 } // 3
                 break;
+            case 4:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $is_email = !isset($is_email)?0:1;
+                        $status_empresa = !isset($status_empresa)?0:1;
+                        $query = "INSERT INTO cat_empresas(
+                                                            rfc,
+                                                            razon_social,
+                                                            calle,
+                                                            num_ext,
+                                                            num_int,
+                                                            colonia,
+                                                            localidad,
+                                                            estado,
+                                                            pais,
+                                                            cp,
+                                                            emails,
+                                                            is_email,
+                                                            status_empresa,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    VALUES(
+                                                            '".strtoupper($rfc)."',
+                                                            '".strtoupper($razon_social)."',
+                                                            '".strtoupper($calle)."',
+                                                            '".strtoupper($num_ext)."',
+                                                            '".strtoupper($num_int)."',
+                                                            '".strtoupper($colonia)."',
+                                                            '".strtoupper($localidad)."',
+                                                            '".strtoupper($estado)."',
+                                                            '".strtoupper($pais)."',
+                                                            '".strtoupper($cp)."',
+                                                            '$emails',
+                                                            $is_email,
+                                                            $status_empresa,
+                                                            $idemp,'$ip','$host',$idusr,NOW() )";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 1:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $is_email = !isset($is_email)?0:1;
+                        $status_empresa = !isset($status_empresa)?0:1;
+
+                        $query = "UPDATE cat_empresas SET
+                                                        rfc = '".strtoupper($rfc)."',
+                                                        razon_social = '".strtoupper($razon_social)."',
+                                                        calle = '".strtoupper($calle)."',
+                                                        num_ext = '".strtoupper($num_ext)."',
+                                                        num_int = '".strtoupper($num_int)."',
+                                                        colonia = '".strtoupper($colonia)."',
+                                                        localidad = '".strtoupper($localidad)."',
+                                                        estado = '".strtoupper($estado)."',
+                                                        pais = '".strtoupper($pais)."',
+                                                        cp = '".strtoupper($cp)."',
+                                                        emails = '$emails',
+                                                        is_email = $is_email,
+                                                        status_empresa = $status_empresa,
+                                                        ip = '$ip',
+                                                        host = '$host',
+                                                        modi_por = $idusr,
+                                                        modi_el = NOW()
+                                WHERE idempresa = $idempresa";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cat_empresas WHERE idempresa = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                }
+                break;
+
 
             case 49: //49
                 switch ($tipo) {
@@ -781,7 +876,7 @@ class oCenturaPDO
                         $idemp = $this->getIdEmpFromAlias($u);
                         $IsConnect = $this->IsExistUserConnect($idusr, $idemp);
                         if (intval($IsConnect) <= 0) {
-                            $query = "insert into usuarios_conectados(
+                            $query = "INSERT INTO usuarios_conectados(
 															iduser,
 															username,
 															isconectado,
@@ -791,7 +886,7 @@ class oCenturaPDO
 															host,
 															creado_por,
 															creado_el)
-													values(
+													VALUES(
 															$idusr,
 															'$u',
 															1,
@@ -806,14 +901,14 @@ class oCenturaPDO
                         } else {
                             $IsConnect = $this->IsConnectUser($idusr, $idemp);
                             if (intval($IsConnect) <= 0) {
-                                $query = "update usuarios_conectados set
+                                $query = "UPDATE usuarios_conectados SET
 																isconectado = 1,
 																ultima_conexion = NOW(),
 																ip = '$ip',
 																host = '$host',
 																modi_por = $idusr,
 																modi_el = NOW()
-										Where iduser = $idusr and idemp = $idemp and isconectado = 0";
+										WHERE iduser = $idusr AND idemp = $idemp AND isconectado = 0";
 
                                 $vRet = $this->guardarDatos($query);
                             } else {
@@ -830,14 +925,14 @@ class oCenturaPDO
                         $idemp = $this->getIdEmpFromAlias($u);
                         $IsConnect = $this->IsConnectUser($idusr, $idemp);
                         if (intval($IsConnect) > 0) {
-                            $query = "update usuarios_conectados set
+                            $query = "UPDATE usuarios_conectados SET
 															isconectado = 0,
 															ultima_conexion = NOW(),
 															ip = '$ip',
 															host = '$host',
 															modi_por = $idusr,
 															modi_el = NOW()
-									Where iduser = $idusr and idemp = $idemp and isconectado = 1";
+									WHERE iduser = $idusr AND idemp = $idemp AND isconectado = 1";
 
                             $vRet = $this->guardarDatos($query);
                         } else {

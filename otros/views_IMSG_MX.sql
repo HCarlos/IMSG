@@ -88,10 +88,13 @@ select
 	per.lugar_trabajo,
 	per.idemp,
 	per.idusuario,
-	u.username
+	u.username,
+    nau.clave
 from cat_personas per
 Left Join usuarios u
-	On per.idusuario = u.iduser and per.idemp = u.idemp;
+	On per.idusuario = u.iduser and per.idemp = u.idemp
+    Left Join usuarios_niveldeacceso nau
+    	On u.idusernivelacceso = nau.idusernivelacceso and u.idemp = nau.idemp;
 
 
 

@@ -20,7 +20,7 @@ $de       = $_POST['user'];
 						<span class="ui-icon icon-plus-sign purple"></span>
 					</div>
 				</td>
-				<td title="" data-original-title="" class="ui-pg-button ui-state-disabled" style="width:4px;">
+				<td style="width:4px;">
 					<span class="ui-separator marginLeft1em"></span>
 				</td>
 				<td data-original-title="Reload Grid" id="refresh_grid-table" title="" class="ui-pg-button ui-corner-all">
@@ -28,6 +28,61 @@ $de       = $_POST['user'];
 						<span class="ui-icon icon-refresh green"></span>
 					</div>
 				</td>
+                <td style="width:5em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+        			<label>
+        				<input name="ranQry01" id="ranQry01" class="ace ranQry01" type="radio" value="0" checked >
+        				<span class="lbl"> A - B</span>
+        			</label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+        			<label>
+        				<input name="ranQry01" id="ranQry01" class="ace ranQry01" type="radio" value="1"  >
+        				<span class="lbl"> C - E</span>
+        			</label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry02" class="ace ranQry01" type="radio" value="2">
+                        <span class="lbl"> F - J </span>
+                    </label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="3">
+                        <span class="lbl"> K - O</span>
+                    </label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="4">
+                        <span class="lbl"> P - R</span>
+                    </label>
+                </td>
+                <td style="width:2em;">
+					<span class="ui-separator marginLeft1em"></span>
+				</td>
+                <td>
+                    <label>
+                        <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="5">
+                        <span class="lbl"> S - Z</span>
+                    </label>
+                </td>
+
 			</tr>
 		</tbody>
 	</table>
@@ -41,11 +96,9 @@ $de       = $_POST['user'];
 
 					<thead>
 						<tr role="row">
-							<th aria-label="idempresa: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
-							<th aria-label="RFC: activate to sort column ascending" style="width: 40px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">RFC</th>
-							<th aria-label="CP: activate to sort column ascending" style="width: 60px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">CP</th>
-							<th aria-label="razon_social: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Razón Social</th>
-							<th aria-label="is_email: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Rec Email</th>
+							<th aria-label="idpersona: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
+							<th aria-label="nombre_persona: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Persona</th>
+							<th aria-label="username: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Username</th>
 							<th aria-label="" style="width: 200px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
@@ -86,8 +139,8 @@ jQuery(function($) {
 	            			"sInfoEmpty": "No existen datos",
 	            			"sInfoFiltered": "(De _MAX_ registros)"
 	        			},
-	        "aaSorting": [[ 0, "desc" ]],
-			"aoColumns": [ null, null, null, null, null,  { "bSortable": false }],
+	        "aaSorting": [[ 1, "asc" ]],
+			"aoColumns": [ null, null, null,  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,
 			"bDestroy": false
@@ -99,30 +152,30 @@ jQuery(function($) {
 		var tB = "";
 
 		$("#preloaderPrincipal").show();
-		var nc = "u="+localStorage.nc;
-		$.post(obj.getValue(0) + "data/", {o:4, t:7, c:nc, p:54, from:0, cantidad:0,s:'rfc'},
+        var rngQry = $('input[name="ranQry01"]:checked').val();
+		var nc = "u="+localStorage.nc+"&clave=003";
+        // alert(nc);
+        // return false;
+		$.post(obj.getValue(0) + "data/", {o:3, t:9, c:nc, p:55, from:0, cantidad:0,s:''},
 			function(json){
 
 					$.each(json, function(i, item) {
-	           				var isok = parseInt(item.is_email,0) == 1 ? "<img src='/img/Ok-icon.png' width='16' height='16' alt='' />":""
 
 						tB +=' 			<tr class="odd">';
 						tB +='';
 						tB +='				<td class=" ">';
-						tB +='					<a class="modempresaPro" href="#" id="idrf2-'+item.idempresa+'">'+padl(item.idempresa,4)+'</a>';
+						tB +='					<a class="modPersonaPro" href="#" id="idprof-'+item.idpersona+'" >'+padl(item.idpersona,4)+'</a>';
 						tB +='				</td>';
-						tB +='				<td class="tbl50W" >'+item.rfc+'</td>';
-						tB +='				<td class="tbl50W" >'+item.cp+'</td>';
-						tB +='				<td class="tbl50W" >'+item.razon_social+'</td>';
-						tB +='				<td class="tbl50W center" >'+isok+'</td>';
-						tB +='				<td >';
+						tB +='				<td class=" " >'+item.nombre_persona+'</td>';
+						tB +='				<td class=" " >'+item.username+'</td>';
+						tB +='				<td class=" ">';
 						tB +='					<div class="hidden-phone visible-desktop action-buttons">';
 						tB +='';
-						tB +='						<a class="green modempresaPro" href="#" id="idempresa-'+item.idempresa+'" >';
+						tB +='						<a class="green modPersonaPro" href="#" id="idpersona-'+item.idpersona+'" >';
 						tB +='							<i class="icon-pencil bigger-130"></i>';
 						tB +='						</a>';
 						tB +='	';
-						tB +='						<a class="red delempresa" href="#"  id="delempresa-'+item.idempresa+'" >';
+						tB +='						<a class="red delPersona" href="#" id="delPersona-'+item.idpersona+'" >';
 						tB +='							<i class="icon-trash bigger-130"></i>';
 						tB +='						</a>';
 						tB +='					</div>';
@@ -135,14 +188,14 @@ jQuery(function($) {
 
 					$("#preloaderPrincipal").hide();
 
-					$(".modempresaPro").on("click",function(event){
+					$(".modPersonaPro").on("click",function(event){
 						event.preventDefault();
 						var arr = event.currentTarget.id.split('-');
 						obj.setIsTimeLine(false);
-						getPropempresa(arr[1]);
+						getPropPersona(arr[1]);
 					});
 
-					$(".delempresa").on("click",function(event){
+					$(".delPersona").on("click",function(event){
 						event.preventDefault();
 						$("#iconSaveCommentResp").show();
 						var resp =  confirm("Desea eliminar este registro?");
@@ -152,7 +205,7 @@ jQuery(function($) {
 							var arr = event.currentTarget.id.split('-');
 							//alert(arr[1]);
 							obj.setIsTimeLine(false);
-				            $.post(obj.getValue(0) + "data/", {o:4, t:2, c:arr[1], p:2, from:0, cantidad:0, s:''},
+				            $.post(obj.getValue(0) + "data/", {o:3, t:2, c:arr[1], p:52, from:0, cantidad:0, s:''},
 				            function(json) {
 				            		if (json[0].msg=="OK"){
 										onClickFillTable();
@@ -201,31 +254,32 @@ jQuery(function($) {
 		event.preventDefault();
 
 		obj.setIsTimeLine(false);
-		getPropempresa(0);
+		getPropPersona(0);
 
 	})
 
-	function getPropempresa(Idempresa){
-        $("#contentProfile").empty();
+	function getPropPersona(IdPersona){
+        $("#contentProfile").html("");
         $("#contentMain").hide(function(){
 	        $("#preloaderPrincipal").show();
 	        obj.setIsTimeLine(false);
 	        var nc = localStorage.nc;
-	        $.post(obj.getValue(0) + "cat-empresa-prop/", {
+	        $.post(obj.getValue(0) + "cat-personas-prop/", {
 				user: nc,
-				idempresa: Idempresa
+				idpersona: IdPersona
 	            },
 	            function(html) {
 	                $("#contentProfile").html(html).show('slow',function(){
 	                	//$("#contentProfile");
-		                $('#breadcrumb').html(getBar('Inicio, Registros Fiscales '));
+		                $('#breadcrumb').html(getBar('Inicio, Propiedades de un nuevo Persona '));
 	                });
 	            }, "html");
         });
         return false;
-
-
 	}
 
 });
+
+
+
 </script>

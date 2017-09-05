@@ -373,13 +373,6 @@ class oCentura
 										FROM _viFamPer where idfamilia = $idfamilia and idemp = $idemp and status_famper = 1
 										Order By parentezco asc ";
                                 break;
-                            case 11:
-                                parse_str($arg);
-                                $idemp = $this->getIdEmpFromAlias($u);
-                                $query = "SELECT concat(razon_social,' - ',rfc) as label, idregfis as data
-										FROM _viRegFis where idemp = $idemp and status_regfis = 1
-										Order By razon_social asc ";
-                                break;
                             case 12:
                                 parse_str($arg);
                                 $idemp = $this->getIdEmpFromAlias($u);
@@ -2367,7 +2360,7 @@ class oCentura
                                 $idemp = $this->getIdEmpFromAlias($user);
                                 $is_email = !isset($is_email)?0:1;
                                 $is_extranjero = !isset($is_extranjero)?0:1;
-                                $status_regfis = !isset($status_regfis)?0:1;
+                                $status_empresa = !isset($status_empresa)?0:1;
                                 $idfammig = intval($idfammig);
                                 $query = "Insert Into cat_registros_fiscales(
 																	rfc,
@@ -2387,7 +2380,7 @@ class oCentura
 																	is_email,
 																	is_extranjero,
 																	referencia,
-																	status_regfis,
+																	status_empresa,
 																	idemp,ip,host,creado_por,creado_el)
 											value(
 																	'".strtoupper($rfc)."',
@@ -2407,7 +2400,7 @@ class oCentura
 																	$is_email,
 																	$is_extranjero,
 																	'$referencia',
-																	$status_regfis,
+																	$status_empresa,
 																	$idemp,'$ip','$host',$idusr,NOW())";
 
                                 $result = mysql_query($query);
@@ -2420,7 +2413,7 @@ class oCentura
 
                                 $is_email = !isset($is_email)?0:1;
                                 $is_extranjero = !isset($is_extranjero)?0:1;
-                                $status_regfis = !isset($status_regfis)?0:1;
+                                $status_empresa = !isset($status_empresa)?0:1;
                                 $idfammig = intval($idfammig);
 
                                 $query = "update cat_registros_fiscales set
@@ -2441,7 +2434,7 @@ class oCentura
 																is_email = $is_email,
 																is_extranjero = $is_extranjero,
 																referencia = '$referencia',
-															  	status_regfis = $status_regfis,
+															  	status_empresa = $status_empresa,
 																ip = '$ip',
 																host = '$host',
 																modi_por = $idusr,

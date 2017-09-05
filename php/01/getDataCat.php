@@ -48,6 +48,7 @@ switch ($index) {
     case 1: // Estados
     case 2: // Muncipios
     case 3: // Cat Personas
+    case 4: // Cat Empresas
     case 49: // Usuarios Conectados
 
         switch ($proc) {
@@ -169,7 +170,7 @@ switch ($index) {
                     }
                     $ret[0] = array("msg" => $rmsg);
                 } else {
-                    $ret[0] =  array("msg" => "OK");
+                    $ret[0] =  array("msg" => $res);
                 }
 
                 //$ret[0] = array("msg" => $res);
@@ -183,29 +184,9 @@ switch ($index) {
             case 54:
                 $ret = $fp->getQueryPDO($var2, $cad, 0, $from, $cantidad);
                 if (count($ret) <= 0) {
-                    // $ret[0]->razon_social = "No se encontraron datos";
-                        // $ret[0]->idcli  = -1;
-                        // $ret[0]->tel1   = "";
-                        // $ret[0]->cel1   = "";
-                        // $ret[0]->email  = "";
+                    $ret[0] =  array("msg" => 0);
                 } else {
-                    $xx = 0;
-                    if (intval($var2)==22) {
-                        $x = $fp->getQueryPDO($var2, $cad, 0, $from, $cantidad, array(), $otros, 0);
-                        $xx = count($x);
-                    }
-                    foreach ($ret as $i=>$value) {
-                        $ret[$i]->registros = $xx;
-                    }
-
-                    if ($index == 49) {
-                        require_once("oFunctions.php");
-                        $Q = oFunctions::getInstance();
-
-                        foreach ($ret as $i=>$value) {
-                            $ret[$i]->fAgo = $Q->time_stamp($ret[$i]->ultima_conexion);
-                        }
-                    }
+                    $ret[0]->msg = count($ret);
                 }
                 break;
 

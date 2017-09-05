@@ -9,7 +9,7 @@ require_once("../oCentura.php");
 $f = oCentura::getInstance();
 
 $user = $_POST['user'];
-$idregfis  = $_POST['idregfis'];
+$idempresa  = $_POST['idempresa'];
 
 ?>
 
@@ -28,18 +28,13 @@ $idregfis  = $_POST['idregfis'];
                     <tr>
                         <td><label for="rfc" class="textRight">RFC</label></td>
                         <td>
-                            <!-- <span class="add-on"><i class="icon-asterisk red"></i></span> -->
-<!--                             <input class="altoMoz" name="rfc" id="rfc" type="text" pattern="^[A-Za-zñ&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9]([A-Za-z0-9]{3})?" required>
- -->
+                            <span class="add-on"><i class="icon-asterisk red"></i></span>
                             <input class="altoMoz" name="rfc" id="rfc" type="text" autofocus>
 
                       </td>
 
-                        <td><label for="curp" class="marginLeft2em textRight">CURP</label></td>
-                        <td>
-                            <!-- <span class="add-on"><i class="icon-asterisk red"></i></span> -->
-                            <input class="altoMoz" name="curp" id="curp" type="text" pattern="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$">
-                        </td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -102,15 +97,10 @@ $idregfis  = $_POST['idregfis'];
                     </tr>
 
                     <tr>
-                        <td><label for="email1" class="textRight">EMail 1</label></td>
-                        <td>
-                            <!-- <span class="add-on"><i class="icon-asterisk red"></i></span> -->
-                            <input class="altoMoz" name="email1" id="email1" type="text" >
-                        </td>
-                        <td><label for="email2" class="marginLeft2em textRight">Email 2</label></td>
-                        <td>
-                            <!-- <span class="add-on"><i class="icon-asterisk red"></i></span> -->
-                            <input class="altoMoz" name="email2" id="email2" type="text" >
+                        <td><label for="emails" class="textRight">EMails</label></td>
+                        <td colspan="3">
+                            <span class="add-on"><i class="icon-asterisk red"></i></span>
+                            <input class="altoMoz" name="emails" id="emails" type="text" >
                         </td>
                         <td></td>
                         <td></td>
@@ -118,38 +108,21 @@ $idregfis  = $_POST['idregfis'];
 
                     <tr>
                         <td><label for="is_email" class="textRight">Rec Mail</label></td>
-                        <td>
+                        <td colspan="3">
                             <input name="is_email" id="is_email" class="ace ace-switch ace-switch-6" type="checkbox">
                             <span class="lbl"></span>
                         </td>
-                        <td><label for="is_extranjero" class="marginLeft2em textRight">Es Extranjero</label></td>
+                        <td><label for="status_empresa" class="marginLeft2em textRight">Estatus</label></td>
                         <td>
-                            <input name="is_extranjero" id="is_extranjero" class="ace ace-switch ace-switch-6" type="checkbox">
-                            <span class="lbl"></span>
-                        </td>
-                        <td><label for="status_regfis" class="marginLeft2em textRight">Estatus</label></td>
-                        <td>
-                            <input name="status_regfis" id="status_regfis" class="ace ace-switch ace-switch-6" type="checkbox" checked>
+                            <input name="status_empresa" id="status_empresa" class="ace ace-switch ace-switch-6" type="checkbox" checked>
                             <span class="lbl"></span>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td><label for="referencia" class="marginTop1em textRight">Referencia</label></td>
-                        <td colspan="3">
-                            <input class="altoMoz marginTop1em wd100prc" name="referencia" id="referencia" type="text">
-                        </td>
-                        <td><label for="idfammig" class="marginLeft2em textRight">IdFamMig</label></td>
-                        <td>
-                            <input class="altoMoz" name="idfammig" id="idfammig" type="text" >
-                        </td>
-                    </tr>
-
 
                 </table>
 
 
-    <input type="hidden" name="idregfis" id="idregfis" value="<?php echo $idregfis; ?>">
+    <input type="hidden" name="idempresa" id="idempresa" value="<?php echo $idempresa; ?>">
     <input type="hidden" name="user" id="user" value="<?php echo $user; ?>">
     <div class="form-group w96" style='margin-right: 3em; margin-top: 1em;'>
     	<button type="submit" class="btn btn-primary pull-right" style='margin-right: 4em;'><i class="icon-save"></i>Guardar</button>
@@ -170,7 +143,7 @@ jQuery(function($) {
 
     $("#rfc").focus();
 
-	var idregfis = <?php echo $idregfis ?>;
+	var idempresa = <?php echo $idempresa ?>;
 
     $("#frmData").unbind("submit");
 	$("#frmData").on("submit",function(event){
@@ -180,8 +153,12 @@ jQuery(function($) {
 
 		    var queryString = $(this).serialize();
 
-			var IdRegFis = (idregfis==0?0:1)
-            $.post(obj.getValue(0) + "data/", {o:14, t:IdRegFis, c:queryString, p:2, from:0, cantidad:0, s:''},
+			var IdEmpresa = (idempresa==0?0:1)
+
+            // alert(IdEmpresa);
+            // alert(queryString);
+
+            $.post(obj.getValue(0) + "data/", {o:4, t:IdEmpresa, c:queryString, p:52, from:0, cantidad:0, s:''},
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
@@ -200,15 +177,15 @@ jQuery(function($) {
 		}
 	});
 
-	function getRegFis(IdRegFis){
+	function getRegFis(idempresa){
 		$("#preloaderPrincipal").show();
-		$.post(obj.getValue(0) + "data/", {o:14, t:28, c:IdRegFis, p:10, from:0, cantidad:0,s:''},
+        var nc = "u="+localStorage.nc+"&idempresa="+idempresa;
+		$.post(obj.getValue(0) + "data/", {o:4, t:8, c:nc, p:54, from:0, cantidad:0,s:''},
 			function(json){
 				if (json.length>0){
 
-					idregfis = json[0].idregfis;
+					idempresa = json[0].idempresa;
 					$("#rfc").val(json[0].rfc);
-					$("#curp").val(json[0].curp);
 					$("#razon_social").val(json[0].razon_social);
 					$("#calle").val(json[0].calle);
 					$("#num_ext").val(json[0].num_ext);
@@ -218,16 +195,12 @@ jQuery(function($) {
 					$("#estado").val(json[0].estado);
 					$("#pais").val(json[0].pais);
                     $("#cp").val(json[0].cp);
-					$("#email1").val(json[0].email1);
-					$("#email2").val(json[0].email2);
-					$("#referencia").val(json[0].referencia);
-                    $("#idfammig").val(json[0].idfammig);
+					$("#emails").val(json[0].emails);
 
                     $("#is_email").prop("checked",json[0].is_email==1?true:false);
-                    $("#is_extranjero").prop("checked",json[0].is_extranjero==1?true:false);
-                    $("#status_regfis").prop("checked",json[0].status_regfis==1?true:false);
+                    $("#status_empresa").prop("checked",json[0].status_empresa==1?true:false);
 
-                    $("#title").html("Reg: " + json[0].idregfis);
+                    $("#title").html("Reg: " + json[0].idempresa);
 
 					$("#preloaderPrincipal").hide();
 
@@ -267,7 +240,7 @@ jQuery(function($) {
 	// getAplanados();
 	// getPlafones();
 
-	// //getMemberFam(idregfis);
+	// //getMemberFam(idempresa);
 
 	// getUsoSuelo();
 	// getNiveles();
@@ -277,12 +250,12 @@ jQuery(function($) {
 	// getEntrepisos();
 
 
-	if (idregfis<=0){ // Nuevo Registro
+	if (idempresa<=0){ // Nuevo Registro
 		$("#title").html("Nuevo registro");
         $("#rfc").focus();
 	}else{ // Editar Registro
-		$("#title").html("Editando la RegFis: "+idregfis);
-		getRegFis(idregfis);
+		$("#title").html("Editando la RegFis: "+idempresa);
+		getRegFis(idempresa);
 	}
 
 });

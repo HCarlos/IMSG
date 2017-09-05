@@ -1,17 +1,30 @@
-                    <li class="open " id="subMenuCatalogos"> 
+                    <li class="open " id="subMenuCatalogos">
                         <a href="#" class="dropdown-toggle">
                                 <i class="icon-book"></i>
                                 <span class="menu-text">Catálogos</span>
                                 <b class="arrow icon-angle-down"></b>
                         </a>
 
-                        <ul class="submenu">                            
-                            
+                        <ul class="submenu">
 
                             <li>
                                 <a href="#" id="cat_personas_list">
                                     <i class="icon-edit"></i>
                                     <span class="menu-text">Personas</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_empresas_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Empresas</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_tecnicos_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Técnicos</span>
                                 </a>
                             </li>
 
@@ -52,6 +65,40 @@ jQuery(function($) {
             return false;
         });
     }
+
+    if ($("#cat_empresas_list").length) {
+        $("#cat_empresas_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-empresas-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Empresas'));
+                }, "html");
+            return false;
+        });
+    }
+
+
+if ($("#cat_tecnicos_list").length) {
+    $("#cat_tecnicos_list").on("click", function(event) {
+        event.preventDefault();
+        cfgBase0();
+        var nc = localStorage.nc;
+        $.post(obj.getValue(0) + "cat-tecnicos-list/", {
+                user: nc
+            },
+            function(html) {
+                $("#contentMain").html(html);
+                $('#breadcrumb').html(getBar('Inicio,Catálogo de Técnicos'));
+            }, "html");
+        return false;
+    });
+}
+
 
     if ($("#cat_estados_list").length) {
         $("#cat_estados_list").on("click", function(event) {

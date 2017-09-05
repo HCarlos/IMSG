@@ -127,9 +127,9 @@ $idregfis  = $_POST['idregfis'];
                             <input name="is_extranjero" id="is_extranjero" class="ace ace-switch ace-switch-6" type="checkbox">
                             <span class="lbl"></span>
                         </td>
-                        <td><label for="status_regfis" class="marginLeft2em textRight">Estatus</label></td>
+                        <td><label for="status_empresa" class="marginLeft2em textRight">Estatus</label></td>
                         <td>
-                            <input name="status_regfis" id="status_regfis" class="ace ace-switch ace-switch-6" type="checkbox" checked>
+                            <input name="status_empresa" id="status_empresa" class="ace ace-switch ace-switch-6" type="checkbox" checked>
                             <span class="lbl"></span>
                         </td>
                     </tr>
@@ -225,7 +225,7 @@ jQuery(function($) {
 
                     $("#is_email").prop("checked",json[0].is_email==1?true:false);
                     $("#is_extranjero").prop("checked",json[0].is_extranjero==1?true:false);
-                    $("#status_regfis").prop("checked",json[0].status_regfis==1?true:false);
+                    $("#status_empresa").prop("checked",json[0].status_empresa==1?true:false);
 
                     $("#title").html("Reg: " + json[0].idregfis);
 

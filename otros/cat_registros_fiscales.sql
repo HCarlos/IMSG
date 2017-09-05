@@ -46,7 +46,7 @@ CREATE TABLE `cat_registros_fiscales` (
   `referencia` varchar(100) NOT NULL,
   `idfammig` int(10) NOT NULL DEFAULT '0',
   `valid_for_admin` int(2) NOT NULL DEFAULT '1' COMMENT '0=No, 1=Si',
-  `status_regfis` int(2) NOT NULL DEFAULT '1' COMMENT '0=Inactivo, 1=Activo',
+  `status_empresa` int(2) NOT NULL DEFAULT '1' COMMENT '0=Inactivo, 1=Activo',
   `idemp` int(5) NOT NULL DEFAULT '0',
   `ip` varchar(50) NOT NULL,
   `host` varchar(100) NOT NULL,
@@ -70,9 +70,9 @@ ALTER TABLE `cat_registros_fiscales`
   ADD KEY `curp` (`curp`),
   ADD KEY `is_email` (`is_email`),
   ADD KEY `is_extrajero` (`is_extranjero`),
-  ADD KEY `status_regfis` (`status_regfis`),
+  ADD KEY `status_empresa` (`status_empresa`),
   ADD KEY `idemp` (`idemp`),
-  ADD KEY `statusemp` (`idemp`,`status_regfis`),
+  ADD KEY `statusemp` (`idemp`,`status_empresa`),
   ADD KEY `curpemp` (`curp`,`idemp`);
 
 --

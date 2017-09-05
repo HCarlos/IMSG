@@ -292,9 +292,6 @@ $idpersona  = $_POST['idpersona'];
 
 jQuery(function($) {
 
-	var stream = io.connect(obj.getValue(4));
-
-
 	$("#preloaderPrincipal").hide();
 
 	$("#username").focus();
@@ -371,7 +368,6 @@ jQuery(function($) {
             		// alert(json.length);
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");
-						stream.emit("cliente", {mensaje: "IMSG-PERSONAS-PROP-"+idpersona});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
 							$("#contentProfile").empty();
@@ -411,7 +407,6 @@ jQuery(function($) {
 	        function(json) {
 	        		// alert(json.lenght);
 	        		if (json[0].msg=="OK"){
-						stream.emit("cliente", {mensaje: "IMSG-PERSONAS-PROP-"+idpersona});
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
 							$("#contentProfile").empty();
