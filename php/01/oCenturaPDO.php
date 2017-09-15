@@ -15,6 +15,8 @@ date_default_timezone_set('America/Mexico_City');
 require_once('vo/voConnPDO.php');
 require_once('vo/voEmpty.php');
 
+define('CLAVE_TECNICO', 3);
+
 class oCenturaPDO
 {
     private static $instancia;
@@ -29,6 +31,7 @@ class oCenturaPDO
     public $Mail;
     public $Foto;
     public $iva;
+
 
     // Constructor
     private function __construct()
@@ -149,7 +152,7 @@ class oCenturaPDO
         return $ret;
     }
 
-    private function guardarDatos($query="")
+    public function guardarDatos($query="")
     {
         $Conn = new voConnPDO();
         $result = $Conn->exec($query);
@@ -165,7 +168,7 @@ class oCenturaPDO
         return $ret;
     }
 
-    private function getArray($query)
+    public function getArray($query)
     {
         $rs=0;
         $Conn = new voConnPDO();
@@ -174,7 +177,7 @@ class oCenturaPDO
         return $rst;
     }
 
-    private function execQuery($query)
+    public function execQuery($query)
     {
         $vRet = "OK";
         $Conn = new voConnPDO();
@@ -218,6 +221,54 @@ class oCenturaPDO
                         $pass = md5($passwordL);
                         $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario) as data
 								FROM  _viUsuarios WHERE username = '$username' AND password = '$pass' AND status_usuario = 1";
+                        break;
+
+                    case 100:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT razon_social as label, idempresa as data
+								FROM  _viEmpresas
+                                WHERE idemp = $idemp AND status_empresa = 1
+                                ORDER By razon_social ASC";
+                        break;
+
+                    case 101:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT nombre_persona as label, idpersona as data
+								FROM  _viPersonas
+                                WHERE idemp = $idemp AND status_persona = 1
+                                ORDER BY nombre_persona ASC";
+                        break;
+
+                    case 102:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT reptte_legal as label, idempresarepresentantelegal as data
+								FROM  _viEmpresaRepteLegal
+                                WHERE idemp = $idemp AND status_empresa_reptte_legal = 1
+                                ORDER BY reptte_legal ASC";
+                        break;
+
+                    case 103:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $clave = CLAVE_TECNICO;
+                        $query = "SELECT nombre_persona as label, idpersona as data
+								FROM  _viPersonas
+                                WHERE idemp = $idemp AND
+                                        clave = $clave AND
+                                        status_persona = 1
+                                ORDER BY nombre_persona ASC";
+                        break;
+
+                    case 104:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT tecnico as label, idempresatecnico as data
+								FROM  _viEmpresaTecnico
+                                WHERE idemp = $idemp AND status_empresa_tecnico = 1
+                                ORDER BY tecnico ASC";
                         break;
 
                     case 2:
@@ -360,6 +411,20 @@ class oCenturaPDO
 							WHERE idemp = $idemp AND clave = '$clave' ORDER BY nombre_persona ASC ";
                 break;
 
+            case 10:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT *
+								FROM cat_marcas
+							WHERE idemp = $idemp order by idmarca desc";
+                break;
+            case 11:
+                $query = "SELECT  *
+								FROM cat_marcas
+							WHERE idmarca = $cad ";
+                break;
+
+
 
             case 4000:
                 parse_str($cad);
@@ -379,7 +444,7 @@ class oCenturaPDO
     }
 
     // Asocia elementos de una tabla A con una tabla B
-    public function SETAsocia($tipo=0, $arg="", $pag=0, $limite=0, $var2=0, $otros="")
+    public function setAsocia($tipo=0, $arg="", $pag=0, $limite=0, $var2=0, $otros="")
     {
         $query="";
         $vRet = "Error";
@@ -388,6 +453,70 @@ class oCenturaPDO
         $host=gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
         switch ($tipo) {
+                case 30:
+                    switch ($var2) {
+                        case 10:
+                            // parse_str($arg);
+                            parse_str($otros);
+                            $iduser = $this->getIdUserFromAlias($u);
+                            $idemp = $this->getIdEmpFromAlias($u);
+
+                            $ar = explode(".", $arg);
+                            $ar0 = explode("|", $ar[0]);
+                            $ar[1];
+                            foreach ($ar0 as $i=>$valor) {
+                                if ((int)($ar0[$i])>0) {
+                                    $query = "INSERT INTO empresas_reptte_legal(idrepresentantelegal,idempresa,idemp,ip,host,creado_por,creado_el)
+                                                                        VALUES($ar0[$i],$ar[1],$idemp,'$ip','$host',$iduser,NOW())";
+                                    $vRet = $this->guardarDatos($query);
+                                }
+                            }
+                            break;
+                        case 20:
+                            // parse_str($arg);
+                            $ar = explode("|", $arg);
+                            foreach ($ar as $i=>$valor) {
+                                if ((int)($ar[$i])>0) {
+                                    $query = "DELETE FROM empresas_reptte_legal WHERE idempresarepresentantelegal = ".$ar[$i];
+                                    $vRet = $this->guardarDatos($query);
+                                }
+                            }
+                            break;
+                    } // 30
+                    break;
+
+                case 31:
+                    switch ($var2) {
+                        case 10:
+                            // parse_str($arg);
+                            parse_str($otros);
+                            $iduser = $this->getIdUserFromAlias($u);
+                            $idemp = $this->getIdEmpFromAlias($u);
+
+                            $ar = explode(".", $arg);
+                            $ar0 = explode("|", $ar[0]);
+                            $ar[1];
+                            foreach ($ar0 as $i=>$valor) {
+                                if ((int)($ar0[$i])>0) {
+                                    $query = "INSERT INTO empresas_tecnicos(idtecnico,idempresa,idemp,ip,host,creado_por,creado_el)
+                                                                        VALUES($ar0[$i],$ar[1],$idemp,'$ip','$host',$iduser,NOW())";
+                                    $vRet = $this->guardarDatos($query);
+                                }
+                            }
+                            break;
+                        case 20:
+                            // parse_str($arg);
+                            $ar = explode("|", $arg);
+                            foreach ($ar as $i=>$valor) {
+                                if ((int)($ar[$i])>0) {
+                                    $query = "DELETE FROM empresas_tecnicos WHERE idempresatecnico = ".$ar[$i];
+                                    $vRet = $this->guardarDatos($query);
+                                }
+                            }
+                            break;
+                    } // 30
+                    break;
+
                 case 51:
                     switch ($var2) {
                         case 10:
@@ -525,7 +654,6 @@ class oCenturaPDO
 
                         parse_str($arg);
                         $query = "UPDATE usuarios SET valid = 1 WHERE username='$username'";
-
                         $vRet = $this->guardarDatos($query);
 
                         break;
@@ -638,6 +766,7 @@ class oCenturaPDO
                         break;
                 }
                 break;
+
             case 2:
                 switch ($tipo) {
                     case 0:
@@ -793,6 +922,7 @@ class oCenturaPDO
                         break;
                 } // 3
                 break;
+
             case 4:
                 switch ($tipo) {
                     case 0:
@@ -867,6 +997,41 @@ class oCenturaPDO
                 }
                 break;
 
+            case 5: // 5
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $marca  = strtoupper($marca);
+                        $query = "INSERT INTO cat_marcas(marca,status_marca,idemp,ip,host,creado_por,creado_el)
+									VALUES( '$marca',$status_marca,$idemp,'$ip','$host',$idusr,NOW())";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 1:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $marca  = strtoupper($marca);
+                        $query = "UPDATE cat_marcas SET marca = '$marca',
+													  	status_marca = $status_marca,
+														ip = '$ip',
+														host = '$host',
+														modi_por = $idusr,
+														modi_el = NOW()
+								WHERE $idmarca = $idmarca";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cat_marcas WHERE idmarca = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                }
+                break; // 5
 
             case 49: //49
                 switch ($tipo) {

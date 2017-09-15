@@ -49,6 +49,10 @@ switch ($index) {
     case 2: // Muncipios
     case 3: // Cat Personas
     case 4: // Cat Empresas
+    case 5: // Cat Marcas
+    case 6: // Cat Colores
+    case 30: // Asocia Reptte Legal a Empresa
+    case 31: // Asocia Tecnicos a Empresa
     case 49: // Usuarios Conectados
 
         switch ($proc) {
@@ -178,13 +182,14 @@ switch ($index) {
                 break;
 
             case 53:
-                $ret[0]->msg = $fp->setAsocia($index, $cad, 0, 0, $var2, $otros);
+
+                $ret[0] = array("msg" => $fp->setAsocia($index, $cad, 0, 0, $var2, $otros) );
                 break;
 
             case 54:
                 $ret = $fp->getQueryPDO($var2, $cad, 0, $from, $cantidad);
                 if (count($ret) <= 0) {
-                    $ret[0] =  array("msg" => 0);
+                    // $ret[0] =  array("msg" => 0);
                 } else {
                     $ret[0]->msg = count($ret);
                 }

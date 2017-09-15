@@ -404,3 +404,35 @@ Left Join cat_niveles cn
 	On btns.idnivel = cn.idnivel and btns.idemp = cn.idemp
 Left Join cat_ciclos cc
 	On btns.idciclo = cc.idciclo and btns.idemp = cc.idemp
+
+
+CREATE OR REPLACE VIEW _viEmpresaRepteLegal AS
+SELECT
+    rem.idempresarepresentantelegal,
+    rem.idrepresentantelegal,
+    per.nombre_persona as reptte_legal,
+    rem.idempresa,
+    emp.razon_social as empresa,
+    rem.status_empresa_reptte_legal,
+    rem.idemp
+FROM empresas_reptte_legal rem
+LEFT JOIN _viPersonas per
+    ON rem.idrepresentantelegal = per.idpersona AND rem.idemp = per.idemp
+LEFT JOIN _viEmpresas emp
+    ON rem.idempresa = emp.idempresa AND rem.idemp = emp.idemp
+
+
+CREATE OR REPLACE VIEW _viEmpresaTecnico AS
+SELECT
+    ete.idempresatecnico,
+    ete.idempresa,
+    emp.razon_social as empresa,
+    ete.idtecnico,
+    per.nombre_persona as tecnico,
+    ete.status_empresa_tecnico,
+    ete.idemp
+FROM empresas_tecnicos ete
+LEFT JOIN _viPersonas per
+    ON ete.idtecnico = per.idpersona AND ete.idemp = per.idemp
+LEFT JOIN _viEmpresas emp
+    ON ete.idempresa = emp.idempresa AND ete.idemp = emp.idemp

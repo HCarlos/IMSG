@@ -1,4 +1,4 @@
-                    <li id="subMenuConfig"> 
+                    <li id="subMenuConfig">
                         <a href="#" class="dropdown-toggle">
                                 <i class="icon-cogs"></i>
                                 <span class="menu-text"> Configuraciones </span>
@@ -6,12 +6,26 @@
                                 <b class="arrow icon-angle-down"></b>
                         </a>
 
-                        <ul class="submenu">                            
-                            
+                        <ul class="submenu">
+
                             <li>
-                                <a href="#" id="cat_usuarios_list"><!-- newTask -->
+                                <a href="#" id="cat_usuarios_list">
                                     <i class="icon-edit"></i>
                                     <span class="menu-text"> Usuarios</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="asoc_reptte_legal_to_empresa">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text"> Repte Legal a Empresa</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="asoc_tecnico_to_empresa">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text"> Técnico a Empresa</span>
                                 </a>
                             </li>
 
@@ -38,7 +52,40 @@ jQuery(function($) {
         });
     }
 
+    if ($("#asoc_reptte_legal_to_empresa").length) {
+        $("#asoc_reptte_legal_to_empresa").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "asoc-reptte-legal-to-empresa/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Asocia un Representante Legal a una Empresa'));
+                }, "html");
+            return false;
+        });
+    }
+
+if ($("#asoc_tecnico_to_empresa").length) {
+    $("#asoc_tecnico_to_empresa").on("click", function(event) {
+        event.preventDefault();
+        cfgBase0();
+        var nc = localStorage.nc;
+        $.post(obj.getValue(0) + "asoc-tecnico-to-empresa/", {
+                user: nc
+            },
+            function(html) {
+                $("#contentMain").html(html);
+                $('#breadcrumb').html(getBar('Inicio,Asocia un Técnico a una Empresa'));
+            }, "html");
+        return false;
+    });
+}
+
+
     $("#preloaderPrincipal").hide();
 
-});    
+});
 </script>

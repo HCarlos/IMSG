@@ -29,9 +29,16 @@
                             </li>
 
                             <li>
-                                <a href="#" id="cat_estados_list">
+                                <a href="#" id="cat_marcas_list">
                                     <i class="icon-edit"></i>
-                                    <span class="menu-text">Estados</span>
+                                    <span class="menu-text">Marcas</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_colores_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Colores</span>
                                 </a>
                             </li>
 
@@ -83,22 +90,53 @@ jQuery(function($) {
     }
 
 
-if ($("#cat_tecnicos_list").length) {
-    $("#cat_tecnicos_list").on("click", function(event) {
-        event.preventDefault();
-        cfgBase0();
-        var nc = localStorage.nc;
-        $.post(obj.getValue(0) + "cat-tecnicos-list/", {
-                user: nc
-            },
-            function(html) {
-                $("#contentMain").html(html);
-                $('#breadcrumb').html(getBar('Inicio,Catálogo de Técnicos'));
-            }, "html");
-        return false;
-    });
-}
+    if ($("#cat_tecnicos_list").length) {
+        $("#cat_tecnicos_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-tecnicos-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Técnicos'));
+                }, "html");
+            return false;
+        });
+    }
 
+    if ($("#cat_marcas_list").length) {
+        $("#cat_marcas_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-marcas-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Marcas'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#cat_colores_list").length) {
+        $("#cat_colores_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-colores-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Colores'));
+                }, "html");
+            return false;
+        });
+    }
 
     if ($("#cat_estados_list").length) {
         $("#cat_estados_list").on("click", function(event) {
