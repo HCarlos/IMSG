@@ -1,0 +1,99 @@
+
+<li>
+    <a href="#" id="operaciones_list">
+        <i class="icon-edit"></i>
+        <span class="menu-text">Órdenes de Servicio</span>
+    </a>
+</li>
+
+<li>
+    <a href="#" id="operaciones_list_vence">
+        <i class="icon-edit"></i>
+        <span class="menu-text">Status de Órdenes</span>
+    </a>
+</li>
+
+<li>
+    <a href="#" id="operaciones_grid_marcas">
+        <i class="icon-dashboard"></i>
+        <span class="menu-text">Análisis por Marcas</span>
+    </a>
+</li>
+
+<script type="text/javascript">
+jQuery(function($) {
+
+    $("#preloaderPrincipal").show();
+
+    if ($("#operaciones_list").length) {
+        $("#operaciones_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "ordenes-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Órdenes de Servicio'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#operaciones_list_vence").length) {
+        $("#operaciones_list_vence").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "ordenes-list-vence/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Top 50 Status sin cambio'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#operaciones_grid_marcas").length) {
+        $("#operaciones_grid_marcas").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "ordenes-grid-marcas/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Análisis por Marcas'));
+                }, "html");
+            return false;
+        });
+    }
+
+
+
+    function cfgBase0(){
+        resizeScreen();
+        $("#contentLevel5").empty();
+        $("#contentLevel5").hide();
+        $("#contentLevel4").empty();
+        $("#contentLevel4").hide();
+        $("#contentLevel3").empty();
+        $("#contentLevel3").hide();
+        $("#contentProfile").empty();
+        $("#contentProfile").hide();
+        $("#contentMain").show();
+        $("#contentMain").empty();
+        $("#preloaderPrincipal").show();
+        obj.setIsTimeLine(false);
+    }
+
+
+    $("#preloaderPrincipal").hide();
+
+})
+
+</script>

@@ -43,7 +43,8 @@ $de       = $_POST['user'];
 						<tr role="row">
 							<th aria-label="idcolor: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
 							<th aria-label="codigo_color_hex: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >COLOR</th>
-							<th aria-label="color: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">CÓDIGO</th>
+							<th aria-label="descripcion: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">DESCRIPCION</th>
+							<th aria-label="visualizar: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">VISUALIZAR</th>
 							<th aria-label="" style="width: 200px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
@@ -85,7 +86,7 @@ jQuery(function($) {
 	            			"sInfoFiltered": "(De _MAX_ registros)"
 	        			},
 	        "aaSorting": [[ 0, "desc" ]],
-			"aoColumns": [ null, null, null,  { "bSortable": false }],
+			"aoColumns": [ null, null, null, null,  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,
 			"bDestroy": false
@@ -98,19 +99,20 @@ jQuery(function($) {
 
 		$("#preloaderPrincipal").show();
 		var nc = "u="+localStorage.nc;
-		$.post(obj.getValue(0) + "data/", {o:30, t:76, c:nc, p:10, from:0, cantidad:0,s:''},
+		$.post(obj.getValue(0) + "data/", {o:6, t:76, c:nc, p:51, from:0, cantidad:0,s:''},
 			function(json){
 
 					$.each(json, function(i, item) {
 
 						tB +=' 			<tr class="odd">';
 						tB +='';
-						tB +='				<td class=" ">';
+						tB +='				<td>';
 						tB +='					<a href="#" >'+padl(item.idcolor,4)+'</a>';
 						tB +='				</td>';
-						tB +='				<td class=" " >'+item.color+'</td>';
-						tB +='				<td class=" " ><span class="btn-colorpicker" style="background-color:'+item.codigo_color_hex+'"></span>  '+item.codigo_color_hex+'</td>';
-						tB +='				<td class=" ">';
+						tB +='				<td><span class="btn-colorpicker" style="background-color:'+item.codigo_color_hex+'"></span>  '+item.codigo_color_hex+'</td>';
+						tB +='				<td>'+item.descripcion+'</td>';
+						tB +='				<td>'+item.visualizar+'</td>';
+						tB +='				<td>';
 						tB +='					<div class="hidden-phone visible-desktop action-buttons">';
 						tB +='';
 						tB +='						<a class="green modColorPro" href="#" id="idcolor-'+item.idcolor+'" >';
@@ -147,7 +149,7 @@ jQuery(function($) {
 							var arr = event.currentTarget.id.split('-');
 							//alert(arr[1]);
 							obj.setIsTimeLine(false);
-				            $.post(obj.getValue(0) + "data/", {o:30, t:2, c:arr[1], p:2, from:0, cantidad:0, s:''},
+				            $.post(obj.getValue(0) + "data/", {o:6, t:2, c:arr[1], p:52, from:0, cantidad:0, s:''},
 				            function(json) {
 				            		if (json[0].msg=="OK"){
 										onClickFillTable();

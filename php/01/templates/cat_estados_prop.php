@@ -35,6 +35,14 @@ $idestado  = $_POST['idestado'];
 			<div id="general" class="tab-pane active">
 
 				<div class="form-group ">
+			    	<label for="idsucursal" class="col-lg-2 control-label">Sucursal</label>
+			    	<div class="col-lg-10">
+						<select class="form-control"  name="idsucursal" id="idsucursal" size="1">
+						</select>
+		      		</div>
+			    </div>
+
+				<div class="form-group ">
 			    	<label for="clave" class="col-lg-2 control-label">Clave</label>
 			    	<div class="col-lg-10 ">
 				    	<input type="text" class="form-control altoMoz" maxlength="20" id="clave" name="clave" required autofocus >
@@ -45,6 +53,16 @@ $idestado  = $_POST['idestado'];
 			    	<label for="estado" class="col-lg-2 control-label">Estado</label>
 			    	<div class="col-lg-10">
 				    	<input type="text" class="form-control altoMoz" id="estado" name="estado" required >
+		      		</div>
+			    </div>
+
+				<div class="form-group ">
+			    	<label for="predeterminado" class="col-lg-2 control-label">Default</label>
+			    	<div class="col-lg-10">
+						<select class="form-control input-lg"  name="predeterminado" id="predeterminado" size="1">
+							<option value="0" selected>No</option>
+							<option value="1">Si</option>
+						</select>
 		      		</div>
 			    </div>
 
@@ -91,19 +109,14 @@ jQuery(function($) {
 
 	var idestado = <?php echo $idestado ?>;
 
-	if (idestado<=0){ // Nuevo Registro
-		$("#title").html("Nuevo registro");
-	}else{ // Editar Registro
-		$("#title").html("Editando el registro: "+idestado);
-		getEstado(idestado);
-	}
-
 	function getEstado(IdEstado){
 		$.post(obj.getValue(0) + "data/", {o:1, t:2, c:IdEstado, p:55, from:0, cantidad:0,s:''},
 			function(json){
 				if (json.length>0){
 					$("#clave").val(json[0].clave);
 					$("#estado").val(json[0].estado);
+					$("#idsucursal").val(json[0].idsucursal);
+					$("#predeterminado").val(json[0].predeterminado);
 					$("#status_estado").val(json[0].status_estado);
 				}
 		},'json');
@@ -162,6 +175,24 @@ jQuery(function($) {
 	}
 
 
+function getSucursales(){
+    var nc = "u="+localStorage.nc;
+    $.post(obj.getValue(0)+"data/", { o:2, t:-3, p:51,c:nc,from:0,cantidad:0, s:"" },
+        function(json){
+           $.each(json, function(i, item) {
+                $("#idsucursal").append('<option value="'+item.data+'"> '+item.label+'</option>');
+            });
+			if (idestado<=0){ // Nuevo Registro
+				$("#title").html("Nuevo registro");
+			}else{ // Editar Registro
+				$("#title").html("Editando el registro: "+idestado);
+				getEstado(idestado);
+			}
+        }, "json"
+    );
+}
+
+getSucursales();
 
 
 });

@@ -266,6 +266,32 @@ class oMetodos {
 	}
 
 
+	public function formatDateSpanish($Fecha="",$Hora="",$Type=0){
+		$retorno = "";
+		// var_dump($Fecha);
+		switch ($Type) {
+			case 0:
+				$f0 = explode('-', $Fecha);
+				$f1 = $f0[2].'-'.$f0[1].'-'.$f0[0];
+				$retorno = $f1.' '.$Hora;
+				break;
+			case 1:
+				$f0      = explode(' ', $Fecha);
+				$f1      = explode('-', $f0[0]);
+				$fecha   = $f1[2].'-'.$f1[1].'-'.$f1[0];
+				$f2      = $f0[1];
+				$retorno = $fecha.' '.$f2;
+				break;
+			
+			default:
+				$retorno = "";
+				break;
+		}
+		return $retorno;
+	}
+	
+
+
 
 
  }  // OF CLASS

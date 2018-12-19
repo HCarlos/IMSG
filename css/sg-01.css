@@ -172,9 +172,14 @@ input[type="file"]#fileElem {
   cursor:pointer;
   font-size:1.1em;
 }
+.wd05prc{width: 5% !important;}
 .wd10prc{width: 10% !important;}
+.wd15prc{width: 15% !important;}
+.wd20prc{width: 20% !important;}
+.wd25prc{width: 25% !important;}
 .wd30prc{width: 30% !important;}
 .wd33prc{width: 33% !important;}
+.wd35prc{width: 35% !important;}
 .wd40prc{width: 40% !important;}
 .wd60prc{width: 60% !important;}
 .wd62prc{width: 62% !important;}
@@ -208,6 +213,14 @@ input[type="file"]#fileElem {
 .marginLeft1em{margin-left: 1em !important;}
 .marginTop1em{margin-top: 1em !important;}
 .marginLeft2em{margin-left: 2em !important;}
+
+.borderTopBottom{
+    border-top: 1px solid #CCC !important;
+    border-bottom: 1px solid #CCC !important;
+    padding: 1em !important;
+    height: 3em !important;
+    line-height: 3em !important;
+}
 
 .transparent{
   background: transparent !important;

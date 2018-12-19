@@ -33,30 +33,32 @@ $idcolor  = $_POST['idcolor'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
-
-				<div class="form-group ">
-			    	<label for="color" class="col-lg-4 control-label">Color</label>
-			    	<div class="col-lg-8">
-				    	<input type="text" class="form-control altoMoz" id="color" name="color" required >
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="codigo_color_hex" class="col-lg-4 control-label">Código</label>
-			    	<div class="col-lg-8 bootstrap-colorpicker">
-				    	<input type="text" class="form-control altoMoz" id="codigo_color_hex" name="codigo_color_hex" required >
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="status_color" class="col-lg-4 control-label">Status</label>
-			    	<div class="col-lg-8">
-						<select class="form-control input-lg"  name="status_color" id="status_color" size="1">
-							<option value="0">Inactivo</option>
-							<option value="1" selected >Activo</option>
-						</select>
-		      		</div>
-			    </div>
+				<table>
+					<tr>
+						<td class="col-md-2"><label for="color" class="control-label">Color</label></td>
+						<td class="col-md-10"><input type="text" class="form-control altoMoz" id="color" name="color" required ></td>
+					</tr>
+					<tr>
+						<td class="col-md-2"><label for="codigo_color_hex" class="control-label">Código</label></td>
+						<td class="col-md-10"><input type="text" class="form-control altoMoz" id="codigo_color_hex" name="codigo_color_hex" required ></td>
+					</tr>
+					<tr>
+						<td class="col-md-2"><label for="visualizar" class="control-label">Visualizar</label></td>
+						<td class="col-md-10">
+							<input name="visualizar" id="visualizar" class="ace ace-switch ace-switch-6 altoMoz" type="checkbox">
+							<span class="lbl"></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="col-md-2"><label for="status_color" class="control-label">Status</label></td>
+						<td class="col-md-10">
+							<select class="form-control altoMoz"  name="status_color" id="status_color" size="1">
+								<option value="0">Inactivo</option>
+								<option value="1" selected >Activo</option>
+							</select>
+					</td>
+					</tr>
+				</table>
 
 			</div>
 
@@ -98,13 +100,15 @@ jQuery(function($) {
 		getColor(idcolor);
 	}
 
-	function getColor(IdNivel){
-		$.post(obj.getValue(0) + "data/", {o:30, t:77, c:IdNivel, p:10, from:0, cantidad:0,s:''},
+	function getColor(IdColor){
+		$.post(obj.getValue(0) + "data/", {o:6, t:77, c:IdColor, p:51, from:0, cantidad:0,s:''},
 			function(json){
 				if (json.length>0){
 					$("#color").val(json[0].color);
 					$("#codigo_color_hex").val(json[0].codigo_color_hex);
+					$("#codigo_color_hex").colorpicker("setValue", json[0].codigo_color_hex);
 					$("#status_color").val(json[0].status_color);
+                    $("#visualizar").prop("checked",json[0].visualizar==1?true:false);
 				}
 		},'json');
 	}
@@ -123,8 +127,8 @@ jQuery(function($) {
 		var data = new FormData();
 
 		if (validForm()){
-			var IdNivel = (idcolor==0?0:1)
-            $.post(obj.getValue(0) + "data/", {o:30, t:IdNivel, c:queryString, p:2, from:0, cantidad:0, s:''},
+			var IdColor = (idcolor==0?0:1)
+            $.post(obj.getValue(0) + "data/", {o:6, t:IdColor, c:queryString, p:52, from:0, cantidad:0, s:''},
             function(json) {
             		if (json[0].msg=="OK"){
             			alert("Datos guardados con éxito.");

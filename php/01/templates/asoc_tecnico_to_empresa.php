@@ -31,13 +31,13 @@
 
         <div class="span4">
             <div class="panel panel-primary">
-              <div class="panel-heading">Directores</div>
+              <div class="panel-heading">Empresas</div>
               <div class="panel-body" style="height: 30em !important; ">
                     <label for="selEmpresas" class="lblH2cmb">Lista de Empresas </label>
                     <select name="selEmpresas" id="selEmpresas" size="1" style="width:100% !important;" >
                     </select>
 
-                    <label for="lstTecnicos" class="lblH2">Reptte. Legal Asignados:</label>
+                    <label for="lstTecnicos" class="lblH2">Técnicos Asignados:</label>
                     <select class="lstTecnicos" name="lstTecnicos" id="lstTecnicos" multiple="multiple" style="width:100% !important; height: 69% !important;" >
                     </select>
                     <span class="label label-large label-yellow arrowed pull-right" id="lbl01"></span>
@@ -85,7 +85,6 @@ function getTeclsEmp(){
     var nc = "u="+localStorage.nc;
     $("#lstTecnicos").empty();
     var y = $('select[name="selEmpresas"] option:selected').val();
-    $("#lstTecnicos").empty();
     $.post(obj.getValue(0)+"data/", {o:31, t:104, p:51,c:nc,from:0,cantidad:0, s:y },
         function(json){
            $.each(json, function(i, item) {

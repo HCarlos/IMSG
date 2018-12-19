@@ -118,7 +118,7 @@ body{background: transparent url("/img/blueprint.png") top left; }
 
     <?php include("php/01/templates/navbar-top.php"); ?>
 
-    <section class="section-portfolio" id="section-portfolio" >
+    <section class="section-portfolio" id="app">
 
         <div class="main-container container-fluid" style="background-color: transparent;">
             <a class="menu-toggler" id="menu-toggler" href="#">
@@ -143,7 +143,7 @@ body{background: transparent url("/img/blueprint.png") top left; }
 
                 <div class="page-content">
                     <div class="row-fluid">
-                        <div class="span12">
+                        <div class="span12" >
                             <!--PAGE CONTENT BEGINS-->
                             <div class="container inw100p " id="contentMain" ></div>
                             <div class="container inw100p " id="contentProfile"></div>
@@ -225,16 +225,27 @@ body{background: transparent url("/img/blueprint.png") top left; }
     <script src="/assets/js/additional-methods.min.js"></script>
     <script src="/assets/js/bootstrap-colorpicker.min.js"></script>
     <script src="/assets/js/jquery.maskedinput.min.js"></script>
-    <script  src="/js/01/base.js"> </script>
-    <script  src="/js/init.js"> </script>
 
-<script>
+/*
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>    
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="/js/vue-file.js"> </script>
+*/
 
-$(".dropdown-toggle").click(function () {
-    $(".nav-collapse").css('height', 'auto')
-});
+    <script src="/js/01/base.js"> </script>
+    <script src="/js/init.js"> </script>
 
-</script>
+    <script>
+
+        $(".dropdown-toggle").click(function () {
+            $(".nav-collapse").css('height', 'auto')
+        });
+
+        $('[data-rel=tooltip]').tooltip();
+
+
+    </script>
+
 
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
@@ -247,8 +258,6 @@ $(".dropdown-toggle").click(function () {
     scJsHost+
     "statcounter.com/counter/counter.js'></"+"script>");
 
-
-    $('[data-rel=tooltip]').tooltip();
 
 </script>
 

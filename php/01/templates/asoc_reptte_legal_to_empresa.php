@@ -31,13 +31,13 @@
 
         <div class="span4">
             <div class="panel panel-primary">
-              <div class="panel-heading">Directores</div>
+              <div class="panel-heading">Empresas</div>
               <div class="panel-body" style="height: 30em !important; ">
                     <label for="selEmpresas" class="lblH2cmb">Lista de Empresas </label>
                     <select name="selEmpresas" id="selEmpresas" size="1" style="width:100% !important;" >
                     </select>
 
-                    <label for="lstReptteLegals" class="lblH2">Reptte. Legal Asignados:</label>
+                    <label for="lstReptteLegals" class="lblH2">Contactos Asignados:</label>
                     <select class="lstReptteLegals" name="lstReptteLegals" id="lstReptteLegals" multiple="multiple" style="width:100% !important; height: 69% !important;" >
                     </select>
                     <span class="label label-large label-yellow arrowed pull-right" id="lbl01"></span>
@@ -73,7 +73,7 @@ function getPersonas(){
                 nc = item.label.split("@");
                 $("#lstPersonas").append('<option value="'+item.data+'"> '+item.label+'</option>');
             });
-            $("#lbl02").html(commaSeparateNumber(json.length)+" Personas")
+            $("#lbl02").html(commaSeparateNumber(json.length)+" Contactos")
             $("#preloaderPrincipal").hide();
             getReptteLegalsEmp();
 
@@ -85,13 +85,12 @@ function getReptteLegalsEmp(){
     var nc = "u="+localStorage.nc;
     $("#lstReptteLegals").empty();
     var y = $('select[name="selEmpresas"] option:selected').val();
-    $("#lstReptteLegals").empty();
     $.post(obj.getValue(0)+"data/", {o:30, t:102, p:51,c:nc,from:0,cantidad:0, s:y },
         function(json){
            $.each(json, function(i, item) {
                 $("#lstReptteLegals").append('<option value="'+item.data+'"> '+item.label+'</option>');
             });
-            $("#lbl01").html(commaSeparateNumber(json.length)+" Personas");
+            $("#lbl01").html(commaSeparateNumber(json.length)+" Contactos");
         }, "json"
     );
 }

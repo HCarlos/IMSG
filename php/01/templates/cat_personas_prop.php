@@ -47,144 +47,114 @@ $idpersona  = $_POST['idpersona'];
 		<div class="tab-content">
 
 			<div id="general" class="tab-pane active">
+				<table>
+					<?php if ( $idpersona>0 ) { ?>
+					<tr>
+						<td class="col-sm-2"><label for="username" class="control-label textRight">Username</label></td>
+						<td class="col-sm-10">
+					    	<input type="text" class="col-sm-10 altoMoz" id="username" name="username" disabled >
+						    <button class="btn btn-link col-sm-2" id="btnGenPerUser">Generar</button>
+						</td>
+					</tr>
+					<?php } ?>
+	
+					<tr>
+						<td class="col-sm-2"><label for="nombre" class="control-label">Nombre</label></td>
+						<td class="col-sm-10">
+	                        <span class="add-on"><i class="icon-asterisk red"></i></span>
+					    	<input type="text" class="wd90prc altoMoz" id="nombre" name="nombre" required >
+						</td>
+					</tr>
+	
+					<tr>						
+						<td class="col-sm-2"><label for="ap_paterno" class="control-label">Ap. Paterno</label></td>
+						<td class="col-sm-10">
+	                        <span class="add-on"><i class="icon-asterisk red"></i></span>
+					    	<input type="text" class="wd90prc altoMoz" id="ap_paterno" name="ap_paterno" required >							
+						</td>
+					</tr>
+	
+					<tr>
+						<td class="col-sm-2"><label for="ap_materno" class="control-label">Ap. Materno</label></td>
+						<td class="col-sm-10">
+	                        <span class="add-on"><i class="icon-asterisk red"></i></span>
+					    	<input type="text" class="wd90prc altoMoz" id="ap_materno" name="ap_materno" required >
+						</td>
+					</tr>
 
-				<div class="form-group ">
-			    	<label for="username" class="col-lg-3 control-label">Username</label>
-			    	<div class="col-lg-8">
-				    	<input type="text" class="form-control altoMoz" id="username" name="username" >
-		      		</div>
-			    	<div class="col-lg-1">
-				    	<button class="btn btn-link " id="btnGenPerUser">Generar</button>
-		      		</div>
-			    </div>
+					<tr>
+						<td class="col-sm-2"><label for="email1" class="control-label">E-Mails</label></td>
+						<td class="col-sm-10">
+	                        <span class="add-on"><i class="icon-asterisk red"></i></span>
+					    	<input type="text" class="wd90prc altoMoz" id="email1" name="email1" required >
+						</td>
+					</tr>
 
-				<div class="form-group ">
-			    	<label for="ap_paterno" class="col-lg-3 control-label">Ap. Paterno</label>
-			    	<div class="col-lg-9">
-				    	<input type="text" class="form-control altoMoz" id="ap_paterno" name="ap_paterno"  >
-		      		</div>
-			    </div>
+					<tr>
+						<td class="col-sm-2"><label for="status_persona" class="control-label">Status</label></td>
+						<td class="col-sm-3">
+	                        <span class="add-on"><i class="icon-ok white"></i></span>
+							<select class="altoMoz" name="status_persona" id="status_persona" size="1">
+								<option value="0">Inactivo</option>
+								<option value="1" selected >Activo</option>
+							</select>							
+						</td>
+					</tr>
 
-				<div class="form-group ">
-			    	<label for="ap_materno" class="col-lg-3 control-label">Ap. Materno</label>
-			    	<div class="col-lg-9">
-				    	<input type="text" class="form-control altoMoz" id="ap_materno" name="ap_materno"  >
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="nombre" class="col-lg-3 control-label">Nombre</label>
-			    	<div class="col-lg-9">
-				    	<input type="text" class="form-control altoMoz" id="nombre" name="nombre"  >
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="curp" class="col-lg-3 control-label">CURP</label>
-			    	<div class="col-lg-9">
-				    	<input type="text" class="form-control altoMoz" id="curp" name="curp"  >
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="email1" class="col-lg-3 control-label">E-Mail 1</label>
-			    	<div class="col-lg-9">
-				    	<input type="text" class="form-control altoMoz" id="email1" name="email1" >
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="email2" class="col-lg-3 control-label">E-Mail 2</label>
-			    	<div class="col-lg-9">
-				    	<input type="text" class="form-control altoMoz" id="email2" name="email2" >
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="status_persona" class="col-lg-3 control-label">Status</label>
-			    	<div class="col-lg-9">
-						<select class="form-control input-lg"  name="status_persona" id="status_persona" size="1">
-							<option value="0">Inactivo</option>
-							<option value="1" selected >Activo</option>
-						</select>
-		      		</div>
-			    </div>
+				</table>
 
 			</div>
 
 			<div id="especificos" class="tab-pane">
+                <table>
+                    <tr>
+                        <td><label for="tel1" class="textRight">Teléfono</label></td>
+                        <td>
+	                        <span class="add-on"><i class="icon-asterisk red"></i></span>
+							<input class=" altoMoz" id="tel1" name="tel1" type="text" required >
+						</td>
+                        <td><label for="cel1" class="textRight">Celular</label></td>
+                        <td>
+	                        <span class="add-on"><i class="icon-asterisk red"></i></span>
+							<input class=" altoMoz" id="cel1" name="cel1" type="text" required >
+						</td>
+					</tr>				
+                    <tr>
+                        <td><label for="genero" class="textRight">Género</label></td>
+                        <td>
+	                        <span class="add-on"><i class="icon-ok white"></i></span>
+							<select class="altoMoz " name="genero" id="genero" size="1">
+								<option value="0">Mujer</option>
+								<option value="1">Hombre</option>
+							</select>
+						</td>
+                        <td><label for="isaddempresa" class="textRight marginLeft2em">Agregar a Empresa</label></td>
+                        <td>
+	                        <span class="add-on"><i class="icon-ok white"></i></span>
+							<select class="altoMoz" name="isaddempresa" id="isaddempresa" size="1">
+								<option value="0" selected>No</option>
+								<option value="1">Si</option>
+							</select>
+						</td>
+					</tr>				
+                    <tr class="IsAddEmpresa">
+                        <td><label for="rfc" class="textRight">RFC</label></td>
+                        <td>
+                            <span class="add-on"><i class="icon-asterisk red"></i></span>
+                            <input class="altoMoz" name="rfc" id="rfc" type="text" required>
+                        </td>
+                        <td><label for="razon_social" class="marginLeft2em textRight">Razon Social</label></td>
+                        <td colspan="3">
+                            <span class="add-on"><i class="icon-asterisk red"></i></span>
+                            <input class="altoMoz tbl400W" name="razon_social" id="razon_social" type="text" required>
+                        </td>
+                    </tr>
 
-				<div class="form-group ">
-					<label for="tel1" class="col-lg-2">Teléfono 1</label>
-			    	<div class="col-lg-10">
-						<input class="form-control altoMoz" id="tel1" name="tel1" type="text" >
-			      	</div>
-			    </div>
-
-				<div class="form-group ">
-					<label for="tel2" class="col-lg-2">Teléfono 2</label>
-			    	<div class="col-lg-10">
-						<input class="form-control altoMoz" id="tel2" name="tel2" type="text" >
-			      	</div>
-			    </div>
-
-
-				<div class="form-group ">
-					<label for="cel1" class="col-lg-2">Celular 1</label>
-			    	<div class="col-lg-10">
-						<input class="form-control altoMoz" id="cel1" name="cel1" type="text" >
-			      	</div>
-			    </div>
-
-				<div class="form-group ">
-					<label for="cel2" class="col-lg-2">Celular 2</label>
-			    	<div class="col-lg-10">
-						<input class="form-control altoMoz" id="cel2" name="cel2" type="text" >
-			      	</div>
-			    </div>
-
-				<div class="form-group ">
-					<label for="fecha_nacimiento" class="col-lg-2">Fecha Nacimiento</label>
-			    	<div class="col-lg-10">
-						<input class="col-lg-3 date-picker altoMoz" id="fecha_nacimiento" name="fecha_nacimiento" data-date-format="dd-mm-yyyy" type="text" >
-			      	</div>
-			    </div>
-
-				<div class="form-group ">
-					<label for="lugar_nacimiento" class="col-lg-2">Lugar Nacimiento</label>
-			    	<div class="col-lg-10">
-				    	<input type="text" class="form-control altoMoz" id="lugar_nacimiento" name="lugar_nacimiento"  >
-			      	</div>
-			    </div>
-
-				<div class="form-group ">
-			    	<label for="genero" class="col-lg-2 control-label">Género</label>
-			    	<div class="col-lg-10">
-						<select class="form-control input-lg"  name="genero" id="genero" size="1">
-							<option value="0">Mujer</option>
-							<option value="1">Hombre</option>
-						</select>
-		      		</div>
-			    </div>
-
-				<div class="form-group ">
-					<label for="ocupacion" class="col-lg-2">Ocupación</label>
-			    	<div class="col-lg-10">
-						<input class="form-control altoMoz" id="ocupacion" name="ocupacion" type="text" >
-			      	</div>
-			    </div>
-
+				</table>
+					
 			</div>
 
 			<div id="domicilio" class="tab-pane">
-
-				<div class="form-group ">
-					<label for="domicilio_generico" class="col-lg-2">Domicilio Genérico</label>
-			    	<div class="col-lg-12">
-						<textarea  class="col-lg-10" id="domicilio_generico" name="domicilio_generico" cols="4" ></textarea>
-			      	</div>
-			    </div>
-
 
 				<div class="form-group ">
 
@@ -203,6 +173,7 @@ $idpersona  = $_POST['idpersona'];
 	                        </td>
 	                        <td><label for="num_int" class="marginLeft2em textRight">Num Int</label></td>
 	                        <td>
+		                        <span class="add-on"><i class="icon-ok white"></i></span>
 	                            <input class="altoMoz" name="num_int" id="num_int" type="text" >
 	                        </td>
 	                    </tr>
@@ -223,28 +194,32 @@ $idpersona  = $_POST['idpersona'];
 	                    </tr>
 
 	                    <tr>
-	                        <td><label for="estado" class="textRight">Estado</label></td>
+							<td><label for="idsucursal" class="textRight">Sucursal</label></td>
+							<td>
+		                        <span class="add-on"><i class="icon-asterisk red"></i></span>
+								<select class="altoMoz tbl180W" name="idsucursal" id="idsucursal" size="1"></select>							
+							</td>
+	                        <td><label for="idestado" class="marginLeft2em textRight">Estado</label></td>
 	                        <td>
 	                            <span class="add-on"><i class="icon-asterisk red"></i></span>
-	                            <input class="altoMoz" name="estado" id="estado" type="text" required>
-	                        </td>
-	                        <td><label for="municipio" class="marginLeft2em textRight">Municipio</label></td>
+								<select class="altoMoz tbl180W" name="idestado" id="idestado" size="1"></select>							
+		                        </td>
+	                        <td><label for="idmunicipio" class="marginLeft2em textRight">Municipio</label></td>
 	                        <td>
 	                            <span class="add-on"><i class="icon-asterisk red"></i></span>
-	                            <input class="altoMoz" name="municipio" id="municipio" value="" type="text" required>
+								<select class="altoMoz tbl180W" name="idmunicipio" id="idmunicipio" size="1"></select>							
 	                        </td>
-	                        <td></td>
-	                        <td></td>
 	                    </tr>
 
 	                    <tr>
 	                        <td><label for="pais" class="marginLeft2em textRight">Pais</label></td>
 	                        <td>
 	                            <span class="add-on"><i class="icon-asterisk red"></i></span>
-	                            <input class="altoMoz" name="pais" id="pais" value="México" type="text" required>
+	                            <input class="altoMoz" name="pais" id="pais" value="MÉXICO" type="text" >
 	                        </td>
 	                        <td><label for="cp" class="marginLeft2em textRight">CP</label></td>
 	                        <td>
+		                        <span class="add-on"><i class="icon-ok white"></i></span>
 	                            <input class="altoMoz" name="cp" id="cp" type="text" >
 	                        </td>
 	                        <td></td>
@@ -255,15 +230,6 @@ $idpersona  = $_POST['idpersona'];
 
                 </div>
 
-				<div class="form-group ">
-			    	<label for="lugar_trabajo" class="col-lg-2 control-label">Lugar de Trabajo</label>
-			    	<div class="col-lg-12">
-				    	<input type="text" class="form-control altoMoz" id="lugar_trabajo" name="lugar_trabajo"  >
-		      		</div>
-			    </div>
-
-
-
 			</div>
 
 
@@ -271,6 +237,9 @@ $idpersona  = $_POST['idpersona'];
 
 	    <input type="hidden" name="idpersona" id="idpersona" value="<?php echo $idpersona; ?>">
 	    <input type="hidden" name="user" id="user" value="<?php echo $user; ?>">
+	    <input type="hidden" name="estado" id="estado" value="">
+	    <input type="hidden" name="municipio" id="municipio" value="">
+	    <input type="hidden" name="idempresa" id="idempresa" value="0">
 	    <div class="form-group w96" style='margin-right: 3em; margin-top: 1em;'>
 	    	<button type="button" class="btn btn-default pull-right" data-dismiss="modal" id="closeFormUpload"><i class="icon-signout"></i>Cerrar</button>
 	    	<span class="muted"></span>
@@ -296,11 +265,18 @@ jQuery(function($) {
 
 	$("#username").focus();
 	$("#btnGenPerUser").hide();
+	$(".IsAddEmpresa").hide();
+	var Inicio        = true;
+	var IdEstado      = 0;
+	var IdMunicipio   = 0;
+	var IsAddEmpresa  = 0;
+	var RFC           = "";
+	var Razon_Social  = "";
 
 	var idpersona = <?php echo $idpersona ?>;
 
 
-	function getpersona(Idpersona){
+	function getPersona(Idpersona){
 		$.post(obj.getValue(0) + "data/", {o:3, t:6, c:Idpersona, p:55, from:0, cantidad:0,s:''},
 			function(json){
 				if (json.length>0){
@@ -309,40 +285,41 @@ jQuery(function($) {
 					$("#ap_paterno").val(json[0].ap_paterno);
 					$("#ap_materno").val(json[0].ap_materno);
 					$("#nombre").val(json[0].nombre);
-					$("#email1").val(json[0].email1);
-					$("#email2").val(json[0].email2);
-
+					$("#email1").val(json[0].emails_emp);
 					$("#cel1").val(json[0].cel1);
-					$("#cel2").val(json[0].cel2);
-
 					$("#tel1").val(json[0].tel1);
-					$("#tel2").val(json[0].tel2);
-
-					$("#domicilio_generico").html(json[0].domicilio_generico);
-
-					$("#calle").val(json[0].calle);
-					$("#num_ext").val(json[0].num_ext);
-					$("#num_int").val(json[0].num_int);
-					$("#colonia").val(json[0].colonia);
-					$("#localidad").val(json[0].localidad);
-					$("#estado").val(json[0].estado);
-					$("#municipio").val(json[0].municipio);
-					$("#pais").val(json[0].pais);
-					$("#cp").val(json[0].cp);
-
-					$("#lugar_nacimiento").val(json[0].lugar_nacimiento);
-					$("#curp").val(json[0].curp);
-					$("#fecha_nacimiento").val(json[0].cfecha_nacimiento);
-					$("#lugar_trabajo").val(json[0].lugar_trabajo);
-
+					$("#calle").val(json[0].calle_emp);
+					$("#num_ext").val(json[0].num_ext_emp);
+					$("#num_int").val(json[0].num_int_emp);
+					$("#colonia").val(json[0].colonia_emp);
+					$("#localidad").val(json[0].localidad_emp);
+					$("#pais").val(json[0].pais_emp);
+					$("#cp").val(json[0].cp_emp);
 					$("#genero").val(json[0].genero);
-					$("#ocupacion").val(json[0].ocupacion);
-
 					$("#status_persona").val(json[0].status_persona);
+
+					$("#idsucursal").val(json[0].idsucursal);
+					IdEstado    = json[0].idestado;
+					IdMunicipio = json[0].idmunicipio; 
+
+					$("#idestado").trigger( "change" );
+
+					IsAddEmpresa = json[0].isaddempresa;
+					RFC 		 = json[0].rfc_emp;
+					Razon_Social = json[0].razon_social_emp;
+
+					if ( json[0].isaddempresa == 1){
+						$(".IsAddEmpresa").show();
+						$("#isaddempresa").val(IsAddEmpresa);
+						$("#rfc").val(RFC);
+						$("#razon_social").val(Razon_Social);
+					}
 
 					if ( $("#username").val() == "" ){
 						$("#btnGenPerUser").show();
 					}
+
+					$("#idempresa").val(json[0].idempresa);
 
 					$("#username").focus();
 
@@ -357,6 +334,9 @@ jQuery(function($) {
 		$("#preloaderPrincipal").show();
 
 		if (validForm()){
+
+			$("#estado").val( $("#idestado option:selected").text() );
+			$("#municipio").val( $("#idmunicipio option:selected").text() );
 
 			var queryString = $(this).serialize();
 
@@ -398,14 +378,16 @@ jQuery(function($) {
 
 	$("#btnGenPerUser").on("click",function(event){
 		event.preventDefault();
-		$("#iconSaveCommentResp").show();
+		genUsername();
+	});
+
+
+	function genUsername(){
 		var resp =  confirm("Esto creará un USERNAME a esta Persona?");
 		if (resp){
 			obj.setIsTimeLine(false);
-			// alert(idpersona);
 	        $.post(obj.getValue(0) + "data/", {o:3, t:2, c:idpersona, p:3, from:0, cantidad:0, s:''},
 	        function(json) {
-	        		// alert(json.lenght);
 	        		if (json[0].msg=="OK"){
 						$("#preloaderPrincipal").hide();
 						$("#contentProfile").hide(function(){
@@ -419,10 +401,7 @@ jQuery(function($) {
 	    			}
 	    	}, "json");
 		}
-	});
-
-
-
+	}
 
 	function validForm(){
 
@@ -443,13 +422,44 @@ jQuery(function($) {
 			$("#nombre").focus();
 			return false;
 		}
-/*
+
 		if ($("#email1").val().length <= 0){
-			alert("Faltan el E-Mai 1");
+			alert("Faltan el E-Mail 1");
 			$("#email1").focus();
 			return false;
 		}
-*/
+
+		if ($("#tel1").val().length <= 0){
+			alert("Faltan el Teléfono");
+			$("#tel1").focus();
+			return false;
+		}
+
+		if ($("#cel1").val().length <= 0){
+			alert("Faltan el Celular");
+			$("#cel1").focus();
+			return false;
+		}
+
+		if ($("#idsucursal").val() <= 0){
+			alert("Seleccione una sucursal");
+			$("#idsucursal").focus();
+			return false;
+		}
+
+		if ($("#idestado").val() <= 0){
+			alert("Seleccione un estado");
+			$("#idestado").focus();
+			return false;
+		}
+
+		if ($("#idmunicipio").val() <= 0){
+			alert("Seleccione un municipio");
+			$("#idmunicipio").focus();
+			return false;
+		}
+
+
 		return true;
 
 	}
@@ -461,15 +471,96 @@ jQuery(function($) {
 	$('#fecha_nacimiento').mask('99-99-9999');
 	$('#fecha_nacimiento').val(obj.getDateToday());
 
-	if (idpersona<=0){ // Nuevo Registro
-		$("#title").html("Nuevo registro");
-	}else{ // Editar Registro
-		$("#title").html("Editando el registro: "+idpersona);
-		getpersona(idpersona);
+	function getEstados(){
+	    var nc = "u="+localStorage.nc;
+	    var issuc = $("#idsucursal").val() <= 0 ? localStorage.IdSucursal :  $("#idsucursal").val();
+	    $("#idestado").empty();
+	    $("#idestado").append('<option value="0">Seleccione un estado</option>');
+	    $.post(obj.getValue(0)+"data/", { o:2, t:-4, p:51,c:nc,from:0,cantidad:0, s:issuc },
+	        function(json){
+	           $.each(json, function(i, item) {
+	           		if (IdEstado == 0){
+		           	    var selected = item.predeterminado==1?' selected ' :'';
+	           		}else{
+		           	    var selected = item.data==IdEstado?' selected ' :'';
+	           		}
+	                $("#idestado").append('<option value="'+item.data+'" '+selected+'> '+item.label+'</option>');
+	            });
+				getMunicipios();
+	        }, "json"
+	    );
 	}
 
+	$("#idestado").on("change",function(event){
+		event.preventDefault();
+		getMunicipios();
+	});
 
+	function getMunicipios(){
+	    var nc = "u="+localStorage.nc;
+	    $("#idmunicipio").empty();
+	    $("#idmunicipio").append('<option value="0">Seleccione un municipio</option>');
+	    $.post(obj.getValue(0)+"data/", { o:2, t:-2, p:51,c:nc,from:0,cantidad:0, s:$("#idestado").val() },
+	        function(json){
+	           $.each(json, function(i, item) {
+	           		if (IdMunicipio == 0){
+		           	    var selected = item.predeterminado==1?' selected ' :'';
+	           		}else{
+		           	    var selected = item.data==IdMunicipio?' selected ' :'';
+	           		}
+	                $("#idmunicipio").append('<option value="'+item.data+'" '+selected+'> '+item.label+'</option>');
+	            });
+	           if (Inicio){
+		           getSucursales();
+		           Inicio = false;
+	           }
+	        }, "json"
+	    );
+	}
+
+	function getSucursales(){
+	    var nc = "u="+localStorage.nc;
+	    $("#idsucursal").empty();
+	    $("#idsucursal").append('<option value="0">Seleccione una sucursal</option>');
+	    $.post(obj.getValue(0)+"data/", { o:2, t:-3, p:51,c:nc,from:0,cantidad:0, s:"" },
+	        function(json){
+	           $.each(json, function(i, item) {
+	                $("#idsucursal").append('<option value="'+item.data+'"> '+item.label+'</option>');
+	            });
+
+				if (idpersona<=0){
+					$("#title").html("Nuevo registro");
+				}else{
+					$("#title").html("Editando el registro: "+idpersona);
+					getPersona(idpersona);
+				}
+
+	        }, "json"
+	    );
+	}
+
+	$("#idsucursal").on("change",function(event){
+		event.preventDefault();
+		getEstados();
+	});
+
+	$("#isaddempresa").on("change",function(event){
+		event.preventDefault();
+		if ( $(this).val() == 0 ){
+			$(".IsAddEmpresa").hide();
+		} else {
+			$(".IsAddEmpresa").show();
+			$("#rfc").val(RFC);
+			$("#razon_social").val(Razon_Social);			
+		}
+
+	});
+
+	// getEstados(param0,param1);
+	getEstados();
 
 });
 
 </script>
+
+

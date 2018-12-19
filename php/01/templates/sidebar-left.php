@@ -6,7 +6,7 @@
 
                 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
 
-                </div><!--#sidebar-shortcuts-->
+                </div>
                 <ul class="nav nav-list" id="menuPrincipal">
 
                 </ul>

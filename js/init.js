@@ -14,16 +14,42 @@ function init() {
     }
 
     $("#preloaderPrincipal").hide();
-    var IDTUSer = parseInt(localStorage.IdUserNivelAcceso, 0);
+    // var IDTUSer = parseInt(localStorage.IdUserNivelAcceso, 0);
+    var CveUser = parseInt(localStorage.ClaveNivelAcceso, 0);
 
-    uParam0 = obj.getkeyUP(IDTUSer, 0);
-    if (uParam0 !== -1) {
-        $.post(obj.getValue(0) + "menu-catalogos/", {},
+    // alert(CveUser);
+    
+    uParam1 = obj.getkeyUP(CveUser, 1);
+    if (uParam1 !== -1) {
+
+        $.post(obj.getValue(0) + "menu-operaciones/", {},
+            function(html) {
+                $("#menuPrincipal").append(html);
+                $.post(obj.getValue(0) + "menu-catalogos/", {},
+                    function(html) {
+                        $("#menuPrincipal").append(html);
+                        $.post(obj.getValue(0) + "menu-config/", {},
+                            function(html) {
+                                $("#menuPrincipal").append(html);
+                            }, "html");
+                    }, "html");
+
+            }, "html");
+    }
+
+    uParam2 = obj.getkeyUP(CveUser, 2);
+    // alert(uParam3);
+    if (uParam2 !== -1) {
+        $.post(obj.getValue(0) + "menu-operaciones-supervisor/", {},
             function(html) {
                 $("#menuPrincipal").append(html);
             }, "html");
+    }
 
-        $.post(obj.getValue(0) + "menu-config/", {},
+    uParam3 = obj.getkeyUP(CveUser, 3);
+    // alert(uParam3);
+    if (uParam3 !== -1) {
+        $.post(obj.getValue(0) + "menu-operaciones-tecnicos/", {},
             function(html) {
                 $("#menuPrincipal").append(html);
             }, "html");

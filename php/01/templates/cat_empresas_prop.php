@@ -83,7 +83,7 @@ $idempresa  = $_POST['idempresa'];
                         <td><label for="estado" class="textRight">Estado</label></td>
                         <td>
                             <span class="add-on"><i class="icon-asterisk red"></i></span>
-                            <input class="altoMoz" name="estado" id="estado" type="text" required>
+                            <input class="altoMoz" name="estado" id="estado" value="" type="text" required>
                         </td>
                         <td><label for="pais" class="marginLeft2em textRight">Pais</label></td>
                         <td>

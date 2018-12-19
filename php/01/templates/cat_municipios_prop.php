@@ -35,6 +35,14 @@ $idmunicipio  = $_POST['idmunicipio'];
 			<div id="general" class="tab-pane active">
 
 				<div class="form-group ">
+			    	<label for="idsucursal" class="col-lg-2 control-label">Sucursal</label>
+			    	<div class="col-lg-10">
+						<select class="form-control"  name="idsucursal" id="idsucursal" size="1">
+						</select>
+		      		</div>
+			    </div>
+
+				<div class="form-group ">
 			    	<label for="idestado" class="col-lg-2 control-label">Estado</label>
 			    	<div class="col-lg-10">
 						<select class="form-control"  name="idestado" id="idestado" size="1">
@@ -53,6 +61,16 @@ $idmunicipio  = $_POST['idmunicipio'];
 			    	<label for="municipio" class="col-lg-2 control-label">Municipio</label>
 			    	<div class="col-lg-10">
 				    	<input type="text" class="form-control altoMoz" id="municipio" name="municipio" required >
+		      		</div>
+			    </div>
+
+				<div class="form-group ">
+			    	<label for="predeterminado" class="col-lg-2 control-label">Default</label>
+			    	<div class="col-lg-10">
+						<select class="form-control input-lg"  name="predeterminado" id="predeterminado" size="1">
+							<option value="0" selected>No</option>
+							<option value="1">Si</option>
+						</select>
 		      		</div>
 			    </div>
 
@@ -104,7 +122,9 @@ jQuery(function($) {
 				if (json.length>0){
 					$("#clave").val(json[0].clave);
 					$("#idestado").val(json[0].idestado);
+					$("#idsucursal").val(json[0].idsucursal);
 					$("#municipio").val(json[0].municipio);
+					$("#predeterminado").val(json[0].predeterminado);
 					$("#status_municipio").val(json[0].status_municipio);
 				}
 		},'json');
@@ -167,7 +187,21 @@ function getEstados(){
     $.post(obj.getValue(0)+"data/", { o:2, t:-1, p:51,c:nc,from:0,cantidad:0, s:"" },
         function(json){
            $.each(json, function(i, item) {
-                $("#idestado").append('<option value="'+item.data+'"> '+item.label+'</option>');
+           	    var selected = item.predeterminado==1?' selected ' :'';
+                $("#idestado").append('<option value="'+item.data+'" '+selected+'> '+item.label+'</option>');
+            });
+				getSucursales();
+        }, "json"
+    );
+}
+
+
+function getSucursales(){
+    var nc = "u="+localStorage.nc;
+    $.post(obj.getValue(0)+"data/", { o:2, t:-3, p:51,c:nc,from:0,cantidad:0, s:"" },
+        function(json){
+           $.each(json, function(i, item) {
+                $("#idsucursal").append('<option value="'+item.data+'"> '+item.label+'</option>');
             });
 
 			if (idmunicipio<=0){
@@ -177,11 +211,11 @@ function getEstados(){
 				getMunicipio(idmunicipio);
 			}
 
-
-
         }, "json"
     );
 }
+
+
 
 getEstados();
 

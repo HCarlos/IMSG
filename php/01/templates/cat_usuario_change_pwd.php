@@ -73,7 +73,7 @@ $iduser  = $_POST['iduser'];
 	    <div class="form-group w96" style='margin-right: 3em; margin-top: 1em;'>
 	    	<button type="button" class="btn btn-default pull-right" data-dismiss="modal" id="closeFormUpload"><i class="icon-signout"></i>Cerrar</button>
 	    	<span class="muted"></span>
-	    	<button type="submit" class="btn btn-primary pull-right" style='margin-right: 4em;'><i class="icon-save"></i>Publicar</button>
+	    	<button type="submit" class="btn btn-primary pull-right" style='margin-right: 4em;'><i class="icon-save"></i>Cambiar</button>
 		</div>
 
 	</form>

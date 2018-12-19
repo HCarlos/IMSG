@@ -28,7 +28,7 @@ $de       = $_POST['user'];
 						<span class="ui-icon icon-refresh green"></span>
 					</div>
 				</td>
-                <td style="width:5em;">
+<!--                 <td style="width:5em;">
 					<span class="ui-separator marginLeft1em"></span>
 				</td>
                 <td>
@@ -81,7 +81,7 @@ $de       = $_POST['user'];
                         <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="5">
                         <span class="lbl"> S - Z</span>
                     </label>
-                </td>
+                </td> -->
 
 			</tr>
 		</tbody>

@@ -51,9 +51,14 @@ switch ($index) {
     case 4: // Cat Empresas
     case 5: // Cat Marcas
     case 6: // Cat Colores
+    case 7: // Cat Categoria_Equipos
+    case 8: // Cat Precios_Categorias
+    case 9: // Cat Unidades_de_Medida
+    case 10: // Cat de Precios
     case 30: // Asocia Reptte Legal a Empresa
     case 31: // Asocia Tecnicos a Empresa
     case 49: // Usuarios Conectados
+    case 70: // Control Master
 
         switch ($proc) {
             case 0:
@@ -161,24 +166,26 @@ switch ($index) {
             case 52:
 
                 $res = $fp->saveDataPDO($index, $cad, 0, 0, $var2);
+                //$ret[0] = array("msg" => $res);
                 // $ret[0]->msg = $res;
-
-                if (trim($res)!=="OK") {
+                
+                if (trim($res)!="OK") {
                     $pos = strpos($res, 'Duplicate');
-                    if ($pos >= 0) {
-                        $rmsg = "Valor DUPLICADO";
+
+                    if ($pos !== false) {
+                        $msg = "Valor DUPLICADO";
+                        $ret[0] = array("msg" => $msg);
                     } else {
                         //require_once('core/messages.php');
-                        $rmsg = str_replace("Table 'imsg_dbIMSG.", "", $res);
-                        $rmsg = str_replace("' doesn't exist", "", $rmsg);
+                        $msg = str_replace("Table 'imsg_dbIMSG.", "", $res);
+                        $msg = str_replace("' doesn't exist", "", $msg);
+                        $ret[0] = array("msg" => $msg);
                     }
-                    $ret[0] = array("msg" => $rmsg);
-                } else {
-                    $ret[0] =  array("msg" => $res);
+                    
+                }else{
+                    $ret[0] = array("msg" => $res);
                 }
-
-                //$ret[0] = array("msg" => $res);
-
+                
                 break;
 
             case 53:
@@ -203,8 +210,7 @@ switch ($index) {
                 break;
 
             case 56:
-                $res = $fp->refreshVencimientos($cad);
-                $ret[0]->msg = $res;
+                $ret = $fp->genAnalisisMarcas();
                 break;
 
             case 57:
@@ -220,6 +226,12 @@ switch ($index) {
             case 59:
                 $res = $fp->refreshBoletaPAIBI($cad);
                 $ret[0]->msg = $res;
+                break;
+
+            case 62:
+
+                $res = $fp->saveDataPDO($index, $cad, 0, 0, $var2);
+                $ret[0] = array("msg" => $res);                
                 break;
 
         }

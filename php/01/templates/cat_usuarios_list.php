@@ -44,7 +44,7 @@ $de       = $_POST['user'];
 							<th aria-label="iduser: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
 							<th aria-label="username: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> USERNAME</th>
 							<th aria-label="nombre_completo: activate to sort column ascending" style="width: 150px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">NOMBRE COMPLETO</th>
-							<th aria-label="foto: activate to sort column ascending" style="width: 20px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">IS PHOTO</th>
+							<th aria-label="nivel_de_acceso: activate to sort column ascending" style="width: 20px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">ROLE</th>
 							<th aria-label="" style="width: 80px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
@@ -109,9 +109,9 @@ jQuery(function($) {
 						tB +='				<td class=" ">';
 						tB +='					<a class="modUsuarioPro" href="#" id="idosr-'+item.iduser+'" >'+padl(item.iduser,4)+'</a>';
 						tB +='				</td>';
-						tB +='				<td class=" " >'+item.username+'</td>';
-						tB +='				<td class=" " >'+item.apellidos+' '+item.nombres+'</td>';
-						tB +='				<td class="center" >'+is_photo+'</td>';
+						tB +='				<td>'+item.username+'</td>';
+						tB +='				<td>'+item.apellidos+' '+item.nombres+'</td>';
+						tB +='				<td>'+item.nivel_de_acceso+'</td>';
 						tB +='				<td class=" ">';
 						tB +='					<div class="hidden-phone visible-desktop action-buttons">';
 						tB +='';

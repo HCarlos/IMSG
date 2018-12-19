@@ -249,13 +249,13 @@ class oCentura
                             case 0:
                                 parse_str($arg);
                                 $pass = md5($passwordL);
-                                $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario) as data
+                                $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario,'|',idsucursal,'|',sucursal) as data
 										FROM  _viUsuarios where username = '$username' and password = '$pass' and status_usuario = 1";
                                 break;
                             case 1:
                                 parse_str($arg);
                                 $pass = md5($passwordL);
-                                $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario) as data
+                                $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario,'|',idsucursal,'|',sucursal) as data
 										FROM  _viUsuarios where username = '$username' and password = '$pass' and status_usuario = 1";
                                 break;
                             case 2:
@@ -285,7 +285,9 @@ class oCentura
 																				WHEN '' THEN -1
 																				WHEN NULL THEN -2
 																				ELSE param1 END,'|',
-																		nombre_completo_usuario)
+																		nombre_completo_usuario,'|',
+                                                                        idsucursal,'|',
+                                                                        sucursal)
 														as data
 										FROM  _viUsuarios where username = '$username' and password = '$pass' and status_usuario = 1";
                                 break;
@@ -293,6 +295,12 @@ class oCentura
                         break;
                     case 1:
                         switch ($tipo) {
+                            case -1:
+                                parse_str($arg);
+                                $idemp = $this->getIdEmpFromAlias($u);
+                                $query = "SELECT sucursal as label, idsucursal as data
+                                        FROM cat_sucursales Order By data asc ";
+                                break;
                             case 0:
                                 parse_str($arg);
                                 $idemp = $this->getIdEmpFromAlias($u);
@@ -1458,8 +1466,8 @@ class oCentura
                                 parse_str($arg);
                                 $idusr = $this->getIdUserFromAlias($user);
                                 $idemp = $this->getIdEmpFromAlias($user);
-                                $query = "Insert Into cat_estados(clave,estado,status_estado,idemp,ip,host,creado_por,creado_el)
-											value( '$clave','$estado',
+                                $query = "Insert Into cat_estados(idsucursal,predeterminado,clave,estado,status_estado,idemp,ip,host,creado_por,creado_el)
+											value($idsucursal,$predeterminado,'$clave','$estado',
 												    $status_estado,$idemp,'$ip','$host',$idusr,NOW())";
                                 $result = mysql_query($query);
                                 $vRet = $result!=1? mysql_error():"OK";
@@ -1468,7 +1476,9 @@ class oCentura
                                  //$ar = $this->unserialice_force($arg);
                                 parse_str($arg);
                                 $idusr = $this->getIdUserFromAlias($user);
-                                $query = "update cat_estados set 	clave = '$clave',
+                                $query = "update cat_estados set clave = '$clave',
+                                                                idsucursal = $idsucursal,
+                                                                predeterminado = $predeterminado,
 															  	estado = '$estado',
 															  	status_estado = $status_estado,
 																ip = '$ip',
@@ -1492,9 +1502,9 @@ class oCentura
                                 parse_str($arg);
                                 $idusr = $this->getIdUserFromAlias($user);
                                 $idemp = $this->getIdEmpFromAlias($user);
-                                $query = "Insert Into cat_municipios(idestado,clave,municipio,status_municipio,idemp,ip,host,creado_por,creado_el)
+                                $query = "Insert Into cat_municipios(idestado,clave,municipio,status_municipio,idsucursal,predeterminado,idemp,ip,host,creado_por,creado_el)
 											value( $idestado, '$clave','$municipio',
-												    $status_municipio,$idemp,'$ip','$host',$idusr,NOW())";
+												    $status_municipio,$idsucursal,$predeterminado,$idemp,'$ip','$host',$idusr,NOW())";
                                 $result = mysql_query($query);
                                 $vRet = $result!=1? mysql_error():"OK";
                                 break;
@@ -1505,6 +1515,8 @@ class oCentura
                                 $query = "update cat_municipios set idestado = $idestado,
 																clave = '$clave',
 															  	municipio = '$municipio',
+                                                                idsucursal = $idsucursal,
+                                                                predeterminado = $predeterminado,
 															  	status_municipio = $status_municipio,
 																ip = '$ip',
 																host = '$host',

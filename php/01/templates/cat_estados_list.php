@@ -42,7 +42,9 @@ $de       = $_POST['user'];
 					<thead>
 						<tr role="row">
 							<th aria-label="idestado: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
+							<th aria-label="sucursal: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Sucursal</th>
 							<th aria-label="estado: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Estado</th>
+							<th aria-label="default: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Default</th>
 							<th aria-label="" style="width: 200px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
@@ -84,7 +86,7 @@ jQuery(function($) {
 	            			"sInfoFiltered": "(De _MAX_ registros)"
 	        			},
 	        "aaSorting": [[ 0, "desc" ]],
-			"aoColumns": [ null, null,  { "bSortable": false }],
+			"aoColumns": [ null, null, null, null,  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,
 			"bDestroy": false
@@ -101,14 +103,17 @@ jQuery(function($) {
 			function(json){
 
 					$.each(json, function(i, item) {
+						var def = item.predeterminado == 1 ? '<i class="icon icon-ok green"></i>': '';
 
 						tB +=' 			<tr class="odd">';
 						tB +='';
-						tB +='				<td class=" ">';
+						tB +='				<td>';
 						tB +='					<a href="#" >'+padl(item.idestado,4)+'</a>';
 						tB +='				</td>';
-						tB +='				<td class=" " >'+item.estado+'</td>';
-						tB +='				<td class=" ">';
+						tB +='				<td>'+item.sucursal+'</td>';
+						tB +='				<td>'+item.estado+'</td>';
+						tB +='				<td class="center">'+def+'</td>';
+						tB +='				<td>';
 						tB +='					<div class="hidden-phone visible-desktop action-buttons">';
 						tB +='';
 						tB +='						<a class="green modEstadoPro" href="#" id="idestado-'+item.idestado+'" >';

@@ -43,6 +43,41 @@
                             </li>
 
                             <li>
+                                <a href="#" id="cat_eqcat_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Categorias de Equipos</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_precios_categorias_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Categorias de Precios</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_unidades_medidas_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Unidades de Medida</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_precios_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Precios</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" id="cat_estados_list">
+                                    <i class="icon-edit"></i>
+                                    <span class="menu-text">Estados</span>
+                                </a>
+                            </li>
+
+                            <li>
                                 <a href="#" id="cat_municipios_list">
                                     <i class="icon-edit"></i>
                                     <span class="menu-text">Municipios</span>
@@ -138,6 +173,75 @@ jQuery(function($) {
         });
     }
 
+
+
+    if ($("#cat_eqcat_list").length) {
+        $("#cat_eqcat_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-equipo_categoria-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Categorías de Equipos'));
+                }, "html");
+            return false;
+        });
+    }
+
+
+    if ($("#cat_unidades_medidas_list").length) {
+        $("#cat_unidades_medidas_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-unidad_medida-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Unidades de Medida'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#cat_precios_categorias_list").length) {
+        $("#cat_precios_categorias_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-precio_categoria-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Categorías de Precios'));
+                }, "html");
+            return false;
+        });
+
+    }
+
+    if ($("#cat_precios_list").length) {
+        $("#cat_precios_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-precio-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Precios'));
+                }, "html");
+            return false;
+        });
+    }
+
+    
     if ($("#cat_estados_list").length) {
         $("#cat_estados_list").on("click", function(event) {
             event.preventDefault();
@@ -154,6 +258,7 @@ jQuery(function($) {
         });
     }
 
+    
     if ($("#cat_municipios_list").length) {
         $("#cat_municipios_list").on("click", function(event) {
             event.preventDefault();
@@ -168,7 +273,6 @@ jQuery(function($) {
                 }, "html");
             return false;
         });
-
     }
 
     $("#preloaderPrincipal").hide();

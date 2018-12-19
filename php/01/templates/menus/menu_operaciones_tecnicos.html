@@ -1,0 +1,217 @@
+<li class="open active " id="subMenuOperaciones">
+    <a href="#" class="dropdown-toggle">
+            <i class="icon-book"></i>
+            <span class="menu-text">Opciones</span>
+            <b class="arrow icon-angle-down"></b>
+    </a>
+
+    <ul class="submenu">
+
+        <li>
+            <a href="#" id="operaciones_list">
+                <i class="icon-edit"></i>
+                <span class="menu-text">Órdenes de Servicio</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" id="operaciones_list_vence">
+                <i class="icon-edit"></i>
+                <span class="menu-text">Status de Órdenes</span>
+            </a>
+        </li>
+<!-- 
+        <li>
+            <a href="#" id="operaciones_grid_marcas">
+                <i class="icon-dashboard"></i>
+                <span class="menu-text">Análisis por Marcas</span>
+            </a>
+        </li>
+ -->        
+    </ul>
+</li>
+
+<li class="open active " id="subMenuCatalogos">
+    <a href="#" class="dropdown-toggle">
+            <i class="icon-book"></i>
+            <span class="menu-text">Opciones</span>
+            <b class="arrow icon-angle-down"></b>
+    </a>
+
+    <ul class="submenu">
+
+        <li>
+            <a href="#" id="cat_personas_list">
+                <i class="icon-edit"></i>
+                <span class="menu-text">Personas</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" id="cat_empresas_list">
+                <i class="icon-edit"></i>
+                <span class="menu-text">Empresas</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" id="asoc_reptte_legal_to_empresa">
+                <i class="icon-edit"></i>
+                <span class="menu-text"> Contactos a Empresa</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#" id="asoc_tecnico_to_empresa">
+                <i class="icon-edit"></i>
+                <span class="menu-text"> Técnico a Empresa</span>
+            </a>
+        </li>
+
+
+    </ul>
+</li>
+
+<script type="text/javascript">
+jQuery(function($) {
+
+    $("#preloaderPrincipal").show();
+
+    if ($("#operaciones_list").length) {
+        $("#operaciones_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "ordenes-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Órdenes de Servicio'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#operaciones_list_vence").length) {
+        $("#operaciones_list_vence").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "ordenes-list-vence/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Top 50 Status sin cambio'));
+                }, "html");
+            return false;
+        });
+    }
+
+
+    if ($("#operaciones_grid_marcas").length) {
+        $("#operaciones_grid_marcas").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "ordenes-grid-marcas/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Análisis por Marcas'));
+                }, "html");
+            return false;
+        });
+    }
+
+
+    if ($("#cat_personas_list").length) {
+        $("#cat_personas_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-personas-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Personas'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#cat_empresas_list").length) {
+        $("#cat_empresas_list").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cat-empresas-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Catálogo de Empresas'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#asoc_reptte_legal_to_empresa").length) {
+        $("#asoc_reptte_legal_to_empresa").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "asoc-reptte-legal-to-empresa/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Asocia Contactos a una Empresa'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#asoc_tecnico_to_empresa").length) {
+        $("#asoc_tecnico_to_empresa").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "asoc-tecnico-to-empresa/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Asocia un Técnico a una Empresa'));
+                }, "html");
+            return false;
+        });
+    }
+
+
+
+    function cfgBase0(){
+        resizeScreen();
+        $("#contentLevel5").empty();
+        $("#contentLevel5").hide();
+        $("#contentLevel4").empty();
+        $("#contentLevel4").hide();
+        $("#contentLevel3").empty();
+        $("#contentLevel3").hide();
+        $("#contentProfile").empty();
+        $("#contentProfile").hide();
+        $("#contentMain").show();
+        $("#contentMain").empty();
+        $("#preloaderPrincipal").show();
+        obj.setIsTimeLine(false);
+    }
+
+
+    $("#preloaderPrincipal").hide();
+
+})
+
+</script>

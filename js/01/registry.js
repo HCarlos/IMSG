@@ -34,21 +34,21 @@ $("#frmLogin").on("submit", function(event) {
 					localStorage.nc = json[0].label;
 					var xim = json[0].data.split('|');
 					localStorage.IdUser = parseInt(xim[0]);
-				  // var stream = io.connect(obj.getValue(4));
-				  // stream.emit("cliente", {mensaje: "IMSG-CONECTADO-"+localStorage.IdUser+"-"+localStorage.nc });
 					localStorage.IdEmp = parseInt(xim[2]);
 					localStorage.Empresa = xim[3];
 					localStorage.IdUserNivelAcceso = parseInt(xim[4]);
 					localStorage.TRPP = parseInt(xim[5]); //registrosporpagina
-					//alert(localStorage.IdUserNivelAcceso);
 					if (parseInt(localStorage.IdUserNivelAcceso,0) <= 100){
 						localStorage.ClaveNivelAcceso = parseInt(xim[6])==null?0:parseInt(xim[6]);
 					}else{
 						localStorage.ClaveNivelAcceso = 0;
 					}
 					localStorage.Param1 = xim[7] == ''?'0':xim[7]; //param1
+					localStorage.Nombre_Completo = xim[8] == ''?'Desconocido':xim[8]; // nombre_completo_usuario
+					localStorage.IdPersona = xim[9] == ''?'0':xim[9]; //param1
+					localStorage.IdSucursal = xim[10] == ''?'0':xim[10]; 
+					localStorage.Sucursal = xim[11] == ''?'':xim[11]; 
 					obj.setIdUser(localStorage.IdUser, localStorage.nc);
-					// stream = null;
 
 					$.getUserConnect();
 

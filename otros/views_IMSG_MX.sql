@@ -1,4 +1,3 @@
-
 Create or Replace View  _viUsuarios As
 select u.iduser,
 		u.username,
@@ -26,6 +25,8 @@ select u.iduser,
 		u.idusernivelacceso,
 		un.nivel_de_acceso,
 		CASE WHEN un.clave IS NOT NULL THEN un.clave ELSE 0 END AS clave,
+		u.idsucursal,
+		suc.sucursal,
 		u.status_usuario,
 		u.token,
 		u.token_source,
@@ -40,7 +41,9 @@ Left Join cat_estados edo
 Left Join cat_municipios mun
 	On u.idmunicipio = mun.idmunicipio and u.idemp = mun.idemp
 Left Join usuarios_niveldeacceso un
-	On u.idusernivelacceso = un.idusernivelacceso and u.idemp = un.idemp;
+	On u.idusernivelacceso = un.idusernivelacceso and u.idemp = un.idemp
+Left Join cat_sucursales suc
+	On u.idsucursal = suc.idsucursal;
 
 
 Create or Replace View _viUsuariosConectados as
@@ -60,50 +63,86 @@ select
 	per.ap_paterno,
 	per.ap_materno,
 	per.nombre,
-	concat(per.ap_paterno, ' ', per.ap_materno, ' ', per.nombre) as nombre_persona,
+	concat(UCASE(TRIM(per.nombre)), ' ',UCASE(TRIM(per.ap_paterno)), ' ',UCASE(TRIM(per.ap_materno)) ) as nombre_persona,
 	per.tel1,
-	per.tel2,
+	concat(TRIM(per.tel1)) as tels_contacto,
 	per.cel1,
-	per.cel2,
+	concat(TRIM(per.cel1)) as cels_contacto,
 	per.email1,
-	per.email2,
-	per.curp,
+	concat(TRIM(per.email1)) as emails_contacto,
 	per.rfc,
-	per.lugar_nacimiento,
-	per.fecha_nacimiento,
-	DATE_FORMAT(per.fecha_nacimiento, '%d-%m-%Y') as cfecha_nacimiento,
+	per.razon_social,
 	per.genero,
-	per.ocupacion,
-	per.status_persona,
-	per.domicilio_generico,
 	per.calle,
 	per.num_ext,
 	per.num_int,
 	per.colonia,
 	per.localidad,
-	per.estado,
-	per.municipio,
+	per.idestado,
+	edo.estado,
+	per.idmunicipio,
+	mun.municipio,
 	per.pais,
 	per.cp,
-	per.lugar_trabajo,
+	concat(TRIM(per.calle), ' ', TRIM(per.num_ext), ' ',TRIM(per.num_int), ', ',TRIM(per.colonia), ', ',TRIM(per.localidad), ', ',TRIM(mun.municipio) ) as direccion,
+	per.status_persona,
 	per.idemp,
-	per.idusuario,
+	per.idusuario,	
+	e.rs as empresa,
+	u.iduser,
 	u.username,
-    nau.clave
+	u.password,
+	u.registrosporpagina,
+	u.param1,
+	concat(u.apellidos,' ',u.nombres) as nombre_completo_usuario,
+	u.status_usuario,
+	CASE WHEN nau.clave IS NOT NULL THEN nau.clave ELSE 0 END AS clave,
+    nau.idusernivelacceso,
+    per.isaddempresa,
+    per.idempresa,
+	emp.rfc as rfc_emp,
+	emp.razon_social as razon_social_emp,
+	emp.calle as calle_emp,
+	emp.num_ext as num_ext_emp,
+	emp.num_int as num_int_emp,
+	emp.colonia as colonia_emp,
+	emp.localidad as localidad_emp,
+	emp.estado as estado_emp,
+	emp.ciudad as municipio_emp,
+	emp.pais as pais_emp,
+	emp.cp as cp_emp,
+	emp.emails as emails_emp,
+    per.idsucursal,
+    s.sucursal
 from cat_personas per
 Left Join usuarios u
 	On per.idusuario = u.iduser and per.idemp = u.idemp
+	Left Join empresa e
+		On u.idemp = e.idemp	
     Left Join usuarios_niveldeacceso nau
-    	On u.idusernivelacceso = nau.idusernivelacceso and u.idemp = nau.idemp;
+    	On u.idusernivelacceso = nau.idusernivelacceso and u.idemp = nau.idemp
+Left Join cat_sucursales s
+	On per.idsucursal = s.idsucursal and per.idemp = s.idemp 	
+Left Join cat_estados edo
+	On per.idestado = edo.idestado and per.idemp = edo.idemp 	
+Left Join cat_municipios mun
+	On per.idmunicipio = mun.idmunicipio and per.idemp = edo.idemp	
+Left Join cat_empresas emp
+	On per.idempresa = emp.idempresa and per.idemp = emp.idemp; 	
 
-
+Create or Replace View _viEstados As
+select e.idestado, e.idsucursal, s.sucursal, e.estado, e.predeterminado, e.status_estado, e.idemp
+from cat_estados e
+Left Join cat_sucursales s
+	on e.idsucursal = s.idsucursal and e.idemp = s.idemp;
 
 Create or Replace View _viMunicipios As
-select m.idmunicipio, m.idestado, e.clave as clave_estado,e.estado, m.clave, m.municipio, m.status_municipio, m.idemp
+select m.idmunicipio, m.idsucursal, s.sucursal, m.idestado, e.clave as clave_estado,e.estado, m.clave, m.municipio, m.predeterminado, m.status_municipio, m.idemp
 from cat_municipios m
 Left Join cat_estados e
-	on m.idestado = e.idestado and m.idemp = e.idemp;
-
+	on m.idestado = e.idestado and m.idemp = e.idemp
+Left Join cat_sucursales s
+	on m.idsucursal = s.idsucursal and m.idemp = s.idemp;
 
 Create or Replace View _viEmpresas As
 select
@@ -124,6 +163,7 @@ select
 	e.idemp
 From cat_empresas e;
 
+
 Create or Replace View _viEmiFis As
 select ef.idemisorfiscal,
 	ef.rfc,
@@ -143,6 +183,7 @@ select ef.idemisorfiscal,
 	ef.is_iva,
 	ef.idemp
 From cat_emisores_fiscales ef
+
 
 Create or Replace View _viProductos As
 Select prod.idproducto,
@@ -170,249 +211,18 @@ Left Join cat_proveedores prov
 	On prod.idproveedor = prov.idproveedor and prod.idemp = prov.idemp
 
 
-Create or Replace View _viSolMatEnc As
-Select
-	sa.idsolicitanteautorizante,
-	sa.idautoriza,
-	sa.idsolicita,
-	ssme.idsolicituddematerial,
-	ssme.fecha_solicitud,
-	ssme.fecha_autorizacion,
-	ssme.fecha_entrega,
-	concat(u.apellidos,' ',u.nombres) as solicitante,
-	ssme.observaciones,
-	ssme.status_solicitud_de_material,
-	case ssme.status_solicitud_de_material
-	WHEN 0 then 'Sin Surtir'
-	WHEN 1 then 'Autorizado'
-	WHEN 2 then 'Surtido'
-	WHEN 3 then 'Entregado'
-	End as cEstatus,
-	ssme.idemp
-From solicitantes_vs_autorizantes sa
-Left Join solicitudes_de_material ssme
-	On sa.idsolicita = ssme.idsolicita and sa.idemp = ssme.idemp
-Left Join _viUsuarios u
-	On ssme.idsolicita = u.iduser and sa.idemp = u.idemp
-
-
-Create or Replace View _viSolMatDet As
-Select
-	ssmd.idsolicituddematerialdetalle,
-	ssmd.idsolicituddematerial,
-	prod.idproveedor,
-	prod.proveedor,
-	ssmd.idproducto,
-	prod.producto,
-	trim(prod.medida1) as medida1,
-	ssmd.idsolicita,
-	concat(sol.apellidos,' ',sol.nombres) as solicitante,
-	ssmd.idautoriza,
-	concat(aut.apellidos,' ',aut.nombres) as autorizante,
-	ssmd.identrega,
-	concat(ent.apellidos,' ',ent.nombres) as entregante,
-	ssmd.cantidad_solicitada,
-	ssmd.costo_unitario,
-	ssmd.importe_solicitado,
-	ssmd.cantidad_autorizada,
-	ssmd.importe_autorizado,
-	ssmd.cantidad_entregado,
-	ssmd.importe_entregado,
-	ssmd.idcolor,
-	col.color,
-	col.codigo_color_hex,
-	ssmd.fecha_solicitud,
-	ssmd.fecha_autorizacion,
-	ssmd.fecha_entrega,
-	ssmd.observaciones_solicitud,
-	ssmd.observaciones_autorizacion,
-	ssmd.observaciones_entrega,
-	ssmd.status_solicitud_de_materiales,
-	ssme.status_solicitud_de_material,
-	ssmd.idemp
-From solicitudes_de_material_detalles ssmd
-Left Join solicitudes_de_material ssme
-	On ssmd.idsolicituddematerial = ssme.idsolicituddematerial and ssmd.idemp = ssme.idemp
-Left Join _viProductos prod
-	On ssmd.idproducto = prod.idproducto and ssmd.idemp = prod.idemp
-Left Join _viUsuarios sol
-	On ssmd.idsolicita = sol.iduser and ssmd.idemp = sol.idemp
-Left Join _viUsuarios aut
-	On ssmd.idautoriza = aut.iduser and ssmd.idemp = aut.idemp
-Left Join _viUsuarios ent
-	On ssmd.identrega = ent.iduser and ssmd.idemp = ent.idemp
-Left Join cat_colores col
-	On ssmd.idcolor = col.idcolor and ssmd.idemp = col.idemp
-
-Create or Replace View _viSupervisorSolMat As
-Select
-	supsm.idsupervisorsolmat,
-	supsm.idusersupervisorsolmat,
-	concat(u.apellidos,' ',u.nombres) as autorizan,
-	supsm.status_supervisor_sol_mat,
-	supsm.idemp
-From cat_supervisores_sol_mat supsm
-lEFT jOIN _viUsuarios u
-	On supsm.idusersupervisorsolmat = u.iduser and supsm.idemp = u.idemp
-
-
-
-Create or Replace View _viSupervisorEntrega As
-Select
-	supe.idsupervisorentrega,
-	supe.idusersupervisorentrega,
-	concat(u.apellidos,' ',u.nombres) as entregan,
-	supe.status_supervisor_entrega,
-	supe.idemp
-From cat_supervisores_entrega supe
-lEFT jOIN _viUsuarios u
-	On supe.idusersupervisorentrega = u.iduser and supe.idemp = u.idemp
-
-
-
-Create or Replace View _viSolAut As
-select
-	solaut.idsolicitanteautorizante,
-	solaut.idautoriza,
-	concat(u0.apellidos,' ',u0.nombres) as autorizan,
-	solaut.idsolicita,
-	concat(u1.apellidos,' ',u1.nombres) as solicitan,
-	solaut.status_solicita_autoriza,
-	solaut.idemp
-from solicitantes_vs_autorizantes solaut
-Left Join _viUsuarios u0
-	on solaut.idautoriza = u0.iduser and solaut.idemp = u0.idemp
-Left Join _viUsuarios u1
-	on solaut.idsolicita = u1.iduser and solaut.idemp = u1.idemp
-
-Create or Replace View _viComMensajes As
-Select
-	msj.idcommensaje,
-	msj.iduserpropietario,
-	concat(userprop.apellidos,' ',userprop.nombres) as nombre_propietario,
-	userprop.foto,
-	userprop.nivel_de_acceso,
-	msj.titulo_mensaje,
-	msj.mensaje,
-	msj.fecha,
-	DATE_FORMAT(msj.fecha, '%d-%m-%Y') as cfecha,
-	msj.lecturas,
-	msj.respuestas,
-	msj.lecturas_nuevas,
-	msj.respuestas_nuevas,
-	msj.archivos,
-	msj.destinatarios,
-	msj.status_mensaje,
-	msj.idciclo,
-	msj.idemp
-From com_mensajes msj
-Left Join _viUsuarios userprop
-	On msj.iduserpropietario = userprop.iduser and msj.idemp = userprop.idemp
-
-
-
-Create or Replace View _viComMensajeDestinatarios As
-Select
-	gd.idcommensajedestinatario,
-	gd.idcomgrupo,
-	msj.titulo_mensaje,
-	msj.fecha,
-	msj.lecturas,
-	msj.respuestas,
-	gpo.grupo,
-	gd.idcommensaje,
-	gd.isleida,
-	gd.fecha_leida,
-	gd.isrespuesta,
-	gd.fecha_respuesta,
-	gd.iteracciones,
-	gd.archivos,
-	gd.status_mensaje_destinatario,
-	gd.idremitente,
-	concat(rem.apellidos,' ',rem.nombres) as nombre_remitente,
-	rem.foto as foto_remitente,
-	rem.nivel_de_acceso as nivel_de_acceso_remitente,
-	gd.iddestinatario,
-	concat(dest.apellidos,' ',dest.nombres) as nombre_destinatario,
-	dest.foto as foto_destinatario,
-	dest.nivel_de_acceso as nivel_de_acceso_destinatario,
-	msj.status_mensaje,
-	gd.idemp
-From com_mensaje_dest gd
-Left Join com_grupos gpo
-	On gd.idcomgrupo = gpo.idcomgrupo and gd.idemp = gpo.idemp
-Left Join com_mensajes msj
-	On gd.idcommensaje = msj.idcommensaje and gd.idemp = msj.idemp
-Left Join _viUsuarios rem
-	On gd.idremitente = rem.iduser and gd.idemp = rem.idemp
-Left Join _viUsuarios dest
-	On gd.iddestinatario = dest.iduser and gd.idemp = dest.idemp
-
-
-
-Create or Replace View _viComGpoUser As
-Select
-	aug.idcomuserasocgpo,
-	aug.idcomgrupo,
-	g.grupo,
-	aug.iduser,
-	concat(u.apellidos,' ',u.nombres) as usuario,
-	aug.status_com_usuario_asoc_grupo,
-	aug.idemp
-From com_usuarios_asoc_grupos aug
-Left Join com_grupos g
-	On aug.idcomgrupo = g.idcomgrupo and aug.idemp = g.idemp
-Left Join _viUsuarios u
-	On aug.iduser = u.iduser and aug.idemp = u.idemp
-
-
-
-Create or Replace View _viComMenDestResp As
-Select
-	mr.idcommensajedestinatariorespuesta,
-	mr.idcommensajedestinatario,
-	mr.respuesta,
-	mr.fecha_respuesta,
-	mr.idparent,
-	dest.username as username_destinatario,
-	dest.apellidos as apellidos_destinatario,
-	dest.nombres as nombres_destinatario,
-	dest.foto as foto_destinatario,
-	dest.nivel_de_acceso,
-	mr.status_mensaje_destinatario_respuesta,
-	mr.idemp
-From com_mensaje_dest_respuestas mr
-Left Join _viUsuarios dest
-	On mr.idparent = dest.iduser and mr.idemp = dest.idemp
-
-
-Create or Replace View _viPDFs as
-Select
-	btns.idpdf,
-	btns.idnivel,
-	CASE WHEN btns.idnivel = 0 THEN 'TODOS' ELSE cn.nivel END AS nivel,
-	btns.pdf,
-	btns.ruta,
-	btns.fecha,
-	btns.categoria_pdf,
-	btns.status_pdf,
-	btns.idciclo,
-	cc.ciclo,
-	btns.idemp
-	From cat_pdfs btns
-Left Join cat_niveles cn
-	On btns.idnivel = cn.idnivel and btns.idemp = cn.idemp
-Left Join cat_ciclos cc
-	On btns.idciclo = cc.idciclo and btns.idemp = cc.idemp
-
-
 CREATE OR REPLACE VIEW _viEmpresaRepteLegal AS
 SELECT
     rem.idempresarepresentantelegal,
     rem.idrepresentantelegal,
-    per.nombre_persona as reptte_legal,
     rem.idempresa,
+    per.nombre_persona as reptte_legal,
+    per.tels_contacto,
+    per.cels_contacto,
+    per.emails_contacto,
+    per.direccion,
     emp.razon_social as empresa,
+    emp.emails as emails_empresa,
     rem.status_empresa_reptte_legal,
     rem.idemp
 FROM empresas_reptte_legal rem
@@ -425,9 +235,9 @@ LEFT JOIN _viEmpresas emp
 CREATE OR REPLACE VIEW _viEmpresaTecnico AS
 SELECT
     ete.idempresatecnico,
+    ete.idtecnico,
     ete.idempresa,
     emp.razon_social as empresa,
-    ete.idtecnico,
     per.nombre_persona as tecnico,
     ete.status_empresa_tecnico,
     ete.idemp
@@ -436,3 +246,227 @@ LEFT JOIN _viPersonas per
     ON ete.idtecnico = per.idpersona AND ete.idemp = per.idemp
 LEFT JOIN _viEmpresas emp
     ON ete.idempresa = emp.idempresa AND ete.idemp = emp.idemp
+
+
+CREATE OR REPLACE VIEW _viControlDetalleUnico AS
+SELECT
+dti.idcontrolmaster, 
+dti.idequipocategoria, 
+dti.equipo, 
+dti.idmarca, 
+dti.marca, 
+dti.modelo, 
+dti.serie, 
+dti.no_parte, 
+dti.version, 
+dti.submodelo, 
+dti.num_pedido, 
+dti.contar, 
+dti.status_detalle,
+dti.idemp
+From control_detalle as dti
+group by dti.idcontrolmaster
+Order by idcontrolmaster asc 
+
+
+CREATE OR REPLACE VIEW _viControlMaster AS
+SELECT
+	ord.idcontrolmaster, 
+	ord.idempresa,
+	ord.idsucursal,
+	ord.idmodulo, 
+	mar.marca,
+	ord.idcliente, 
+	cli.reptte_legal,
+	cli.empresa,
+	cli.tels_contacto,
+	cli.cels_contacto,
+	cli.emails_contacto,
+	cli.direccion,
+	ord.idtecnico,
+	tec.tecnico, 
+	ord.idrecibio, 
+	per.nombre_persona, 
+	ord.responsable, 
+	ord.garantia, 
+	ord.contrato, 
+	ord.tipo, 
+	ord.mantto, 
+	ord.fentrada, 
+	ord.hora, 
+	ord.fsalida, 
+	ord.folgen, 
+	ord.folmod, 
+	ord.cargo, 
+	ord.status, 
+	col.descripcion,
+	col.codigo_color_hex,
+	ord.no_venta, 
+	ord.no_factura, 
+	ord.falla, 
+	ord.accesorios, 
+	ord.observaciones, 
+	ord.trabajo, 
+	ord.comment, 
+	ord.idclienterecibioentrega,
+	per1.nombre_persona as cliente_que_recibio,
+	ord.idtecnicoentrego,
+	per2.nombre_persona as tecnico_que_entrego,
+	dtu.equipo,
+	dtu.marca  as marca_det,
+	dtu.modelo,
+	dtu.serie,
+	ord.status_master, 
+	suc.sucursal,
+	ord.idemp,
+	ord.creado_el,
+	ord.modi_el
+FROM control_master ord 
+LEFT JOIN cat_marcas mar 
+	ON ord.idmodulo = mar.idmarca AND ord.idemp = mar.idemp 
+LEFT JOIN _viEmpresaRepteLegal cli 
+	ON ord.idcliente = cli.idrepresentantelegal AND ord.idempresa = cli.idempresa AND ord.idemp = cli.idemp 
+LEFT JOIN _viEmpresaTecnico tec 
+	ON ord.idtecnico = tec.idtecnico AND ord.idempresa = tec.idempresa AND ord.idemp = tec.idemp 
+LEFT JOIN _viPersonas per 
+	ON ord.idrecibio = per.idpersona AND ord.idemp = per.idemp 
+LEFT JOIN cat_colores col 
+	ON ord.status = col.idcolor AND ord.idemp = col.idemp 
+LEFT JOIN _viPersonas per1 
+	ON ord.idclienterecibioentrega = per1.idpersona AND ord.idemp = per1.idemp 
+LEFT JOIN _viPersonas per2 
+	ON ord.idtecnicoentrego = per2.idpersona AND ord.idemp = per2.idemp 
+LEFT JOIN _viControlDetalleUnico dtu 
+	ON ord.idcontrolmaster = dtu.idcontrolmaster AND ord.idemp = dtu.idemp 
+LEFT JOIN cat_sucursales suc 
+	ON ord.idsucursal = suc.idsucursal AND ord.idemp = suc.idemp; 
+
+
+CREATE OR REPLACE VIEW _viPrecios AS
+SELECT
+	pre.idprecio, 
+	pre.codigo, 
+	pre.concepto, 
+	pre.idunidadmedida,
+	med.clave AS clave_unidad,
+	med.unidad_medida, 
+	pre.precio_unitario, 
+	pre.idpreciocategoria,
+	cat.clave AS clave_categoria,
+	cat.precio_categoria, 
+	pre.tipo, 
+	pre.status_precio_unitario, 
+	pre.idemp 
+FROM cat_precios pre 
+LEFT JOIN cat_unidades_medidas med 
+	 ON pre.idunidadmedida = med.idunidadmedida AND pre.idemp = med.idemp 
+LEFT JOIN cat_precios_categorias cat 
+	 ON pre.idpreciocategoria = cat.idpreciocategoria AND pre.idemp = cat.idemp 
+
+
+CREATE OR REPLACE VIEW _viControlImporte AS
+SELECT
+cim.idimporte, 
+cim.idcontrolmaster, 
+cim.cantidad, 
+cim.idprecio, 
+cim.codigo, 
+cim.precio_unitario, 
+cim.importe, 
+cim.observaciones,
+pre.clave_unidad,
+pre.unidad_medida,
+pre.clave_categoria,
+pre.precio_categoria,
+cim.status_importe
+FROM control_importe cim 
+LEFT JOIN _viPrecios pre 
+	ON cim.idprecio = pre.idprecio AND cim.idemp = pre.idemp 
+
+
+CREATE OR REPLACE VIEW _viControlComentarios AS
+SELECT
+	cco.idcontrolcomentario, 
+	cco.idcontrolmaster, 
+	cco.iduser, 
+	per.nombre_persona,
+	per.username,
+	cco.comentario, 
+	cco.fecha, 
+	cco.idemp 
+FROM control_comentarios cco 
+LEFT JOIN _viPersonas per 
+	ON cco.iduser = per.idusuario AND cco.idemp = per.idemp 
+
+-- LEFT JOIN _viControlMaster cma 
+-- 	ON cco.idcontrolmaster = cma.idcontrolmaster AND cco.idemp = cma.idemp 
+
+
+CREATE OR REPLACE VIEW _viConlMasDifFec AS
+SELECT
+	ord.idcontrolmaster, 
+	ord.idempresa,
+	ord.idmodulo, 
+	mar.marca,
+	ord.idcliente, 
+	cli.reptte_legal,
+	cli.empresa,
+	ord.idtecnico,
+	tec.tecnico, 
+	ord.idrecibio, 
+	per.nombre_persona, 
+	ord.responsable, 
+	ord.garantia, 
+	ord.contrato, 
+	ord.tipo, 
+	ord.mantto, 
+	ord.fentrada, 
+	ord.hora, 
+	ord.fsalida, 
+	ord.folgen, 
+	ord.folmod, 
+	ord.status, 
+	col.descripcion,
+	col.codigo_color_hex,
+	ord.no_venta, 
+	ord.no_factura, 
+	ord.falla, 
+	ord.accesorios, 
+	ord.observaciones, 
+	ord.trabajo, 
+	ord.comment, 
+	ord.idclienterecibioentrega,
+	per1.nombre_persona as cliente_que_recibio,
+	ord.idtecnicoentrego,
+	per2.nombre_persona as tecnico_que_entrego,
+	ord.status_master,
+	ord.status_anterior,
+	ord.status_actual,
+	ord.fecha_change_status,
+	DATEDIFF(NOW(), ord.fecha_change_status) as dias_dif_enteros, 
+	TIMESTAMPDIFF(DAY, ord.fecha_change_status, NOW()) as dias_dif_exactos, 
+	DATEDIFF(NOW(), ord.fentrada) as dias_dif_enteros_orden, 
+	dtu.marca  as marca_det,
+	dtu.modelo,
+	dtu.serie,
+	ord.idemp,
+	ord.creado_el,
+	ord.modi_el
+FROM control_master ord 
+LEFT JOIN cat_marcas mar 
+	ON ord.idmodulo = mar.idmarca AND ord.idemp = mar.idemp 
+LEFT JOIN _viEmpresaRepteLegal cli 
+	ON ord.idcliente = cli.idrepresentantelegal AND ord.idempresa = cli.idempresa AND ord.idemp = cli.idemp 
+LEFT JOIN _viEmpresaTecnico tec 
+	ON ord.idtecnico = tec.idtecnico AND ord.idempresa = tec.idempresa AND ord.idemp = tec.idemp 
+LEFT JOIN _viPersonas per 
+	ON ord.idrecibio = per.idpersona AND ord.idemp = per.idemp 
+LEFT JOIN cat_colores col 
+	ON ord.status = col.idcolor AND ord.idemp = col.idemp AND col.status_color = 1  
+LEFT JOIN _viPersonas per1 
+	ON ord.idclienterecibioentrega = per1.idpersona AND ord.idemp = per1.idemp 
+LEFT JOIN _viPersonas per2 
+	ON ord.idtecnicoentrego = per2.idpersona AND ord.idemp = per2.idemp 
+LEFT JOIN _viControlDetalleUnico dtu 
+	ON ord.idcontrolmaster = dtu.idcontrolmaster AND ord.idemp = dtu.idemp 
+

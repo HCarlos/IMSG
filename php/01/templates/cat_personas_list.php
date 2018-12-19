@@ -8,7 +8,7 @@ $F = oFunctions::getInstance();
 require_once("../oCentura.php");
 $f = oCentura::getInstance();
 
-$de       = $_POST['user'];
+//$de       = $_POST['user'];
 
 ?>
 <div  class="row-fluid">
@@ -31,7 +31,7 @@ $de       = $_POST['user'];
                 <td style="width:5em;">
 					<span class="ui-separator marginLeft1em"></span>
 				</td>
-                <td>
+<!--                <td>
         			<label>
         				<input name="ranQry01" id="ranQry01" class="ace ranQry01" type="radio" value="0" checked >
         				<span class="lbl"> A - B</span>
@@ -40,7 +40,7 @@ $de       = $_POST['user'];
                 <td style="width:2em;">
 					<span class="ui-separator marginLeft1em"></span>
 				</td>
-                <td>
+                 <td>
         			<label>
         				<input name="ranQry01" id="ranQry01" class="ace ranQry01" type="radio" value="1"  >
         				<span class="lbl"> C - E</span>
@@ -75,13 +75,13 @@ $de       = $_POST['user'];
                 </td>
                 <td style="width:2em;">
 					<span class="ui-separator marginLeft1em"></span>
-				</td>
+				</td> 
                 <td>
                     <label>
                         <input name="ranQry01" id="ranQry03" class="ace ranQry01" type="radio" value="5">
                         <span class="lbl"> S - Z</span>
                     </label>
-                </td>
+                </td>-->
 
 			</tr>
 		</tbody>
@@ -139,7 +139,7 @@ jQuery(function($) {
 	            			"sInfoEmpty": "No existen datos",
 	            			"sInfoFiltered": "(De _MAX_ registros)"
 	        			},
-	        "aaSorting": [[ 1, "asc" ]],
+	        "aaSorting": [[ 0, "desc" ]],
 			"aoColumns": [ null, null, null,  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,

@@ -42,7 +42,8 @@ $de       = $_POST['user'];
 					<thead>
 						<tr role="row">
 							<th aria-label="IdMarca: activate to sort column ascending" style="width: 80px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="0" role="columnheader" class="sorting" >ID</th>
-							<th aria-label="marca: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">marca</th>
+							<th aria-label="marca: activate to sort column ascending" style="width: 200px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="1" role="columnheader" class="sorting">Marca</th>
+							<th aria-label="logo: activate to sort column ascending" style="width: 100px;" colspan="1" rowspan="1" aria-controls="sample-table-2" tabindex="2" role="columnheader" class="sorting"></th>
 							<th aria-label="" style="width: 200px;" colspan="1" rowspan="1" role="columnheader" class="sorting_disabled"></th>
 						</tr>
 					</thead>
@@ -84,7 +85,7 @@ jQuery(function($) {
 	            			"sInfoFiltered": "(De _MAX_ registros)"
 	        			},
 	        "aaSorting": [[ 0, "desc" ]],
-			"aoColumns": [ null, null,  { "bSortable": false }],
+			"aoColumns": [ null, null, { "bSortable": false },  { "bSortable": false }],
 			"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
 			"bRetrieve": true,
 			"bDestroy": false
@@ -102,24 +103,31 @@ jQuery(function($) {
 
 					$.each(json, function(i, item) {
 
+                    	var strx = item.imagen.split(".");
+                    	var imgPath = obj.getValue(0) + "up_empresa/"+strx[0]+"."+strx[1];
+                    	d = new Date();
 						tB +=' 			<tr class="odd">';
 						tB +='';
 						tB +='				<td>';
 						tB +='					<a href="#" >'+padl(item.idmarca,4)+'</a>';
 						tB +='				</td>';
 						tB +='				<td>'+item.marca+'</td>';
+						tB +='				<td><img src="'+imgPath+"?timestamp="+d.getTime()+'" width="100" height="80" /></td>';
 						tB +='				<td>';
 						tB +='					<div class="visible-desktop action-buttons">';
 						tB +='';
 						tB +='						<a class="green modMarcaPro" href="#" id="IdMarca-'+item.idmarca+'" >';
 						tB +='							<i class="icon-pencil bigger-130"></i>';
 						tB +='						</a>';
-						tB +='	';
-						tB +='						<a class="red delMarca" href="#"  id="delMarca-'+item.idmarca+'" >';
+						tB +='';
+						tB +='						<a class="red delMarca" href="#"  id="delMarca-'+item.idmarca+'-'+item.imagen+'" >';
 						tB +='							<i class="icon-trash bigger-130"></i>';
 						tB +='						</a>';
-						tB +='					</div>';
 						tB +='';
+						tB +='						<a class="orange modMarcaImg" href="#" id="IdMarca-'+item.idmarca+'" >';
+						tB +='							<i class="fa fa-picture-o bigger-130" aria-hidden="true"></i>';
+						tB +='						</a>';
+						tB +='					</div>';
 						tB +='				</td>';
 						tB +='			</tr>';
 					});
@@ -131,7 +139,14 @@ jQuery(function($) {
 						event.preventDefault();
 						var arr = event.currentTarget.id.split('-');
 						obj.setIsTimeLine(false);
-						getPropMarca(arr[1]);
+						getPropMarca(arr[1],1);
+					});
+
+					$(".modMarcaImg").on("click",function(event){
+						event.preventDefault();
+						var arr = event.currentTarget.id.split('-');
+						obj.setIsTimeLine(false);
+						getPropMarca(arr[1],2);
 					});
 
 					$(".delMarca").on("click",function(event){
@@ -141,14 +156,27 @@ jQuery(function($) {
 						if (resp){
 							var arr = event.currentTarget.id.split('-');
 							obj.setIsTimeLine(false);
-				            $.post(obj.getValue(0) + "data/", {o:5, t:2, c:arr[1], p:52, from:0, cantidad:0, s:''},
-				            function(json) {
-				            		if (json[0].msg=="OK"){
+							var data = new FormData();
+							var dt = "idmarca="+arr[1]+"&img="+arr[2];
+							data.append('data', dt);
+
+							$.ajax({
+							    url:obj.getValue(0)+"fu-marca-01-delete/",
+							    data: data,
+							    cache: false,
+							    contentType: false,
+							    processData: false,
+							    dataType: 'json',
+							    type: 'POST',
+							    success: function(json){
+							        alert(json.message);			           
+							    	if (json.status=="OK"){
 										onClickFillTable();
-				        			}else{
-				        				alert(json[0].msg);
-				        			}
-				        	}, "json");
+							       	}
+							       	$("#preloaderPrincipal").hide();
+							    }
+							});
+
 			        	}
 
 					});
@@ -190,13 +218,25 @@ jQuery(function($) {
 		event.preventDefault();
 
 		obj.setIsTimeLine(false);
-		getPropMarca(0);
+		getPropMarca(0,0);
 
 	})
 
-	function getPropMarca(IdMarca){
+	function getPropMarca(IdMarca,tEvent){
 		var nc = localStorage.nc;
-		$.post(obj.getValue(0) + "cat-marcas-prop/", {
+		var url = "";
+		switch(tEvent){
+			case 0:
+					url = "cat-marcas-prop-new/";
+					break;
+			case 1:
+					url = "cat-marcas-prop-edit/";
+					break;
+			case 2:
+					url = "cat-marcas-prop-image-change/";
+					break;
+		}
+		$.post(obj.getValue(0) + url, {
 				user: nc,
 				idmarca: IdMarca
 			},

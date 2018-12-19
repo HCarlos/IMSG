@@ -1,0 +1,49 @@
+REUNIÓN IMSG :: 24-03-2018
+
+EN ORDEN: MODULAR (for search) Ya esta, se llama 'folmod'
+
+EN LA PESTAÑA DE EQUIPO:
+
+- Agregar los campos: VERSION, SUBMODELO, NUM_PEDIDO (for search)
+
+- Agregar el campo: VIÁTICOS EN "PRECIOS"
+
+- Reingeniería del Módulo de Status. Manejo de "Notificaciones".
+
+- Recordatorios de Status en Espera...
+
+MODULO DE COMPRAS DE REFACCIONES: 
+
+- Número de Partes.
+
+-----------------------------------------------------------------------------
+
+REUNIÓN IMSG :: 17-11-2018
+
+- Agregar Tabla de Sucursales.
+
+- Agregar combo : Estado - Municipio
+
+- Exigir un Teléfono Fijo y 1 Num Cel.
+
+- Validar para personas física, que no se duplique la captura de datos.
+
+- En la Orden de Servicio, en los combos, seguir el formato N-APP-APM
+
+- Que Trabajo Realizado no se active, hasta que cambie el Status.
+
+- En la órden de servicio debe llevar la dicrección, los tels y los emails de la empresa.
+
+- La orden de trabajo, solo la pueden modificar el personal autorizado por el CEO.
+
+- El módulo solo aplica cuando el garatía y cuando es servicio externo.
+
+- Title en icons-action button
+
+- Que no se cierre, sino no hay precios, ni fallas, ni trabajo realizado.
+
+
+
+
+
+

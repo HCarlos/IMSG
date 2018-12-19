@@ -137,7 +137,7 @@ jQuery(function($) {
 
 					$(".modempresaPro").on("click",function(event){
 						event.preventDefault();
-						var arr = event.currentTarget.id.split('-');
+						var arr = event.currentTarget.id.split('-'); 
 						obj.setIsTimeLine(false);
 						getPropempresa(arr[1]);
 					});
@@ -150,18 +150,16 @@ jQuery(function($) {
 						//return false;
 						if (resp){
 							var arr = event.currentTarget.id.split('-');
-							//alert(arr[1]);
 							obj.setIsTimeLine(false);
-				            $.post(obj.getValue(0) + "data/", {o:4, t:2, c:arr[1], p:2, from:0, cantidad:0, s:''},
+				            $.post(obj.getValue(0) + "data/", {o:4, t:2, c:arr[1], p:52, from:0, cantidad:0, s:''},
 				            function(json) {
-				            		if (json[0].msg=="OK"){
-										onClickFillTable();
-				        			}else{
-				        				alert(json[0].msg);
-				        			}
+			            		if (json[0].msg=="OK"){
+									onClickFillTable();
+			        			}else{
+			        				alert(json[0].msg);
+			        			}
 				        	}, "json");
 			        	}
-
 					});
 
 					if (init==true){

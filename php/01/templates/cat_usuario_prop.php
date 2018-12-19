@@ -243,6 +243,7 @@ jQuery(function($) {
 	});
 
 	function getUserNivelAcceso(){
+	    $("#idusernivelacceso").append('<option value="0">Seleccione un Nivel de Acceso</option>');
 	    var nc = "u="+localStorage.nc+"&idemp="+localStorage.IdEmp;
 	    $.post(obj.getValue(0)+"data/", { o:0, t:2, p:51,c:nc,from:0,cantidad:0, s:"" },
 	        function(json){
@@ -252,9 +253,9 @@ jQuery(function($) {
 
 				if (iduser<=0){ // Nuevo Registro
 					$("#title").html("Nuevo registro");
-					$("#username").val("");
-					$("#password1").val("");
-					$("#password2").val("");
+					$("#username").empty();
+					$("#password1").empty();
+					$("#password2").empty();
 					$("#username").focus();
 
 				}else{ // Editar Registro

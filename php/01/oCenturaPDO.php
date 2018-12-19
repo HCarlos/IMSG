@@ -104,6 +104,7 @@ class oCenturaPDO
         } else {
             $ret= $result[0]->iduser;
         }
+        $Conn = null;
         return $ret;
     }
 
@@ -119,6 +120,7 @@ class oCenturaPDO
         } else {
             $ret= $result[0]->iduser;
         }
+        $Conn = null;
         return $ret;
     }
 
@@ -134,7 +136,7 @@ class oCenturaPDO
         } else {
             $ret= $result[0]->valor;
         }
-
+        $Conn = null;
         return $ret;
     }
 
@@ -149,7 +151,38 @@ class oCenturaPDO
         } else {
             $ret= $result[0]->rs;
         }
+        $Conn = null;
         return $ret;
+    }
+
+    public function getPubIdEmp($user="")
+    {
+        $idemp = $this->getIdEmpFromAlias($user);
+        return $idemp;
+    }
+
+    public function getPubIdUser($user="")
+    {
+        $idusr = $this->getIdUserFromAlias($user);
+        return $idusr;
+    }
+
+    public function isExistUserFromEmp($user="")
+    {
+        $idemp = $this->getPubIdEmp($user);
+        $query = "select iduser from usuarios where username = '$user' and status_usuario = 1 and idemp = ".$idemp." limit 1";
+       
+        $Conn = new voConnPDO();
+        $result = $Conn->queryFetchAllAssocOBJ($query);
+
+        if (!$result) {
+            $ret=0;
+        } else {
+            $ret= $result[0]->iduser;
+        }
+        $Conn = null;
+        return $ret;
+
     }
 
     public function guardarDatos($query="")
@@ -164,6 +197,39 @@ class oCenturaPDO
             $ret = "OK";
         }
 
+        $Conn = null;
+        return $ret;
+    }
+
+    public function getLastID($query=""){
+        $Conn = new voConnPDO();
+        $result = $Conn->queryFetchAllAssocOBJ($query);
+        if (!$result) {
+            $ret=0;
+        } else {
+            $ret= $result[0]->Id;
+        }
+        $Conn = null;
+        return $ret;
+    }
+
+    public function guardarDatosOrden($query="",$id="",$table="")
+    {
+        $Conn = new voConnPDO();
+        $result = $Conn->exec($query);
+        $qry = "SELECT MAX( $id ) AS Id FROM $table";
+
+        if (!$result) {
+            $rt  = $Conn->errorInfo();
+            if (is_null($rt[2]) ) {
+                $ret = $this->getLastID($qry);
+            }else{
+                $ret = -1;                
+            }
+            // $ret = is_null($rt[2]) ? "OK" : $rt[2];
+        } else {
+               $ret = $this->getLastID($qry);
+         }
         $Conn = null;
         return $ret;
     }
@@ -197,11 +263,29 @@ class oCenturaPDO
         $query="";
         switch ($tipo) {
 
+                    case -4:
+
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT estado as label, idestado as data, predeterminado
+                                FROM cat_estados WHERE idemp = $idemp AND status_estado = 1
+                                AND idsucursal = $otros 
+                                Order By data asc ";
+                        break;
+
+                    case -3:
+
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT sucursal as label, idsucursal as data
+                                FROM cat_sucursales Order By data asc ";
+                        break;
+
                     case -2:
 
                         parse_str($arg);
                         $idemp = $this->getIdEmpFromAlias($u);
-                        $query = "SELECT municipio as label, idmunicipio as data
+                        $query = "SELECT municipio as label, idmunicipio as data, predeterminado
 								FROM cat_municipios WHERE idestado = $otros AND status_municipio = 1 AND idemp = $idemp
 								Order By data asc ";
                         break;
@@ -210,7 +294,7 @@ class oCenturaPDO
 
                         parse_str($arg);
                         $idemp = $this->getIdEmpFromAlias($u);
-                        $query = "SELECT estado as label, idestado as data
+                        $query = "SELECT estado as label, idestado as data, predeterminado
 								FROM cat_estados WHERE idemp = $idemp AND status_estado = 1
 								Order By data asc ";
                         break;
@@ -219,9 +303,85 @@ class oCenturaPDO
 
                         parse_str($arg);
                         $pass = md5($passwordL);
-                        $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario) as data
-								FROM  _viUsuarios WHERE username = '$username' AND password = '$pass' AND status_usuario = 1";
+                        $query = "SELECT username as label, concat(iduser,'|',password,'|',idemp,'|',empresa,'|',idusernivelacceso,'|',registrosporpagina,'|',clave,'|',param1,'|',nombre_completo_usuario,'|',idpersona,'|',idsucursal,'|',sucursal) as data
+								FROM  _viPersonas WHERE username = '$username' AND password = '$pass' AND status_usuario = 1";
                         break;
+
+                    case 76:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT *
+                                        FROM cat_colores
+                                    Where idemp = $idemp order by idcolor asc";
+                        break;
+
+                    case 77:
+                        $query = "SELECT *
+                                        FROM cat_colores
+                                    where idcolor = $arg ";
+                        break;
+
+                    case 78:
+                        $query = "SELECT idrepresentantelegal as data, reptte_legal as label
+                                        FROM _viEmpresaRepteLegal
+                                    where idempresa = $arg ";
+                        break;
+
+                    case 79:
+                        $query = "SELECT idtecnico as data, tecnico as label
+                                        FROM _viEmpresaTecnico
+                                    where idempresa = $arg ";
+                        break;
+
+                    case 80:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idmarca as data, marca as label
+                                        FROM cat_marcas
+                                    where idemp = $idemp ";
+                        break;
+
+                    case 81:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idcolor as data, descripcion as label, codigo_color_hex
+                                        FROM cat_colores
+                                    where idemp = $idemp ";
+                        break;
+
+                    case 82:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idequipocategoria as data, equipo_categoria as label
+                                        FROM cat_equipos_categorias
+                                    where idemp = $idemp 
+                                    ORDER BY equipo_categoria ASC";
+                        break;
+
+                    case 83:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idunidadmedida as data, unidad_medida as label
+                                        FROM cat_unidades_medidas
+                                    where idemp = $idemp ";
+                        break;
+
+                    case 84:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idpreciocategoria as data, precio_categoria as label
+                                        FROM cat_precios_categorias
+                                    where idemp = $idemp ";
+                        break;
+
+                    case 85:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idprecio as data, concat(codigo,' - ',concepto,' - ',precio_unitario) as label,codigo,precio_unitario,is_iva
+                                        FROM cat_precios
+                                    where idemp = $idemp ";
+                        break;
+
 
                     case 100:
                         parse_str($arg);
@@ -237,7 +397,9 @@ class oCenturaPDO
                         $idemp = $this->getIdEmpFromAlias($u);
                         $query = "SELECT nombre_persona as label, idpersona as data
 								FROM  _viPersonas
-                                WHERE idemp = $idemp AND status_persona = 1
+                                WHERE idemp = $idemp AND 
+                                         idusernivelacceso IN (1,2,4,5) AND 
+                                        status_persona = 1
                                 ORDER BY nombre_persona ASC";
                         break;
 
@@ -246,7 +408,9 @@ class oCenturaPDO
                         $idemp = $this->getIdEmpFromAlias($u);
                         $query = "SELECT reptte_legal as label, idempresarepresentantelegal as data
 								FROM  _viEmpresaRepteLegal
-                                WHERE idemp = $idemp AND status_empresa_reptte_legal = 1
+                                WHERE idemp = $idemp AND 
+                                      idempresa = $otros AND 
+                                      status_empresa_reptte_legal = 1
                                 ORDER BY reptte_legal ASC";
                         break;
 
@@ -258,6 +422,7 @@ class oCenturaPDO
 								FROM  _viPersonas
                                 WHERE idemp = $idemp AND
                                         clave = $clave AND
+                                        idusernivelacceso = 3 AND 
                                         status_persona = 1
                                 ORDER BY nombre_persona ASC";
                         break;
@@ -267,7 +432,9 @@ class oCenturaPDO
                         $idemp = $this->getIdEmpFromAlias($u);
                         $query = "SELECT tecnico as label, idempresatecnico as data
 								FROM  _viEmpresaTecnico
-                                WHERE idemp = $idemp AND status_empresa_tecnico = 1
+                                WHERE idemp = $idemp AND
+                                      idempresa = $otros AND 
+                                     status_empresa_tecnico = 1
                                 ORDER BY tecnico ASC";
                         break;
 
@@ -313,7 +480,7 @@ class oCenturaPDO
                 $iduser = $this->getIdUserFromAlias($u);
                 $idemp = $this->getIdEmpFromAlias($u);
 
-                $query = "SELECT iduser, username, apellidos, nombres, foto
+                $query = "SELECT iduser, username, apellidos, nombres, foto, nivel_de_acceso
 							FROM _viUsuarios
 							WHERE  idemp = $idemp AND status_usuario = 1  AND idusernivelacceso <= 100
 							Order by iduser desc";
@@ -329,7 +496,7 @@ class oCenturaPDO
                 parse_str($cad);
                 $idemp = $this->getIdEmpFromAlias($u);
                 $query = "SELECT *
-								FROM cat_estados
+								FROM _viEstados
 							WHERE idemp = $idemp order by idestado desc";
                 break;
             case 2:
@@ -358,24 +525,25 @@ class oCenturaPDO
                 $qry = "";
                 switch ($rngQry) {
                     case 0:
-                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('A','B') ) ";
+                        $qry = " AND ( SUBSTR(TRIM(nombre_persona),1,1) IN ('A','B') ) ";
                         break;
                     case 1:
-                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('C','D','E') ) ";
+                        $qry = " AND ( SUBSTR(TRIM(nombre_persona),1,1) IN ('C','D','E') ) ";
                         break;
                     case 2:
-                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('F','H','H','I','J') ) ";
+                        $qry = " AND ( SUBSTR(TRIM(nombre_persona),1,1) IN ('F','H','H','I','J') ) ";
                         break;
                     case 3:
-                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('K','L','M','N','O') ) ";
+                        $qry = " AND ( SUBSTR(TRIM(nombre_persona),1,1) IN ('K','L','M','N','O') ) ";
                         break;
                     case 4:
-                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('P','Q','R') ) ";
+                        $qry = " AND ( SUBSTR(TRIM(nombre_persona),1,1) IN ('P','Q','R') ) ";
                         break;
                     case 5:
-                        $qry = " AND ( SUBSTR(nombre_persona,1,1) IN ('S','T','U','V','W','X','Y','Z') ) ";
+                        $qry = " AND ( SUBSTR(TRIM(nombre_persona),1,1) IN ('S','T','U','V','W','X','Y','Z') ) ";
                         break;
                 }
+                $qry = " ";
                 $idemp = $this->getIdEmpFromAlias($u);
                 $query = "SELECT idpersona, nombre_persona, username
 								FROM _viPersonas
@@ -424,6 +592,187 @@ class oCenturaPDO
 							WHERE idmarca = $cad ";
                 break;
 
+            case 12:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT *
+                                FROM cat_equipos_categorias
+                            WHERE idemp = $idemp order by idequipocategoria desc";
+                break;
+
+            case 13:
+                $query = "SELECT  *
+                                FROM cat_equipos_categorias
+                            WHERE idequipocategoria = $cad ";
+                break;
+
+            case 14:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                if ($CNA == 0 || $CNA == 1){
+                    $query = "SELECT *
+                                    FROM _viControlMaster
+                                WHERE idemp = $idemp order by idcontrolmaster desc";
+
+                }else if ($CNA == 3){
+                    $query = "SELECT *
+                                    FROM _viControlMaster
+                                WHERE idemp = $idemp AND 
+                                    idtecnico = $idper 
+                                ORDER BY idcontrolmaster DESC";
+                }else {
+                    $query = "SELECT *
+                                FROM _viControlMaster
+                                WHERE idemp = $idemp 
+                                ORDER BY idcontrolmaster DESC 
+                                LIMIT 1";
+                    
+                }
+
+                break;
+
+            case 15:
+                $query = "SELECT  *
+                                FROM _viControlMaster
+                            WHERE idcontrolmaster = $cad ";
+                break;
+
+            case 16:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT DISTINCT empresa, idempresa
+                                FROM _viEmpresaRepteLegal
+                            WHERE idemp = $idemp order by empresa asc";
+                break;
+
+            case 17:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT  *
+                                FROM control_detalle
+                            WHERE idcontrolmaster = $idcontrolmaster AND idemp = $idemp ";
+                break;
+
+            case 18:
+                $query = "SELECT  *
+                                FROM control_detalle
+                            WHERE iddetalle = $cad ";
+                break;
+
+            case 19:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT  *
+                                FROM control_importe
+                            WHERE idcontrolmaster = $idcontrolmaster AND idemp = $idemp ";
+                break;
+
+            case 20:
+                $query = "SELECT  *
+                                FROM control_importe
+                            WHERE idimporte = $cad ";
+                break;
+
+            case 21:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT *
+                                FROM cat_precios_categorias
+                            WHERE idemp = $idemp order by idpreciocategoria desc";
+                break;
+
+            case 22:
+                $query = "SELECT  *
+                                FROM cat_precios_categorias
+                            WHERE idpreciocategoria = $cad ";
+                break;
+
+            case 23:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT *
+                                FROM cat_unidades_medidas
+                            WHERE idemp = $idemp order by idunidadmedida desc";
+                break;
+
+            case 24:
+                $query = "SELECT  *
+                                FROM cat_unidades_medidas
+                            WHERE idunidadmedida = $cad ";
+                break;
+
+            case 25:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT *
+                                FROM cat_precios
+                            WHERE idemp = $idemp order by idprecio desc";
+                break;
+
+            case 26:
+                $query = "SELECT  *
+                                FROM cat_precios
+                            WHERE idprecio = $cad ";
+                break;
+
+            case 27:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT *
+                                FROM _viControlComentarios
+                            WHERE idcontrolmaster = $idcontrolmaster AND idemp = $idemp ORDER BY idcontrolcomentario DESC";
+                break;
+
+            case 28:
+                $query = "SELECT  *
+                                FROM _viControlComentarios
+                            WHERE idcontrolcomentario = $cad ";
+                break;
+
+            case 29:
+                $query = "SELECT idclienterecibioentrega, idtecnicoentrego, fsalida
+                                FROM control_master
+                            WHERE idcontrolmaster = $cad ";
+                break;
+
+            case 30:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                    $query = "
+                            SELECT *
+                            FROM _viConlMasDifFec
+                            WHERE idemp = $idemp 
+                            ORDER BY dias_dif_enteros_orden DESC, idcontrolmaster ASC 
+                            LIMIT 0, 50";
+
+                break;
+
+            case 31:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                    $query = "
+                            SELECT *
+                            FROM _viConlMasDifFec
+                            WHERE idemp = $idemp 
+                            ORDER BY dias_dif_enteros_orden DESC, idcontrolmaster ASC 
+                            LIMIT 0, 50";
+
+                break;
+
+            case 32:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $cad = $numero > 10 ? ' dias_dif_enteros_orden > 10 ' : ' dias_dif_enteros_orden = '.$numero;
+                    $query = "
+                            SELECT *
+                            FROM _viConlMasDifFec
+                            WHERE 
+                                idemp = $idemp AND  
+                                TRIM(marca_det) = '$marca' AND 
+                                $cad     
+                            ORDER BY idcontrolmaster ASC";
+
+                break;
 
 
             case 4000:
@@ -463,7 +812,7 @@ class oCenturaPDO
 
                             $ar = explode(".", $arg);
                             $ar0 = explode("|", $ar[0]);
-                            $ar[1];
+                            // $ar[1];
                             foreach ($ar0 as $i=>$valor) {
                                 if ((int)($ar0[$i])>0) {
                                     $query = "INSERT INTO empresas_reptte_legal(idrepresentantelegal,idempresa,idemp,ip,host,creado_por,creado_el)
@@ -495,7 +844,7 @@ class oCenturaPDO
 
                             $ar = explode(".", $arg);
                             $ar0 = explode("|", $ar[0]);
-                            $ar[1];
+                            // $ar[1];
                             foreach ($ar0 as $i=>$valor) {
                                 if ((int)($ar0[$i])>0) {
                                     $query = "INSERT INTO empresas_tecnicos(idtecnico,idempresa,idemp,ip,host,creado_por,creado_el)
@@ -523,8 +872,7 @@ class oCenturaPDO
                             parse_str($arg);
                             $iduser = $this->getIdUserFromAlias($u);
                             $idemp = $this->getIdEmpFromAlias($u);
-
-                              $ar = explode("|", $dests);
+                            $ar = explode("|", $dests);
                             foreach ($ar as $i=>$valor) {
                                 if ((int)($ar[$i])>0) {
                                     $query = "INSERT INTO pase_salida_alumnos(idpsa,idalumno,idciclo,clave_nivel,idgrupo,idemp,ip,host,creado_por,creado_el)
@@ -735,9 +1083,13 @@ class oCenturaPDO
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
                         $idemp = $this->getIdEmpFromAlias($user);
-                        $query = "INSERT INTO cat_estados(clave,estado,status_estado,idemp,ip,host,creado_por,creado_el)
+                        if ( intval($predeterminado) == 1 ){
+                            $q = "UPDATE cat_estados SET predeterminado = 0 WHERE idsucursal = $idsucursal AND predeterminado = 1 AND idemp = $idemp";
+                            $r = $this->guardarDatos($q);
+                        }
+                        $query = "INSERT INTO cat_estados(clave,estado,status_estado,idsucursal,predeterminado,idemp,ip,host,creado_por,creado_el)
 									VALUES( '$clave','$estado',
-										    $status_estado,$idemp,'$ip','$host',$idusr,NOW())";
+										    $status_estado,$idsucursal,$predeterminado,$idemp,'$ip','$host',$idusr,NOW())";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -746,8 +1098,15 @@ class oCenturaPDO
                          //$ar = $this->unserialice_force($arg);
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
-                        $query = "UPDATE cat_estados SET 	clave = '$clave',
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        if ( intval($predeterminado) == 1 ){
+                            $q = "UPDATE cat_estados SET predeterminado = 0 WHERE idsucursal = $idsucursal AND predeterminado = 1 AND idemp = $idemp";
+                            $r = $this->guardarDatos($q);
+                        }
+                        $query = "UPDATE cat_estados SET clave = '$clave',
 													  	estado = '$estado',
+                                                        idsucursal = $idsucursal,    
+                                                        predeterminado = $predeterminado,
 													  	status_estado = $status_estado,
 														ip = '$ip',
 														host = '$host',
@@ -773,9 +1132,13 @@ class oCenturaPDO
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
                         $idemp = $this->getIdEmpFromAlias($user);
-                        $query = "INSERT INTO cat_municipios(idestado,clave,municipio,status_municipio,idemp,ip,host,creado_por,creado_el)
+                        if ( intval($predeterminado) == 1 ){
+                            $q = "UPDATE cat_municipios SET predeterminado = 0 WHERE idestado = $idestado AND idsucursal = $idsucursal AND predeterminado = 1 AND idemp = $idemp";
+                            $r = $this->guardarDatos($q);                        
+                        }
+                        $query = "INSERT INTO cat_municipios(idestado,clave,municipio,status_municipio,idsucursal,predeterminado,idemp,ip,host,creado_por,creado_el)
 									VALUES( $idestado, '$clave','$municipio',
-										    $status_municipio,$idemp,'$ip','$host',$idusr,NOW())";
+										    $status_municipio,$idsucursal,$predeterminado,$idemp,'$ip','$host',$idusr,NOW())";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -784,7 +1147,14 @@ class oCenturaPDO
                          //$ar = $this->unserialice_force($arg);
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        if ( intval($predeterminado) == 1 ){
+                            $q = "UPDATE cat_municipios SET predeterminado = 0 WHERE idestado = $idestado AND idsucursal = $idsucursal AND predeterminado = 1 AND idemp = $idemp";
+                            $r = $this->guardarDatos($q);                        
+                        }
                         $query = "UPDATE cat_municipios SET idestado = $idestado,
+                                                        idsucursal = $idsucursal,
+                                                        predeterminado = $predeterminado,
 														clave = '$clave',
 													  	municipio = '$municipio',
 													  	status_municipio = $status_municipio,
@@ -810,35 +1180,74 @@ class oCenturaPDO
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
                         $idemp = $this->getIdEmpFromAlias($user);
+                        $email1 = strtolower($email1);
+                        $idempresa = 0;
+                        if ( $isaddempresa == 0 ){
 
-                        $fn = explode('-', $fecha_nacimiento);
-                        $fn = $fn[2].'-'.$fn[1].'-'.$fn[0];
+                            $rfc = "";
+                            $razon_social = "";
+                        
+                        }else{
+
+                            $is_email = 1;
+                            $status_empresa = 1;
+                            $query = "INSERT INTO cat_empresas(
+                                                                rfc,
+                                                                razon_social,
+                                                                calle,
+                                                                num_ext,
+                                                                num_int,
+                                                                colonia,
+                                                                localidad,
+                                                                estado,
+                                                                pais,
+                                                                cp,
+                                                                emails,
+                                                                is_email,
+                                                                status_empresa,
+                                                                idemp,ip,host,creado_por,creado_el)
+                                        VALUES(
+                                                                '".strtoupper($rfc)."',
+                                                                '".strtoupper($razon_social)."',
+                                                                '".strtoupper($calle)."',
+                                                                '".strtoupper($num_ext)."',
+                                                                '".strtoupper($num_int)."',
+                                                                '".strtoupper($colonia)."',
+                                                                '".strtoupper($localidad)."',
+                                                                '".strtoupper($estado)."',
+                                                                '".strtoupper($pais)."',
+                                                                '".strtoupper($cp)."',
+                                                                '".strtolower($email1)."',
+                                                                $is_email,
+                                                                $status_empresa,
+                                                                $idemp,'$ip','$host',$idusr,NOW() )";
+
+                            $idempresa = $this->guardarDatosOrden($query,'idempresa','cat_empresas');
+
+                        }
 
                         $query = "INSERT INTO cat_personas(
 															ap_paterno,
 															ap_materno,
 															nombre,
 															email1,
-															email2,
 															tel1,
-															tel2,
 															cel1,
-															cel2,
-															lugar_nacimiento,
-															fecha_nacimiento,
 															genero,
-															ocupacion,
-															domicilio_generico,
+                                                            rfc,
+                                                            razon_social,
 															calle,
 															num_ext,
 															num_int,
 															colonia,
 															localidad,
-															estado,
-															municipio,
 															pais,
 															cp,
-															lugar_trabajo,
+                                                            idsucursal,
+                                                            isaddempresa,
+                                                            idestado,
+                                                            idmunicipio,
+                                                            idempresa,
 															status_persona,
 															idemp,ip,host,creado_por,creado_el)
 									VALUES(
@@ -846,66 +1255,85 @@ class oCenturaPDO
 															'$ap_materno',
 															'$nombre',
 															'$email1',
-															'$email2',
 															'$tel1',
-															'$tel2',
 															'$cel1',
-															'$cel2',
-															'$lugar_nacimiento',
-															'$fn',
 															$genero,
-															'$ocupacion',
-															'".mb_strtoupper($domicilio_generico, 'UTF-8')."',
-															'".mb_strtoupper($calle, 'UTF-8')."',
+															'".mb_strtoupper($rfc, 'UTF-8')."',
+                                                            '".mb_strtoupper($razon_social, 'UTF-8')."',
+                                                            '".mb_strtoupper($calle, 'UTF-8')."',
 															'".mb_strtoupper($num_ext, 'UTF-8')."',
 															'".mb_strtoupper($num_int, 'UTF-8')."',
 															'".mb_strtoupper($colonia, 'UTF-8')."',
 															'".mb_strtoupper($localidad, 'UTF-8')."',
-															'".mb_strtoupper($estado, 'UTF-8')."',
-															'".mb_strtoupper($municipio, 'UTF-8')."',
 															'".mb_strtoupper($pais, 'UTF-8')."',
 															'".mb_strtoupper($cp, 'UTF-8')."',
-															'".mb_strtoupper($lugar_trabajo, 'UTF-8')."',
-															$status_persona,
+                                                            $idsucursal,
+                                                            $isaddempresa,
+                                                            $idestado,
+                                                            $idmunicipio,
+                                                            $idempresa,
+                                                            $status_persona,
 															$idemp,'$ip','$host',$idusr,NOW())";
 
-                        $vRet = $this->guardarDatos($query);
-
+                        $idpersona = $this->guardarDatosOrden($query,"idpersona","cat_personas");
+                        $vRet = $this->generarUsuario($idpersona);
+                        $vRet = $this->setAsocia(30, "$idpersona.$idempresa", 0, 0, 10, "u=$user");
+                        $vRet = "OK";
                         break;
 
                     case 1:
                          //$ar = $this->unserialice_force($arg);
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
+                        $email1 = strtolower($email1);
+                        if ( $isaddempresa == 0 ){
+                            $rfc = "";
+                            $razon_social = "";
+                        }else{
 
-                        $fn = explode('-', $fecha_nacimiento);
-                        $fn = $fn[2].'-'.$fn[1].'-'.$fn[0];
+                            $query = "UPDATE cat_empresas SET
+                                                            rfc = '".strtoupper($rfc)."',
+                                                            razon_social = '".strtoupper($razon_social)."',
+                                                            calle = '".strtoupper($calle)."',
+                                                            num_ext = '".strtoupper($num_ext)."',
+                                                            num_int = '".strtoupper($num_int)."',
+                                                            colonia = '".strtoupper($colonia)."',
+                                                            localidad = '".strtoupper($localidad)."',
+                                                            estado = '".strtoupper($estado)."',
+                                                            pais = '".strtoupper($pais)."',
+                                                            cp = '".strtoupper($cp)."',
+                                                            emails = '".strtolower($email1)."',
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                    WHERE idempresa = ".$idempresa;
+                            $vRet = $this->guardarDatos($query);
+
+                        }
 
                         $query = "UPDATE cat_personas SET
 														ap_paterno = '$ap_paterno',
 														ap_materno = '$ap_materno',
 														nombre = '$nombre',
 														email1 = '$email1',
-														email2 = '$email2',
 														tel1 = '$tel1',
-														tel2 = '$tel2',
 														cel1 = '$cel1',
-														cel2 = '$cel2',
-														lugar_nacimiento = '$lugar_nacimiento',
-														fecha_nacimiento = '$fn',
-														calle = '".mb_strtoupper($calle, 'UTF-8')."',
+														rfc = '".mb_strtoupper($rfc, 'UTF-8')."',
+                                                        razon_social = '".mb_strtoupper($razon_social, 'UTF-8')."',
+                                                        calle = '".mb_strtoupper($calle, 'UTF-8')."',
 														num_ext = '".mb_strtoupper($num_ext, 'UTF-8')."',
 														num_int = '".mb_strtoupper($num_int, 'UTF-8')."',
 														colonia = '".mb_strtoupper($colonia, 'UTF-8')."',
 														localidad = '".mb_strtoupper($localidad, 'UTF-8')."',
-														estado = '".mb_strtoupper($estado, 'UTF-8')."',
-														municipio = '".mb_strtoupper($municipio, 'UTF-8')."',
 														pais = '".mb_strtoupper($pais, 'UTF-8')."',
 														cp = '".mb_strtoupper($cp, 'UTF-8')."',
 														genero = $genero,
-														ocupacion = '".mb_strtoupper($ocupacion, 'UTF-8')."',
-														domicilio_generico = '".mb_strtoupper($domicilio_generico, 'UTF-8')."',
-														lugar_trabajo = '".mb_strtoupper($lugar_trabajo, 'UTF-8')."',
+                                                        isaddempresa = $isaddempresa,
+                                                        idsucursal = $idsucursal,
+                                                        idestado = $idestado,
+                                                        idmunicipio = $idmunicipio,
+                                                        idempresa = $idempresa,
 												  		status_persona = $status_persona,
 														ip = '$ip',
 														host = '$host',
@@ -930,6 +1358,7 @@ class oCenturaPDO
                         $idusr = $this->getIdUserFromAlias($user);
                         $idemp = $this->getIdEmpFromAlias($user);
                         $is_email = !isset($is_email)?0:1;
+
                         $status_empresa = !isset($status_empresa)?0:1;
                         $query = "INSERT INTO cat_empresas(
                                                             rfc,
@@ -957,7 +1386,7 @@ class oCenturaPDO
                                                             '".strtoupper($estado)."',
                                                             '".strtoupper($pais)."',
                                                             '".strtoupper($cp)."',
-                                                            '$emails',
+                                                            '".strtolower($emails)."',
                                                             $is_email,
                                                             $status_empresa,
                                                             $idemp,'$ip','$host',$idusr,NOW() )";
@@ -980,7 +1409,7 @@ class oCenturaPDO
                                                         estado = '".strtoupper($estado)."',
                                                         pais = '".strtoupper($pais)."',
                                                         cp = '".strtoupper($cp)."',
-                                                        emails = '$emails',
+                                                        emails = '".strtolower($emails)."',
                                                         is_email = $is_email,
                                                         status_empresa = $status_empresa,
                                                         ip = '$ip',
@@ -1004,8 +1433,10 @@ class oCenturaPDO
                         $idusr = $this->getIdUserFromAlias($user);
                         $idemp = $this->getIdEmpFromAlias($user);
                         $marca  = strtoupper($marca);
-                        $query = "INSERT INTO cat_marcas(marca,status_marca,idemp,ip,host,creado_por,creado_el)
-									VALUES( '$marca',$status_marca,$idemp,'$ip','$host',$idusr,NOW())";
+                        $is_cat = !isset($is_cat)?0:1;
+                        $status_marca = !isset($status_marca)?0:1;
+                        $query = "INSERT INTO cat_marcas(marca,imagen,is_cat,status_marca,idemp,ip,host,creado_por,creado_el)
+									VALUES( '$marca','$imagen',$is_cat,$status_marca,$idemp,'$ip','$host',$idusr,NOW())";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -1014,13 +1445,17 @@ class oCenturaPDO
                         parse_str($arg);
                         $idusr = $this->getIdUserFromAlias($user);
                         $marca  = strtoupper($marca);
+                        $is_cat = !isset($is_cat)?0:1;
+                        $status_marca = !isset($status_marca)?0:1;
+                                                        // imagen = '$imagen',
                         $query = "UPDATE cat_marcas SET marca = '$marca',
-													  	status_marca = $status_marca,
+													  	is_cat = $is_cat,
+                                                        status_marca = $status_marca,
 														ip = '$ip',
 														host = '$host',
 														modi_por = $idusr,
 														modi_el = NOW()
-								WHERE $idmarca = $idmarca";
+								WHERE idmarca = $idmarca";
 
                         $vRet = $this->guardarDatos($query);
 
@@ -1028,10 +1463,245 @@ class oCenturaPDO
                     case 2:
                         $query = "DELETE FROM cat_marcas WHERE idmarca = ".$arg;
                         $vRet = $this->guardarDatos($query);
+                        break;
+                    case 3:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $query = "UPDATE cat_marcas SET imagen = '$imagen',
+                                                        ip = '$ip',
+                                                        host = '$host',
+                                                        modi_por = $idusr,
+                                                        modi_el = NOW()
+                                WHERE idmarca = $idmarca";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+
+                }
+                break; // 5
+
+            case 6:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $visualizar = !isset($visualizar)?0:1;
+                        $query = "Insert Into cat_colores(color,codigo_color_hex,visualizar,status_color,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    value('$color','$codigo_color_hex',$visualizar,$status_color,
+                                            $idemp,'$ip','$host',$idusr,NOW())";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 1:
+                         //$ar = $this->unserialice_force($arg);
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $visualizar = !isset($visualizar)?0:1;
+                        $query = "update cat_colores set
+                                                        color = '$color',
+                                                        codigo_color_hex = '$codigo_color_hex',
+                                                        status_color = $status_color,
+                                                        visualizar = $visualizar,
+                                                        ip = '$ip',
+                                                        host = '$host',
+                                                        modi_por = $idusr,
+                                                        modi_el = NOW()
+                                Where idcolor = $idcolor";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 2:
+                        $query = "delete from cat_colores Where idcolor = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                }
+                break; // 6
+
+
+            case 7:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $status_equipo_categoria = !isset($status_equipo_categoria)?0:1;
+                        $query = "INSERT INTO cat_equipos_categorias(equipo_categoria,status_equipo_categoria,idemp,ip,host,creado_por,creado_el)
+                                    VALUES( '$equipo_categoria',$status_equipo_categoria ,$idemp,'$ip','$host',$idusr,NOW())";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 1:
+                         //$ar = $this->unserialice_force($arg);
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $status_equipo_categoria = !isset($status_equipo_categoria)?0:1;
+                        $query = "UPDATE cat_equipos_categorias SET    
+                                                        equipo_categoria = '$equipo_categoria',
+                                                        status_equipo_categoria = $status_equipo_categoria,
+                                                        ip = '$ip',
+                                                        host = '$host',
+                                                        modi_por = $idusr,
+                                                        modi_el = NOW()
+                                WHERE idequipocategoria = $idequipocategoria";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cat_equipos_categorias WHERE idequipocategoria = ".$arg;
+
+                        $vRet = $this->guardarDatos($query);
 
                         break;
                 }
-                break; // 5
+                break; // 7
+
+            case 8:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $status_precio_categoria = !isset($status_precio_categoria)?0:1;
+                        $query = "INSERT INTO cat_precios_categorias(clave,precio_categoria,status_precio_categoria,idemp,ip,host,creado_por,creado_el)
+                                    VALUES('$clave', '$precio_categoria',$status_precio_categoria ,$idemp,'$ip','$host',$idusr,NOW())";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 1:
+                         //$ar = $this->unserialice_force($arg);
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $status_precio_categoria = !isset($status_precio_categoria)?0:1;
+                        $query = "UPDATE cat_precios_categorias SET    
+                                                        clave = '$clave',
+                                                        precio_categoria = '$precio_categoria',
+                                                        status_precio_categoria = $status_precio_categoria,
+                                                        ip = '$ip',
+                                                        host = '$host',
+                                                        modi_por = $idusr,
+                                                        modi_el = NOW()
+                                WHERE idpreciocategoria = $idpreciocategoria";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cat_precios_categorias WHERE idpreciocategoria = ".$arg;
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                }
+                break; // 8
+
+            case 9:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $status_unidad_medida = !isset($status_unidad_medida)?0:1;
+                        $query = "INSERT INTO cat_unidades_medidas(clave,unidad_medida,status_unidad_medida,idemp,ip,host,creado_por,creado_el)
+                                    VALUES('$clave', '$unidad_medida',$status_unidad_medida ,$idemp,'$ip','$host',$idusr,NOW())";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 1:
+                         //$ar = $this->unserialice_force($arg);
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $status_unidad_medida = !isset($status_unidad_medida)?0:1;
+                        $query = "UPDATE cat_unidades_medidas SET    
+                                                        clave = '$clave',
+                                                        unidad_medida = '$unidad_medida',
+                                                        status_unidad_medida = $status_unidad_medida,
+                                                        ip = '$ip',
+                                                        host = '$host',
+                                                        modi_por = $idusr,
+                                                        modi_el = NOW()
+                                WHERE idunidadmedida = $idunidadmedida";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cat_unidades_medidas WHERE idunidadmedida = ".$arg;
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                }
+                break; // 9
+
+            case 10:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $status_precio_unitario = !isset($status_precio_unitario)?0:1;
+                        $is_iva = !isset($is_iva)?0:1;
+                        $query = "INSERT INTO cat_precios(
+                                                        codigo,
+                                                        concepto,
+                                                        idunidadmedida,
+                                                        precio_unitario,
+                                                        idpreciocategoria,
+                                                        tipo,
+                                                        is_iva,
+                                                        status_precio_unitario,
+                                                        idemp,ip,host,creado_por,creado_el)
+                                                VALUES(
+                                                        '$codigo', 
+                                                        '$concepto',
+                                                        $idunidadmedida,
+                                                        $precio_unitario,
+                                                        $idpreciocategoria,
+                                                        '$tipo',
+                                                        $is_iva,
+                                                        $status_precio_unitario,
+                                                        $idemp,'$ip','$host',$idusr,NOW())";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 1:
+                         //$ar = $this->unserialice_force($arg);
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $status_precio_unitario = !isset($status_precio_unitario)?0:1;
+                        $is_iva = !isset($is_iva)?0:1;
+                        $query = "UPDATE cat_precios SET    
+                                                        codigo = '$codigo',
+                                                        concepto = '$concepto',
+                                                        idunidadmedida = $idunidadmedida,
+                                                        precio_unitario = $precio_unitario,
+                                                        idpreciocategoria = $idpreciocategoria,
+                                                        tipo = '$tipo',
+                                                        is_iva = $is_iva,
+                                                        status_precio_unitario = $status_precio_unitario,
+                                                        ip = '$ip',
+                                                        host = '$host',
+                                                        modi_por = $idusr,
+                                                        modi_el = NOW()
+                                WHERE idprecio = $idprecio";
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cat_precios WHERE idprecio = ".$arg;
+
+                        $vRet = $this->guardarDatos($query);
+
+                        break;
+                }
+                break; // 10
 
             case 49: //49
                 switch ($tipo) {
@@ -1108,6 +1778,286 @@ class oCenturaPDO
                 } //49
                 break;
 
+            case 70:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $tipox = !isset($tipox)?0:1;
+                        $mantto = !isset($mantto)?0:1;
+                        $garantia = !isset($garantia)?0:1;
+                        $contrato = !isset($contrato)?0:1;
+                        $status_master = !isset($status_master)?0:1;
+                        $query = "INSERT INTO control_master(
+                                                            idempresa,
+                                                            idmodulo,
+                                                            idcliente,
+                                                            idtecnico,
+                                                            idrecibio,
+                                                            tipo,
+                                                            mantto,
+                                                            garantia,
+                                                            contrato,
+                                                            status,
+                                                            folmod,
+                                                            status_master,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    VALUES(
+                                                            $idempresa,
+                                                            $idmodulo,
+                                                            $idcliente,
+                                                            $idtecnico,
+                                                            $idrecibio,
+                                                            $tipox,
+                                                            $mantto,
+                                                            $garantia,
+                                                            $contrato,
+                                                            $status,
+                                                            '$folmod',
+                                                            $status_master,
+                                                            $idemp,'$ip','$host',$idusr,NOW() )";
+                        $vRet = $this->guardarDatosOrden($query,"idcontrolmaster","control_master");
+                        break;
+                    case 1:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $tipox = !isset($tipox)?0:1;
+                        $mantto = !isset($mantto)?0:1;
+                        $garantia = !isset($garantia)?0:1;
+                        $contrato = !isset($contrato)?0:1;
+                        $status_master = !isset($status_master)?0:1;
+
+                        $query = "UPDATE control_master SET
+                                                            idempresa = $idempresa,
+                                                            idmodulo = $idmodulo,
+                                                            idcliente = $idcliente,
+                                                            idtecnico = $idtecnico,
+                                                            idrecibio = $idrecibio,
+                                                            garantia = $garantia,
+                                                            contrato = $contrato,
+                                                            tipo = $tipox,
+                                                            mantto = $mantto,
+                                                            status = $status,
+                                                            folmod = '$folmod',
+                                                            status_master = $status_master,
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE idcontrolmaster = $idcontrolmaster";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 2:
+                        $query = "DELETE FROM control_master WHERE idcontrolmaster = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 3:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        //$status_detalle = !isset($status_detalle)?0:1;
+                        $query = "INSERT INTO control_detalle(
+                                                            idcontrolmaster,
+                                                            idequipocategoria,
+                                                            equipo,
+                                                            idmarca,
+                                                            marca,
+                                                            modelo,
+                                                            serie,
+                                                            no_parte,
+                                                            version,
+                                                            submodelo,
+                                                            num_pedido,
+                                                            status_detalle,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    VALUES(
+                                                            $idcontrolmaster,
+                                                            $idequipocategoria,
+                                                            '$equipo',
+                                                            $idmarca,
+                                                            '$marca',
+                                                            '$modelo',
+                                                            '$serie',
+                                                            '$no_parte',
+                                                            '$version',
+                                                            '$submodelo',
+                                                            '$num_pedido',
+                                                            $status_detalle,
+                                                            $idemp,'$ip','$host',$idusr,NOW() )";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 4:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        //$status_detalle = !isset($status_detalle)?0:1;
+
+                        $query = "UPDATE control_detalle SET
+                                                            idequipocategoria = $idequipocategoria,
+                                                            equipo = '$equipo',
+                                                            idmarca = $idmarca,
+                                                            marca = '$marca',
+                                                            modelo = '$modelo',
+                                                            serie = '$serie',
+                                                            no_parte = '$no_parte',
+                                                            version = '$version',
+                                                            submodelo = '$submodelo',
+                                                            num_pedido = '$num_pedido',
+                                                            status_detalle = $status_detalle,
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE iddetalle = $iddetalle";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    
+                    case 5:
+                        $query = "DELETE FROM control_detalle WHERE iddetalle = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 6:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($u);
+                        // comment = '$comment',
+                        
+                        $query = "UPDATE control_master SET
+                                                            falla = '$falla',
+                                                            accesorios = '$accesorios',
+                                                            observaciones = '$observaciones',
+                                                            trabajo = '$trabajo',
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE idcontrolmaster = $idcontrolmaster";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    
+                    case 7:
+                        $query = "DELETE FROM control_importe WHERE idimporte = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 8:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $is_iva = !isset($is_iva)?0:1;
+                        $status_importe = !isset($status_importe)?0:1;
+                        $viaticos = floatval($viaticos);
+
+                        $query = "INSERT INTO control_importe(
+                                                            idcontrolmaster,
+                                                            cantidad,
+                                                            idprecio,
+                                                            codigo,
+                                                            precio_unitario,
+                                                            viaticos,
+                                                            observaciones,
+                                                            is_iva,
+                                                            status_importe,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    VALUES(
+                                                            $idcontrolmaster,
+                                                            $cantidad,
+                                                            $idprecio,
+                                                            '$codigo',
+                                                            $precio_unitario,
+                                                            $viaticos,
+                                                            '$observaciones',
+                                                            $is_iva,
+                                                            $status_importe,
+                                                            $idemp,'$ip','$host',$idusr,NOW() )";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 9:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $is_iva = !isset($is_iva)?0:1;
+                        $status_importe = !isset($status_importe)?0:1;
+
+                        $query = "UPDATE control_importe SET
+                                                            cantidad        = $cantidad,
+                                                            idprecio        = $idprecio,
+                                                            codigo          = '$codigo',
+                                                            precio_unitario = $precio_unitario,
+                                                            viaticos        = $viaticos,
+                                                            observaciones   = '$observaciones',
+                                                            is_iva          = $is_iva,
+                                                            status_importe  = $status_importe,
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE idimporte = $idimporte";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 10:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $query = "INSERT INTO control_comentarios(
+                                                            idcontrolmaster,
+                                                            iduser,
+                                                            comentario,
+                                                            fecha,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    VALUES(
+                                                            $idcontrolmaster,
+                                                            $idusr,
+                                                            '$comentario',
+                                                            NOW(),
+                                                            $idemp,'$ip','$host',$idusr,NOW() )";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 11:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+
+                        $query = "UPDATE control_comentarios SET
+                                                            comentario = '$comentario',
+                                                            fecha = NOW(),
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE idcontrolcomentario = $idcontrolcomentario";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                    case 12:
+                        $query = "DELETE FROM control_comentarios WHERE idcontrolcomentario = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 13:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        
+                        $now = date("Y-m-d H:i:s");
+
+                        $fsalida = substr($fsalida, 0,2)=="00" ? $now : $fsalida;
+
+                        $query = "UPDATE control_master SET
+                                                            idclienterecibioentrega = $idclienterecibioentrega,
+                                                            idtecnicoentrego = $idtecnicoentrego,
+                                                            fsalida = '$fsalida',
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE idcontrolmaster = $idcontrolmaster";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                } // 70
+                break;
+
 
         }
 
@@ -1128,4 +2078,57 @@ class oCenturaPDO
         $Conn = null;
         return $ret;
     }
+
+
+    public function genAnalisisMarcas(){
+        $Conn = new voConnPDO();
+        $ret = [];
+        $query = "select marca from cat_marcas order by idmarca asc";
+        $r = $Conn->queryFetchAllAssocOBJ($query);
+        $c = 0;
+        foreach ($r as $i => $value) {
+            $l1 = $l2 = $l3 = $l4 = $l5 = $l6 = $l7 = $l8 = $l9 = $l10 = $lM = 0;
+            $tieneMov = false;
+            $q = "select dias_dif_enteros_orden as ddeo from _viConlMasDifFec WHERE trim(marca_det) = '".$r[$i]->marca."' ";
+            $r1 = $Conn->queryFetchAllAssocOBJ($q);
+            foreach ($r1 as $j => $value) {
+
+                if ( $r1[$j]->ddeo == 1 ) {++$l1; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 2 ) {++$l2; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 3 ) {++$l3; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 4 ) {++$l4; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 5 ) {++$l5; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 6 ) {++$l6; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 7 ) {++$l7; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 8 ) {++$l8; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 9 ) {++$l9; $tieneMov = true;}
+                if ( $r1[$j]->ddeo == 10 ) {++$l10; $tieneMov = true;}
+                if ( $r1[$j]->ddeo >  10 ) {++$lM; $tieneMov = true;}
+
+            }
+
+            if ($tieneMov){
+                $ret[$c] = [
+                            'marca' => $r[$i]->marca, 
+                            'uno' => $l1!=0?$l1:'',
+                            'dos' => $l2!=0?$l2:'',
+                            'tres' => $l3!=0?$l3:'',
+                            'cuatro' => $l4!=0?$l4:'',
+                            'cinco' => $l5!=0?$l5:'',
+                            'seis' => $l6!=0?$l6:'',
+                            'siete' => $l7!=0?$l7:'',
+                            'ocho' => $l8!=0?$l8:'',
+                            'nueve' => $l9!=0?$l9:'',
+                            'diez' => $l10!=0?$l10:'',
+                            'masdiez' => $lM!=0?$lM:'',
+                            ];
+                ++$c;                            
+            } 
+        }
+        $Conn = null;
+        return $ret;
+
+    }
+
+
 }

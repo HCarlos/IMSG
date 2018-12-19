@@ -7,27 +7,11 @@ function oObject() {
 	];
 	var IdUser    = 0;
 	var Username  = "";
-	var keyUP0    = [1, 999, 1000];
-	var keyUP1    = [1, 3, 4];
-	var keyUP2    = [0];
+	var keyUP1    = [0,1, 999, 1000];
+	var keyUP2    = [2];
 	var keyUP3    = [3];
-	var keyUP5    = [5];
-	var keyUP6    = [6]; // maestros
-	var keyUP7    = [8,9,10,11,12];
-	var keyUP8    = [888];
-	var keyUP9    = [21]; // compras
-	var keyUP10   = [7]; // tutores
-	var keyUP20   = [2]; // coordinadores
-	var keyUP21   = [20]; // Administrativos
-	var keyUP22   = [22]; // Profesor - Tutor
-	var keyUP23   = [23]; // Coordinador - Profesor
-	var keyUP27   = [27]; // Coordinador - Profesor
-	var keyUP28   = [28]; // tutores
-	var keyUP29   = [29]; // Relaciones Publicas
-	var keyUP30   = [3, 4]; // Comunica
-	var keyUP33   = [21]; // Profesor - Director
-	var keyUP40   = [22]; // PSA
-	var keyUP60   = [20]; // Caja
+	var keyUP4    = [4];
+	var keyUP5    = [41,2,3,4,5];
 	var minHeight = 0;
 
 	var pURLS = ["imsg.mx", "www.imsg.mx"];
@@ -161,9 +145,6 @@ function oObject() {
 			getkeyUP: function(value, param) {
 				var nreturn;
 				switch (param) {
-					case 0:
-						nreturn = keyUP0.indexOf(value);
-						break;
 					case 1:
 						nreturn = keyUP1.indexOf(value);
 						break;
@@ -173,61 +154,8 @@ function oObject() {
 					case 3:
 						nreturn = keyUP3.indexOf(value);
 						break;
-					case 5:
-						nreturn = keyUP5.indexOf(value);
-						break;
-					case 6:
-						nreturn = keyUP6.indexOf(value);
-						break;
-					case 7:
-						nreturn = keyUP10.indexOf(value);
-						break;
-					case 8:
-					case 9:
-					case 10:
-					case 11:
-					case 12:
-					case 19:
-						nreturn = keyUP7.indexOf(value);
-						break;
-					case 28:
-						nreturn = keyUP28.indexOf(value);
-						break;
-					case 29:
-						nreturn = keyUP29.indexOf(value);
-						break;
-					case 30:
-						nreturn = keyUP30.indexOf(value);
-						break;
-					case 40:
-						nreturn = keyUP40.indexOf(value);
-						break;
-					case 21:
-						nreturn = keyUP9.indexOf(value);
-						break;
-					case 27:
-						nreturn = keyUP27.indexOf(value);
-						break;
-					case 60:
-						nreturn = keyUP60.indexOf(value);
-						break;
-					case 200:
-						nreturn = keyUP21.indexOf(value);
-						break;
-					case 201:
-						nreturn = keyUP22.indexOf(value);
-						break;
-					case 202:
-						nreturn = keyUP23.indexOf(value);
-						break;
-					case 222:
-						nreturn = keyUP20.indexOf(value);
-						break;
-					case 333:
-						nreturn = keyUP33.indexOf(value);
-						break;
-					case 888:
-						nreturn = keyUP8.indexOf(value);
+					case 4:
+						nreturn = keyUP4.indexOf(value);
 						break;
 					default:
 						nreturn = -1;
@@ -541,6 +469,26 @@ function ValidateName(name) {
 }
 
 
+(function($) {
+	$.fn.dateToSpanish = function(Fecha,Hora,Type) {
+		var retorno;
+		switch(Type){
+			case 0:
+					var f0    = Fecha.split('-');
+					var fecha = f0[2]+'-'+f0[1]+'-'+f0[0];
+					retorno   = $(this[0]).html(fecha+' '+Hora);
+					break;
+			case 1:
+					var f0    = Fecha.split(' ');
+					var f1    = f0[0].split('-');
+					var f2    = f0[1];
+					var fecha = f1[2]+'-'+f1[1]+'-'+f1[0];
+					retorno   = $(this[0]).val(fecha+' '+f2);
+					break;
+		}
+		return retorno;
+	};
+})(jQuery);
 
 (function($) {
 	$.fn.formatCurrencyON = function(val) {
