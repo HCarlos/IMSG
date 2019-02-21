@@ -185,6 +185,7 @@ $destino  = $_POST['destino'];
         </div>
     </div>
 </div>
+
 <hr></hr>
 <div class="widget-box wbCFallas" id="wdCDetalles02">
 
@@ -340,6 +341,52 @@ $destino  = $_POST['destino'];
         </div>
     </div>
 </div>
+
+<hr></hr>
+<div class="widget-box wbCImagen" id="wdCImagen01">
+
+    <div class="widget-header header-color-red3">
+        <h5>IMAGENES ASOCIADAS</h5>
+
+        <div class="widget-toolbar">
+            <a href="#" data-action="settings" id="btnAddCImagenProp">
+                <i class="icon-plus"></i>
+            </a>
+
+            <a href="#" title="" data-original-title="" class="ui-pg-button ui-state-disabled" style="width:5px;">
+                <span class="ui-separator marginLeft1em"></span>
+            </a>
+
+            <a href="#" data-action="reload" id="btnRefreshCImagenProp">
+                <i class="icon-refresh"></i>
+            </a>
+
+            <a href="#" title="" data-original-title="" class="ui-pg-button ui-state-disabled" style="width:5px;">
+                <span class="ui-separator marginLeft1em"></span>
+            </a>
+
+            <a href="#" data-action="collapse">
+                <i class="icon-chevron-up"></i>
+            </a>
+
+        </div>
+    </div>
+    <div class="widget-body">
+        <div class="widget-main">
+            <div class="row-fluid">
+                    <table class="table wd100prc" id="tblCImagen">
+                        <thead>
+                            <th>IMAGEN</th>
+                            <th>DESCRIPCIÓN</th>
+                            <th></th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <hr></hr>
 <div class="row-fluid">
 <h5 class="label label-inverse arrowed-in-right arrowed closeFormUpload pull-right" style="cursor: pointer;" >Regresar</h5>
@@ -360,6 +407,7 @@ jQuery(function($) {
     $(".wbCDetalle").hide();
     $(".wbCFallas").hide();
     $(".wbCCostos").hide();
+    $(".wbCImagen").hide();
 
 	var IdControlMaster = <?= $idcontrolmaster ?>;
     var IdEmpresa = <?= $idempresa ?>;
@@ -395,7 +443,8 @@ jQuery(function($) {
             			alert("Datos guardados con éxito.");
                         $(".wbCDetalle").show();
                         $(".wbCFallas").show();
-                        $(".wbCCostos").show();                        
+                        $(".wbCCostos").show();          
+                        $(".wbCImagen").show();
                         getOrdenDetalle(IdControlMaster);
         			}else{
 						$("#preloaderPrincipal").hide();
@@ -443,6 +492,7 @@ jQuery(function($) {
                     $(".wbCDetalle").show();
                     $(".wbCFallas").show();
                     $(".wbCCostos").show();                        
+                    $(".wbCImagen").show();
                     $(".ocultaStatus").show();
 
 					$("#search_empresa").val(json[0].empresa);
@@ -471,6 +521,7 @@ jQuery(function($) {
 					$("#preloaderPrincipal").hide();
                     getOrdenDetalle(IdControlMaster);
                     getOrdenCostos(IdControlMaster);
+                    getOrdenImagenes(IdControlMaster);
                     $("#idcliente").focus();
                     
 				}
@@ -629,7 +680,7 @@ jQuery(function($) {
                     getOrden(IdControlMaster);    
                     getOrdenDetalle(IdControlMaster);    
                     getOrdenCostos(IdControlMaster);    
-
+                    getOrdenImagenes(IdControlMaster);
                 }
             }, "json"
         );
@@ -845,6 +896,99 @@ jQuery(function($) {
                 $("#divUploadImage").modal('toggle');
         }, "html");
     }
+
+
+
+// MODULO DE IMAGENES 
+
+
+    function getOrdenImagenes(IdControlMaster){
+        var nc = "u="+localStorage.nc+"&idcontrolmaster="+IdControlMaster;
+        $("#tblCImagen > tbody").empty();
+        $.post(obj.getValue(0)+"data/", { o:70, t:33, p:54,c:nc,from:0,cantidad:0, s:"" },
+            function(json){
+                var tbdy = "";
+               $.each(json, function(i, item) {
+                    tbdy +='<tr>';
+                    tbdy +='    <td class="textLeft"><a href="'+item.root+item.imagen+'" target="_blank" title="'+item.imagen+'"><img src="'+item.root+item.imagen+'" width="58" height="80" /></a></td>';
+                    tbdy +='    <td class="textLeft">'+item.descripcion+'</td>';
+                    tbdy +='    <td class="textRight">';
+                    tbdy +='        <div class="visible-desktop action-buttons">';
+                    tbdy +='            <a class="red delCI" href="#"  id="delCI-'+item.idcontrolimagen+'-'+item.imagen+'" title="Elimna esta imagen" >';
+                    tbdy +='                <i class="icon-trash bigger-130"></i>';
+                    tbdy +='            </a>';
+                    tbdy +='        </div>';
+                    tbdy +='    </td>';
+                    tbdy +='</tr>';
+
+                });
+                $('#tblCImagen > tbody').html(tbdy);
+
+                $(".delCI").on("click",function(event){
+                    event.preventDefault();
+                    $("#iconSaveCommentResp").show();
+                    var resp =  confirm("Desea eliminar la imagen seleccionada?");
+                    if (resp){
+                        var arr = event.currentTarget.id.split('-');
+                        obj.setIsTimeLine(false);
+                        var data = new FormData();
+                        var dt = "idcontrolimagen="+arr[1]+"&img="+arr[2];
+                        data.append('data', dt);
+
+                        $.ajax({
+                            url:obj.getValue(0)+"fu-cimg-delete/",
+                            data: data,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            type: 'POST',
+                            success: function(json){
+                                alert(json.message);                       
+                                if (json.status=="OK"){
+                                    getOrdenImagenes(IdControlMaster);
+                                }
+                                $("#preloaderPrincipal").hide();
+                            }
+                        });
+                    }
+
+                });
+
+
+            }, "json"
+        );
+    }
+
+
+
+    $("#btnRefreshCImagenProp").on("click",function(event){
+        event.preventDefault();
+        getOrdenImagenes(IdControlMaster);
+    })
+
+    $("#btnAddCImagenProp").on("click",function(event){
+        event.preventDefault();
+        getImagenes(IdControlMaster);
+    })
+
+    function getImagenes(IdControlMaster){
+        $("#divUploadImage").empty();
+        
+        var nc = localStorage.nc;
+        $.post(obj.getValue(0) + "orden-imagen-prop/", {
+                user: nc,
+                idcontrolmaster: IdControlMaster
+            },
+            function(html) {
+                $("#divUploadImage").html(html);
+                $("#divUploadImage").modal('toggle');
+        }, "html");
+    }
+
+
+
+
 
 
 });

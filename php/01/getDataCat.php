@@ -59,6 +59,8 @@ switch ($index) {
     case 31: // Asocia Tecnicos a Empresa
     case 49: // Usuarios Conectados
     case 70: // Control Master
+    case 71: // Cotizaciones Encab
+    case 72: // Cotizaciones Detalles
 
         switch ($proc) {
             case 0:

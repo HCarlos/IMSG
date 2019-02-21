@@ -20,6 +20,13 @@
     </a>
 </li>
 
+<li>
+    <a href="#" id="cotizaciones">
+        <i class="icon icon-desktop"></i>
+        <span class="menu-text">Cotizaciones</span>
+    </a>
+</li>
+
 <script type="text/javascript">
 jQuery(function($) {
 
@@ -68,6 +75,22 @@ jQuery(function($) {
                 function(html) {
                     $("#contentMain").html(html);
                     $('#breadcrumb').html(getBar('Inicio,Análisis por Marcas'));
+                }, "html");
+            return false;
+        });
+    }
+
+    if ($("#cotizaciones").length) {
+        $("#cotizaciones").on("click", function(event) {
+            event.preventDefault();
+            cfgBase0();
+            var nc = localStorage.nc;
+            $.post(obj.getValue(0) + "cotizaciones-list/", {
+                    user: nc
+                },
+                function(html) {
+                    $("#contentMain").html(html);
+                    $('#breadcrumb').html(getBar('Inicio,Cotizaciones'));
                 }, "html");
             return false;
         });

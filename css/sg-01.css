@@ -284,6 +284,7 @@ input:focus{-webkit-border-radius: 0.25em !important;
 .margen0{margin: 0 !important;}
 
 .lbl00{ margin-top: 0.5em !important;}
+.lbl-mi-05{ padding-left: 2em !important; background-color: red !important;}
 
 .cafe {
   color:#874A2A !important;

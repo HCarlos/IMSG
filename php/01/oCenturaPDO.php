@@ -31,17 +31,19 @@ class oCenturaPDO
     public $Mail;
     public $Foto;
     public $iva;
+    public $urlCImg;
 
 
     // Constructor
     private function __construct()
     {
         $this->Nav      = "Ninguno";
-        $this->IdUser    = 0;
+        $this->IdUser   = 0;
         $this->User     = "";
         $this->Pass     = "";
         $this->iva      = 0.16;
         $this->URL      = "http://imsg.mx/";
+        $this->urlCImg  = "http://imsg.mx/";
     }
 
     // Get Instance
@@ -382,6 +384,20 @@ class oCenturaPDO
                                     where idemp = $idemp ";
                         break;
 
+                    case 86:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idporcentajeutilidad as data, descripcion as label, predeterminado
+                                        FROM cat_porcentaje_utilidad
+                                    where idemp = $idemp ";
+                        break;
+
+                    case 87:
+                        parse_str($arg);
+                        $idemp = $this->getIdEmpFromAlias($u);
+                        $query = "SELECT idmoneda as data, moneda as label, tipo_cambio, predeterminado
+                                        FROM cat_moneda";
+                        break;
 
                     case 100:
                         parse_str($arg);
@@ -774,6 +790,58 @@ class oCenturaPDO
 
                 break;
 
+            case 33:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT  *
+                                FROM control_imagenes
+                            WHERE idcontrolmaster = $idcontrolmaster AND idemp = $idemp 
+                            ORDER BY idcontrolimagen DESC";
+                break;
+
+            case 34:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                    $query = "SELECT *
+                                FROM cotizacion_encab
+                                WHERE idemp = $idemp 
+                                ORDER BY idcotizacion DESC 
+                                LIMIT 1";
+                break;
+
+            case 35:
+                $query = "SELECT  *
+                                FROM cotizacion_encab
+                            WHERE idcotizacion = $cad ";
+                break;
+
+            case 36:
+                parse_str($cad);
+                $idemp = $this->getIdEmpFromAlias($u);
+                $query = "SELECT  *
+                                FROM _viCotizacion_Detalle
+                            WHERE idcotizacion = $idcotizacion AND idemp = $idemp 
+                                ORDER BY idcotizaciondetalle desc";
+                break;
+
+            case 37:
+                $query = "SELECT  *
+                                FROM cotizacion_detalles
+                            WHERE idcotizaciondetalle = $cad ";
+                break;
+
+            case 38:
+                $query = "SELECT  subtotal,iva,total
+                                FROM cotizacion_encab
+                            WHERE idcotizacion = $cad ";
+                break;
+
+            case 39:
+                $query = "SELECT  *
+                                FROM _viCotizacion_Detalle
+                            WHERE idcotizacion = $cad 
+                                ORDER BY idcotizaciondetalle asc";
+                break;
 
             case 4000:
                 parse_str($cad);
@@ -2055,8 +2123,153 @@ class oCenturaPDO
                                 WHERE idcontrolmaster = $idcontrolmaster";
                         $vRet = $this->guardarDatos($query);
                         break;
+                    case 14:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        
+                        $query = "INSERT INTO control_imagenes(
+                                                            idcontrolmaster,
+                                                            root,
+                                                            imagen,
+                                                            descripcion,
+                                                            idemp,
+                                                            ip,
+                                                            host,
+                                                            creado_por,
+                                                            creado_el
+                                                        )values(
+                                                            $idcontrolmaster,
+                                                            '$root',
+                                                            '$imagen',
+                                                            '$descripcion',
+                                                            $idemp,
+                                                            '$ip',
+                                                            '$host',
+                                                            $idusr,
+                                                            NOW()
+                                                        )";
+                        $vRet = $this->guardarDatos($query);
+                        break;
                 } // 70
                 break;
+
+            case 71:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $query = "INSERT INTO cotizacion_encab(
+                                                            persona,
+                                                            empresa,
+                                                            fecha,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    VALUES(
+                                                            '$persona',
+                                                            '$empresa',
+                                                            '$fecha',
+                                                            $idemp,'$ip','$host',$idusr,NOW() )";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 1:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+
+                        $query = "UPDATE cotizacion_encab SET
+                                                            persona = '$persona',
+                                                            empresa = '$empresa',
+                                                            fecha = '$fecha',
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE idcotizacion = $idcotizacion";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cotizacion_encab WHERE idcotizacion = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+
+                  } // 71
+                  break;
+
+            case 72:
+                switch ($tipo) {
+                    case 0:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $idemp = $this->getIdEmpFromAlias($user);
+                        $query = "INSERT INTO cotizacion_detalles(
+                                                            idcotizacion,
+                                                            idmoneda,
+                                                            tipo_cambio,
+                                                            lote,
+                                                            cantidad,
+                                                            idunidadmedida,
+                                                            descripcion,
+                                                            precio_unitario,
+                                                            idporcentajeutilidad,
+                                                            flete,
+                                                            idemp,ip,host,creado_por,creado_el)
+                                    VALUES(
+                                                            $idcotizacion,
+                                                            $idmoneda,
+                                                            $tipo_cambio,
+                                                            '$lote',
+                                                            $cantidad,
+                                                            $idunidadmedida,
+                                                            '$descripcion',
+                                                            $precio_unitario,
+                                                            $idporcentajeutilidad,
+                                                            $flete,
+                                                            $idemp,'$ip','$host',$idusr,NOW() )";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 1:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+
+                        $query = "UPDATE cotizacion_detalles SET
+                                                            idcotizacion         = $idcotizacion,
+                                                            idmoneda             = $idmoneda,
+                                                            tipo_cambio          = $tipo_cambio,
+                                                            lote                 = '$lote',
+                                                            cantidad             = $cantidad,
+                                                            idunidadmedida       = $idunidadmedida,
+                                                            descripcion          = '$descripcion',
+                                                            precio_unitario      = $precio_unitario,
+                                                            idporcentajeutilidad = $idporcentajeutilidad,
+                                                            flete                = $flete,
+                                                            ip = '$ip',
+                                                            host = '$host',
+                                                            modi_por = $idusr,
+                                                            modi_el = NOW()
+                                WHERE idcotizaciondetalle = $idcotizaciondetalle";
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 2:
+                        $query = "DELETE FROM cotizacion_detalles WHERE idcotizaciondetalle = ".$arg;
+                        $vRet = $this->guardarDatos($query);
+                        break;
+                    case 3:
+                        parse_str($arg);
+                        $idusr = $this->getIdUserFromAlias($user);
+                        $arrIdCotDets = explode('|', $IdCotDets);
+                        foreach ($arrIdCotDets as $i => $value) {
+                            $query = "UPDATE cotizacion_detalles 
+                                        SET idmoneda = $idmoneda,
+                                            tipo_cambio = $tipo_cambio 
+                                        WHERE idcotizaciondetalle = $arrIdCotDets[$i]";
+                            $vRet = $this->guardarDatos($query);
+                        }
+                        break;    
+
+                  } // 72
+                  break;
+
+
+
 
 
         }

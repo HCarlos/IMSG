@@ -470,3 +470,57 @@ LEFT JOIN _viPersonas per2
 LEFT JOIN _viControlDetalleUnico dtu 
 	ON ord.idcontrolmaster = dtu.idcontrolmaster AND ord.idemp = dtu.idemp 
 
+
+
+
+CREATE OR REPLACE VIEW _viCotizacion_Encab AS
+SELECT
+ce.idcotizacion, 
+ce.fecha, 
+ce.idpersona, 
+per.nombre_persona,
+ce.idempresa, 
+cli.empresa,
+ce.reglas, 
+ce.observaciones, 
+ce.subtotal,
+ce.iva,
+ce.total,
+ce.status_cotizacion, 
+ce.idemp 
+FROM cotizacion_encab ce 
+LEFT JOIN _viPersonas per 
+	ON ce.idpersona = per.idpersona AND ce.idemp = per.idemp 
+LEFT JOIN _viEmpresaRepteLegal cli 
+	ON ce.idempresa = cli.idrepresentantelegal AND ce.idemp = cli.idemp 
+
+
+CREATE OR REPLACE VIEW _viCotizacion_Detalle AS
+SELECT
+cd.idcotizaciondetalle, 
+cd.idcotizacion, 
+cd.lote, 
+mon.idmoneda,
+mon.tipo_cambio,
+cd.cantidad, 
+cd.idunidadmedida, 
+md.clave,
+md.unidad_medida,
+cd.descripcion, 
+cd.precio_unitario, 
+cd.idporcentajeutilidad,
+pu.descripcion as porcentaje_utilidad,
+pu.porcentaje_inverso,
+pu.predeterminado, 
+cd.flete, 
+cd.precio_venta, 
+cd.importe, 
+cd.status_cotizacion_detalle, 
+cd.idemp 
+FROM cotizacion_detalles cd
+LEFT JOIN cat_moneda mon
+	ON cd.idmoneda = mon.idmoneda
+LEFT JOIN cat_unidades_medidas md
+	ON cd.idunidadmedida = md.idunidadmedida
+LEFT JOIN cat_porcentaje_utilidad pu 
+	ON cd.idporcentajeutilidad = pu.idporcentajeutilidad 

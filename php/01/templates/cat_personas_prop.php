@@ -125,7 +125,7 @@ $idpersona  = $_POST['idpersona'];
 	                        <span class="add-on"><i class="icon-ok white"></i></span>
 							<select class="altoMoz " name="genero" id="genero" size="1">
 								<option value="0">Mujer</option>
-								<option value="1">Hombre</option>
+								<option value="1" selected>Hombre</option>
 							</select>
 						</td>
                         <td><label for="isaddempresa" class="textRight marginLeft2em">Agregar a Empresa</label></td>

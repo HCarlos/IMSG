@@ -226,11 +226,6 @@ body{background: transparent url("/img/blueprint.png") top left; }
     <script src="/assets/js/bootstrap-colorpicker.min.js"></script>
     <script src="/assets/js/jquery.maskedinput.min.js"></script>
 
-/*
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>    
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
-    <script src="/js/vue-file.js"> </script>
-*/
 
     <script src="/js/01/base.js"> </script>
     <script src="/js/init.js"> </script>
