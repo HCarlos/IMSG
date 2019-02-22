@@ -34,6 +34,7 @@ class oCenturaPDO
     public $urlCImg;
 
 
+
     // Constructor
     private function __construct()
     {
